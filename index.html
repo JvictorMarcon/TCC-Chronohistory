@@ -1,225 +1,317 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chronohistory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="chronohistory.css">
-    <link rel="stylesheet" href="map.css">
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="css/chronohistory.css" />
+    <link rel="stylesheet" href="css/map.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-</head>
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
 
-<body>
-
+  <body>
     <!-- ═══ HEADER ═══ -->
     <header>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
-            <div class="flex items-center justify-between gap-2">
-                <!-- Logo -->
-                <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                    <img src="logo.png" alt="Logo Chronohistory" class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain">
-                    <span class="logo-title">Chronohistory</span>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Logo -->
+          <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <img
+              src="logo.png"
+              alt="Logo Chronohistory"
+              class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain"
+            />
+            <span class="logo-title">Chronohistory</span>
+          </div>
 
-                <!-- Desktop Nav -->
-                <nav class="hidden lg:flex items-center">
-                    <a class="nav-link active" href="index.html">Linha do Tempo</a>
-                    <a class="nav-link" href="galeria.html">Galeria Histórica</a>
-                    <a class="nav-link" href="jogo.html">Jogo Interativo</a>
-                    <a class="nav-link" href="professor.html">Área do Professor</a>
-                </nav>
+          <!-- Desktop Nav -->
+          <nav class="hidden lg:flex items-center" id="desktopNav">
+            <a class="nav-link active" href="index.html">Linha do Tempo</a>
+            <a
+              class="nav-link hidden"
+              data-requires-auth
+              href="html/galeria.html"
+              >Galeria Histórica</a
+            >
+            <a class="nav-link hidden" data-requires-auth href="html/jogo.html"
+              >Jogo Interativo</a
+            >
+            <a class="nav-link" href="html/login.html" id="navLoginBtn"
+              >Login</a
+            >
+          </nav>
 
-                <!-- Mobile Toggle -->
-                <button id="menuBtn" class="menu-toggle" aria-label="Menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Mobile Menu -->
-            <nav id="mobileMenu" class="mobile-menu">
-                <a class="mobile-link active" href="index.html">Linha do Tempo</a>
-                <a class="mobile-link" href="galeria.html">Galeria Histórica</a>
-                <a class="mobile-link" href="jogo.html">Jogo Interativo</a>
-                <a class="mobile-link" href="professor.html">Área do Professor</a>  
-            </nav>
+          <!-- Mobile Toggle -->
+          <button id="menuBtn" class="menu-toggle" aria-label="Menu">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobileMenu" class="mobile-menu">
+          <a class="mobile-link active" href="index.html">Linha do Tempo</a>
+          <a
+            class="mobile-link hidden"
+            data-requires-auth
+            href="html/galeria.html"
+            >Galeria Histórica</a
+          >
+          <a class="mobile-link hidden" data-requires-auth href="html/jogo.html"
+            >Jogo Interativo</a
+          >
+          <a class="mobile-link" href="html/login.html" id="mobileLoginBtn"
+            >Login</a
+          >
+        </nav>
+      </div>
     </header>
 
     <!-- ═══ HERO SECTION (vídeo confinado aqui, não mais na página inteira) ═══ -->
     <section class="hero-section" id="hero">
+      <div class="hero-video-bg">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="vei.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-video-overlay"></div>
+      </div>
 
-        <div class="hero-video-bg">
-            <video autoplay muted loop playsinline preload="auto">
-                <source src="vei.mp4" type="video/mp4">
-            </video>
-            <div class="hero-video-overlay"></div>
+      <div class="hero-pixel-border"></div>
+
+      <div class="hero-content">
+        <span class="hero-badge">Linha do tempo interativa</span>
+        <h1 class="hero-title">
+          Explore a <span class="hero-title-accent">história</span><br />
+          do mundo
+        </h1>
+        <p class="hero-desc">
+          Descubra eventos, civilizações e personagens que moldaram a humanidade
+          ao longo dos séculos.
+        </p>
+        <div class="hero-btns">
+          <a href="#timeline-section" class="hero-btn-primary"
+            >Ver linha do tempo</a
+          >
+          <a href="html/jogo.html" class="hero-btn-secondary">Jogar agora</a>
         </div>
+      </div>
 
-        <div class="hero-pixel-border"></div>
-
-        <div class="hero-content">
-            <span class="hero-badge">Linha do tempo interativa</span>
-            <h1 class="hero-title">
-                Explore a <span class="hero-title-accent">história</span><br>
-                do mundo
-            </h1>
-            <p class="hero-desc">
-                Descubra eventos, civilizações e personagens que moldaram a humanidade ao longo dos séculos.
-            </p>
-            <div class="hero-btns">
-                <a href="#timeline-section" class="hero-btn-primary">Ver linha do tempo</a>
-                <a href="jogo.html" class="hero-btn-secondary">Jogar agora</a>
-            </div>
-        </div>
-
-        <div class="hero-scroll-arrow" onclick="document.getElementById('timeline-section').scrollIntoView({behavior:'smooth'})">
-            <div class="scroll-arrow-pixel">↓</div>
-            <div class="scroll-arrow-label">Rolar</div>
-        </div>
+      <div
+        class="hero-scroll-arrow"
+        onclick="
+          document
+            .getElementById('timeline-section')
+            .scrollIntoView({ behavior: 'smooth' })
+        "
+      >
+        <div class="scroll-arrow-pixel">↓</div>
+        <div class="scroll-arrow-label">Rolar</div>
+      </div>
     </section>
 
     <!-- ═══ MAIN ═══ -->
     <main id="timeline-section">
+      <!-- Filtros -->
+      <div class="filter-section">
+        <h2 class="filter-title">Filtrar jornada histórica</h2>
+        <div class="filter-grid">
+          <div class="lugar-filter-wrapper">
+            <label class="filter-label">Local do evento</label>
+            <div class="lugar-input-container">
+              <input
+                type="text"
+                id="lugarFilter"
+                class="filter-input lugar-filter-input"
+                list="lugarOptions"
+                placeholder="Digite um país, ex: Roma, Egito..."
+                autocomplete="off"
+              />
+              <span class="lugar-search-icon">⌕</span>
+            </div>
+            <datalist id="lugarOptions"></datalist>
+          </div>
+          <div>
+            <label class="filter-label">Ano ou época</label>
+            <input
+              type="text"
+              id="anoFilter"
+              class="filter-input"
+              placeholder="Ex: 476, 1500, 1945, 500 a.C."
+            />
+          </div>
+          <div>
+            <label class="filter-label">Período histórico</label>
+            <select id="periodoFilter" class="filter-select"></select>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button id="limparFiltros" class="btn-clear">Limpar filtros</button>
+          <button id="aplicarFiltros" class="btn-apply">Aplicar filtros</button>
+        </div>
+      </div>
 
-        <!-- Filtros -->
-        <div class="filter-section">
-            <h2 class="filter-title">Filtrar jornada histórica</h2>
-            <div class="filter-grid">
-                <div class="lugar-filter-wrapper">
-                    <label class="filter-label">Local do evento</label>
-                    <div class="lugar-input-container">
-                        <input
-                            type="text"
-                            id="lugarFilter"
-                            class="filter-input lugar-filter-input"
-                            list="lugarOptions"
-                            placeholder="Digite um país, ex: Roma, Egito..."
-                            autocomplete="off"
-                        >
-                        <span class="lugar-search-icon">⌕</span>
-                    </div>
-                    <datalist id="lugarOptions"></datalist>
-                </div>
-                <div>
-                    <label class="filter-label">Ano ou época</label>
-                    <input type="text" id="anoFilter" class="filter-input" placeholder="Ex: 476, 1500, 1945, 500 a.C.">
-                </div>
-                <div>
-                    <label class="filter-label">Período histórico</label>
-                    <select id="periodoFilter" class="filter-select">
-                    </select>
-                </div>
-            </div>
-            <div class="filter-actions">
-                <button id="limparFiltros" class="btn-clear">Limpar filtros</button>
-                <button id="aplicarFiltros" class="btn-apply">Aplicar filtros</button>
-            </div>
+      <!-- Linha do Tempo -->
+      <div class="mb-8">
+        <div class="timeline-header">
+          <h2 class="timeline-title">Linha do tempo cronológica</h2>
         </div>
 
-        <!-- Linha do Tempo -->
-        <div class="mb-8">
-            <div class="timeline-header">
-                <h2 class="timeline-title">Linha do tempo cronológica</h2>
+        <div id="timelineContainer" class="timeline-container">
+          <div class="timeline-line"></div>
+          <div id="timelineItems" class="space-y-12">
+            <div class="text-center py-16">
+              <div class="loading-spinner mx-auto mb-4"></div>
+              <p>Carregando eventos históricos...</p>
             </div>
-
-            <div id="timelineContainer" class="timeline-container">
-                <div class="timeline-line"></div>
-                <div id="timelineItems" class="space-y-12">
-                    <div class="text-center py-16">
-                        <div class="loading-spinner mx-auto mb-4"></div>
-                        <p>Carregando eventos históricos...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="loadingIndicator" class="hidden text-center py-8">
-                <div class="loading-spinner mx-auto mb-4"></div>
-                <p class="text-[#EDD9A3] text-lg">Carregando mais eventos históricos...</p>
-            </div>
+          </div>
         </div>
 
+        <div id="loadingIndicator" class="hidden text-center py-8">
+          <div class="loading-spinner mx-auto mb-4"></div>
+          <p class="text-[#EDD9A3] text-lg">
+            Carregando mais eventos históricos...
+          </p>
+        </div>
+      </div>
     </main>
 
     <!-- ═══ FOOTER ═══ -->
     <footer>
-        <div class="max-w-7xl mx-auto text-center">
-            <span class="footer-brand">Chronohistory — desvendando o passado, construindo o futuro</span>
-            <p class="footer-copy">© 2026 · Uma jornada através do tempo com sabedoria ancestral</p>
-        </div>
+      <div class="max-w-7xl mx-auto text-center">
+        <span class="footer-brand"
+          >Chronohistory — desvendando o passado, construindo o futuro</span
+        >
+        <p class="footer-copy">
+          © 2026 · Uma jornada através do tempo com sabedoria ancestral
+        </p>
+      </div>
     </footer>
 
     <!-- ═══ MODALS ═══ -->
-    <div id="saberMaisModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto transform transition-all">
-            <div class="modal-header flex justify-between items-center">
-                <h3 class="modal-title">Saber mais</h3>
-                <button id="fecharModal" class="modal-close">×</button>
-            </div>
-            <div id="modalContent" class="modal-body"></div>
+    <div
+      id="saberMaisModal"
+      class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto transform transition-all"
+      >
+        <div class="modal-header flex justify-between items-center">
+          <h3 class="modal-title">Saber mais</h3>
+          <button id="fecharModal" class="modal-close">×</button>
         </div>
+        <div id="modalContent" class="modal-body"></div>
+      </div>
     </div>
 
-    <div id="mapModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform transition-all">
-            <div class="modal-header flex justify-between items-center">
-                <h3 class="modal-title">Localização do evento</h3>
-                <button id="fecharMapModal" class="modal-close">×</button>
-            </div>
-            <div class="p-4">
-                <div id="map" style="height: 400px; border-radius: 4px;"></div>
-            </div>
+    <div
+      id="mapModal"
+      class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform transition-all"
+      >
+        <div class="modal-header flex justify-between items-center">
+          <h3 class="modal-title">Localização do evento</h3>
+          <button id="fecharMapModal" class="modal-close">×</button>
         </div>
+        <div class="p-4">
+          <div id="map" style="height: 400px; border-radius: 4px"></div>
+        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
 
-    <!-- ═══ MENU MOBILE ═══ -->
+    <!-- ═══ MENU MOBILE & PARTÍCULAS MEDIEVAIS ═══ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var header = document.querySelector('header');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 40) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            }, { passive: true });
+      (function () {
+        var particleSymbols = ["✦", "✧", "⬥", "⬦", "◆", "◇", "⚜"];
+        var colors = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
 
-            const menuBtn = document.getElementById('menuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
+        function createParticle() {
+          var p = document.createElement("div");
+          p.className = "medieval-particle";
+          p.textContent =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-20px";
+          p.style.color = colors[Math.floor(Math.random() * colors.length)];
+          p.style.animationDuration = 6 + Math.random() * 10 + "s";
+          p.style.animationDelay = Math.random() * 4 + "s";
+          p.style.fontSize = 8 + Math.random() * 10 + "px";
+          p.style.opacity = "0";
+          document.body.appendChild(p);
+          setTimeout(function () {
+            if (p.parentNode) p.parentNode.removeChild(p);
+          }, 18000);
+        }
 
-            if (menuBtn) {
-                menuBtn.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('open');
-                });
+        setInterval(createParticle, 2200);
+        for (var i = 0; i < 5; i++) {
+          setTimeout(createParticle, i * 400);
+        }
+      })();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var header = document.querySelector("header");
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (window.scrollY > 40) {
+              header.classList.add("scrolled");
+            } else {
+              header.classList.remove("scrolled");
             }
+          },
+          { passive: true },
+        );
 
-            if (mobileMenu) {
-                mobileMenu.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        mobileMenu.classList.remove('open');
-                    });
-                });
-            }
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
 
-            window.addEventListener('resize', function() {
-                if (window.innerWidth >= 1024 && mobileMenu) {
-                    mobileMenu.classList.remove('open');
-                }
+        if (menuBtn) {
+          menuBtn.addEventListener("click", function () {
+            mobileMenu.classList.toggle("open");
+          });
+        }
+
+        if (mobileMenu) {
+          mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+              mobileMenu.classList.remove("open");
             });
+          });
+        }
+
+        window.addEventListener("resize", function () {
+          if (window.innerWidth >= 1024 && mobileMenu) {
+            mobileMenu.classList.remove("open");
+          }
         });
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

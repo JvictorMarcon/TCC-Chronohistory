@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronohistory — Cadastro</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/medieval.css" />
+    <link rel="stylesheet" href="../css/cadastro.css" />
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+  <body>
+    <!-- VÍDEO DE FUNDO -->
+    <div class="video-bg-container">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="../vei.mp4" type="video/mp4" />
+      </video>
+      <div class="video-bg-overlay"></div>
+    </div>
+
+    <!-- CONTAINER DO CADASTRO -->
+    <div class="login-wrapper">
+      <a
+        href="../index.html"
+        class="back-button"
+        title="Voltar para a Página Inicial"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+        <span>Voltar</span>
+      </a>
+      <div class="login-card">
+        <div class="login-ornament">Novo Registro</div>
+
+        <a href="../index.html" class="login-logo">
+          <img src="../logo.png" alt="Chronohistory Logo" />
+          <h1>CHRONOHISTORY</h1>
+          <span>Criar Conta</span>
+        </a>
+
+        <!-- FORMULÁRIO DE REGISTRO -->
+        <form class="login-form" id="registerForm">
+          <div class="form-group">
+            <label for="fullname">
+              <svg
+                class="w-4 h-4 text-gold inline-block mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              Nome Completo
+            </label>
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="Digite seu nome completo"
+              required
+              autocomplete="name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="username">
+              <svg
+                class="w-4 h-4 text-gold inline-block mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                ></path>
+              </svg>
+              Usuário de Acesso
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Escolha um nome de usuário"
+              required
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              <svg
+                class="w-4 h-4 text-gold inline-block mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
+              </svg>
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Mínimo de 6 caracteres"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+
+          <button type="submit" class="btn-login" id="submitBtn">
+            <span>Cadastrar-se</span>
+          </button>
+        </form>
+
+        <!-- RODAPÉ DO CARD -->
+        <div class="login-footer">
+          Já possui uma conta?
+          <a href="login.html" class="signup-link">Faça login aqui</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCRIPTS DE REGISTRO -->
+    <script>
+      const API_URL = "https://backend-tcc-cronohistory.onrender.com";
+      const API_URL_LOCAL = "http://localhost:5000";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("registerForm");
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const fullname = document.getElementById("fullname").value.trim();
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const btn = document.getElementById("submitBtn");
+
+          if (!fullname || !username || !password) {
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+          }
+
+          btn.disabled = true;
+          btn.innerHTML = "<span>Cadastrando...</span>";
+
+          const payload = JSON.stringify({
+            nome: fullname,
+            user: username,
+            password: password,
+            perfil: "aluno",
+          });
+
+          // Tenta primeiro a URL de produção, depois local
+          const urlsTentar = [API_URL, API_URL_LOCAL];
+          let erro = null;
+
+          for (const url of urlsTentar) {
+            try {
+              const response = await fetch(`${url}/cadastro`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: payload,
+              });
+
+              const data = await response.json();
+
+              if (response.ok && data.status === "success") {
+                alert(`Conta criada com sucesso! Bem-vindo(a), ${fullname}.`);
+                window.location.href = "login.html";
+                return;
+              } else if (response.status === 400) {
+                // Usuário duplicado ou erro de validação
+                alert(
+                  data.message ||
+                    "Erro ao realizar o cadastro. Tente outro nome de usuário.",
+                );
+                btn.disabled = false;
+                btn.innerHTML = "<span>Cadastrar-se</span>";
+                return;
+              }
+              // Se chegou aqui, houve um erro mas pode tentar próxima URL
+              erro = data.message || "Erro no servidor";
+            } catch (error) {
+              erro = error.message;
+              // Continua para próxima URL
+            }
+          }
+
+          // Se chegou aqui, todas as URLs falharam
+          console.error("Erro de cadastro:", erro);
+          alert(
+            "Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.",
+          );
+          btn.disabled = false;
+          btn.innerHTML = "<span>Cadastrar-se</span>";
+        });
+      });
+    </script>
+  </body>
+</html>

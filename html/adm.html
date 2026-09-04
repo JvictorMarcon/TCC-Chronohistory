@@ -1,0 +1,1945 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Administrativo — Chronohistory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="logo.png" />
+    <style>
+      :root {
+        --bg-dark: #0e0c0a;
+        --bg-card: #181410;
+        --bg-card-hover: #221c17;
+        --bg-input: #120e0b;
+        --border-color: rgba(201, 162, 39, 0.22);
+        --border-hover: rgba(201, 162, 39, 0.55);
+        --gold: #c9a227;
+        --gold-light: #e8c84a;
+        --gold-soft: rgba(201, 162, 39, 0.12);
+        --paper: #f5e6c8;
+        --paper-dim: #d1be9b;
+        --text-muted: #9e8e76;
+        --danger: #e74c3c;
+        --danger-bg: rgba(231, 76, 60, 0.15);
+        --success: #2ecc71;
+        --success-bg: rgba(46, 204, 113, 0.15);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--paper);
+        min-height: 100vh;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .brand-font {
+        font-family: "Fraunces", serif;
+      }
+
+      /* ═══ NAVBAR HEADER ═══ */
+      header.adm-header {
+        background: rgba(14, 12, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 0.85rem 2rem;
+      }
+
+      .header-inner {
+        max-width: 1600px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .brand-box {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .brand-title {
+        font-size: 1.45rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.01em;
+      }
+
+      .badge-adm {
+        background: var(--gold-soft);
+        border: 1px solid var(--border-color);
+        color: var(--gold-light);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+      }
+
+      .nav-tabs {
+        display: flex;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-color);
+        padding: 4px;
+        border-radius: 30px;
+        gap: 4px;
+      }
+
+      .tab-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: inherit;
+      }
+
+      .tab-btn:hover {
+        color: var(--paper);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .tab-btn.active {
+        background: var(--gold);
+        color: #0e0c0a;
+        box-shadow: 0 2px 10px rgba(201, 162, 39, 0.3);
+      }
+
+      .tab-badge {
+        background: rgba(0, 0, 0, 0.25);
+        padding: 2px 7px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .tab-btn.active .tab-badge {
+        background: rgba(0, 0, 0, 0.2);
+        color: #0e0c0a;
+      }
+
+      .user-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .btn-logout {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--paper-dim);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: inherit;
+      }
+
+      .btn-logout:hover {
+        background: var(--danger-bg);
+        border-color: var(--danger);
+        color: #ff6b6b;
+      }
+
+      /* ═══ MAIN LAYOUT ═══ */
+      main.adm-main {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      /* ═══ STATS GRID ═══ */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .kpi-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        transition: var(--transition);
+      }
+
+      .kpi-card:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        background: var(--bg-card-hover);
+      }
+
+      .kpi-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: var(--gold-soft);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold-light);
+        flex-shrink: 0;
+      }
+
+      .kpi-details {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .kpi-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--paper);
+        line-height: 1.1;
+      }
+
+      .kpi-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-top: 0.3rem;
+      }
+
+      /* ═══ TAB PANELS ═══ */
+      .tab-panel {
+        display: none;
+        animation: fadeIn 0.25s ease-out forwards;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .panel-split {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 1.8rem;
+        align-items: start;
+      }
+
+      @media (max-width: 1100px) {
+        .panel-split {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ═══ CARD STYLES ═══ */
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.85rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .card-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--paper);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .card-title svg {
+        color: var(--gold);
+      }
+
+      /* ═══ FORMS ═══ */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .form-group label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--paper-dim);
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.65rem 0.9rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        color: var(--paper);
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: var(--transition);
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px var(--gold-soft);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+
+      .btn-primary {
+        width: 100%;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        color: #0e0c0a;
+        border: none;
+        padding: 0.75rem 1.2rem;
+        border-radius: var(--radius-md);
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: inherit;
+        box-shadow: 0 4px 15px rgba(201, 162, 39, 0.2);
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
+      }
+
+      /* ═══ FILTER & SEARCH BAR ═══ */
+      .table-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 240px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.6rem 1rem 0.6rem 2.4rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        color: var(--paper);
+        font-size: 0.88rem;
+        font-family: inherit;
+        transition: var(--transition);
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px var(--gold-soft);
+      }
+
+      .search-box svg {
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+      }
+
+      .filter-select {
+        padding: 0.6rem 1rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        color: var(--paper-dim);
+        font-size: 0.85rem;
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      .filter-select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      /* ═══ DATA TABLES ═══ */
+      .table-container {
+        overflow-x: auto;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+      }
+
+      table.adm-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.88rem;
+      }
+
+      table.adm-table th {
+        background: rgba(0, 0, 0, 0.4);
+        color: var(--paper-dim);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        white-space: nowrap;
+      }
+
+      table.adm-table td {
+        padding: 0.9rem 1rem;
+        border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+        vertical-align: middle;
+        color: var(--paper);
+      }
+
+      table.adm-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      table.adm-table tr:hover td {
+        background: rgba(201, 162, 39, 0.04);
+      }
+
+      .item-period-badge {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: var(--gold-soft);
+        color: var(--gold-light);
+        border: 1px solid var(--border-color);
+        white-space: nowrap;
+      }
+
+      .action-btns {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .btn-icon {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--paper-dim);
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .btn-icon:hover {
+        border-color: var(--gold);
+        color: var(--gold-light);
+        background: var(--gold-soft);
+      }
+
+      .btn-icon.btn-danger:hover {
+        border-color: var(--danger);
+        color: #ff6b6b;
+        background: var(--danger-bg);
+      }
+
+      /* ═══ GALLERY GRID ═══ */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .gallery-card {
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .gallery-card:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .gallery-img-wrapper {
+        width: 100%;
+        height: 140px;
+        background: #000;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .gallery-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .gallery-card:hover .gallery-img-wrapper img {
+        transform: scale(1.05);
+      }
+
+      .gallery-info {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        flex: 1;
+      }
+
+      .gallery-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--paper);
+        line-height: 1.3;
+      }
+
+      .gallery-meta {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .gallery-actions {
+        margin-top: auto;
+        padding-top: 0.8rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.4rem;
+        border-top: 1px solid rgba(251, 251, 251, 0.05);
+      }
+
+      /* ═══ MODAL OVERLAY ═══ */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border-hover);
+        border-radius: var(--radius-lg);
+        width: 90%;
+        max-width: 580px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 1.8rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        transform: scale(0.95);
+        transition: transform 0.2s ease;
+      }
+
+      .modal-overlay.open .modal-box {
+        transform: scale(1);
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .modal-title {
+        font-size: 1.2rem;
+        color: var(--paper);
+      }
+
+      .btn-close-modal {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .btn-close-modal:hover {
+        color: var(--paper);
+      }
+
+      /* ═══ EMPTY & LOADING STATES ═══ */
+      .empty-box {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* ═══ TOAST NOTIFICATION ═══ */
+      .toast-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .toast {
+        background: var(--bg-card);
+        border: 1px solid var(--gold);
+        color: var(--paper);
+        padding: 0.9rem 1.4rem;
+        border-radius: var(--radius-md);
+        font-size: 0.88rem;
+        font-weight: 500;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      .toast.toast-error {
+        border-color: var(--danger);
+        background: #2a1210;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        header.adm-header {
+          padding: 0.8rem 1rem;
+        }
+        .header-inner {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .nav-tabs {
+          justify-content: center;
+        }
+        main.adm-main {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ═══ HEADER BAR ═══ -->
+    <header class="adm-header">
+      <div class="header-inner">
+        <div class="brand-box">
+          <span class="brand-title brand-font">Chronohistory</span>
+          <span class="badge-adm">ADMIN</span>
+        </div>
+
+        <!-- TABS SWITCHER -->
+        <nav class="nav-tabs">
+          <button class="tab-btn active" onclick="switchTab('eventos')">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              ></path>
+              <polyline points="17 5 17 17 7 11"></polyline>
+            </svg>
+            Eventos
+            <span class="tab-badge" id="countEventosBadge">0</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('imagens')">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            Galeria
+            <span class="tab-badge" id="countImagensBadge">0</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('usuarios')">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+            </svg>
+            Usuários
+            <span class="tab-badge" id="countUsuariosBadge">0</span>
+          </button>
+        </nav>
+
+        <div class="user-control">
+          <button class="btn-logout" onclick="logoutAdmin()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Sair
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ MAIN CONTENT AREA ═══ -->
+    <main class="adm-main">
+      <!-- KPI SUMMARY CARDS -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-box">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+              ></path>
+              <polyline points="17 5 17 17 7 11"></polyline>
+            </svg>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="kpiEventosVal">0</span>
+            <span class="kpi-label">Eventos Históricos</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="kpiImagensVal">0</span>
+            <span class="kpi-label">Obras na Galeria</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="kpiUsuariosVal">0</span>
+            <span class="kpi-label">Alunos Cadastrados</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="kpiFaseMediaVal">1.0</span>
+            <span class="kpi-label">Fase Média no Jogo</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ TAB 1: EVENTOS HISTÓRICOS ═══ -->
+      <section id="tab-eventos" class="tab-panel active">
+        <div class="panel-split">
+          <!-- FORM CADASTRO DE EVENTO -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title brand-font">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Novo Evento Histórico
+              </h2>
+            </div>
+            <form id="formAddEvento" onsubmit="handleSalvarEvento(event)">
+              <div class="form-group">
+                <label for="evNome">Nome do Evento *</label>
+                <input
+                  type="text"
+                  id="evNome"
+                  placeholder="Ex: Queda da Bastilha"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="evPeriodo">Período Histórico *</label>
+                <select id="evPeriodo" required>
+                  <option value="Pré-História">Pré-História</option>
+                  <option value="Idade Antiga">Idade Antiga</option>
+                  <option value="Idade Média">Idade Média</option>
+                  <option value="Idade Moderna">Idade Moderna</option>
+                  <option value="Idade Contemporânea" selected>
+                    Idade Contemporânea
+                  </option>
+                </select>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="evAnoInicio">Ano Início</label>
+                  <input type="text" id="evAnoInicio" placeholder="Ex: 1789" />
+                </div>
+                <div class="form-group">
+                  <label for="evAnoFim">Ano Fim</label>
+                  <input type="text" id="evAnoFim" placeholder="Ex: 1799" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="evLugar">Localização / País</label>
+                <input
+                  type="text"
+                  id="evLugar"
+                  placeholder="Ex: Paris, França"
+                />
+              </div>
+              <div class="form-group">
+                <label for="evFiguras">Figuras Históricas (vírgula)</label>
+                <input
+                  type="text"
+                  id="evFiguras"
+                  placeholder="Ex: Napoleão Bonaparte, Luís XVI"
+                />
+              </div>
+              <div class="form-group">
+                <label for="evImagem">URL da Imagem (opcional)</label>
+                <input
+                  type="text"
+                  id="evImagem"
+                  placeholder="imagens/exemplo.webp ou https://..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="evAcontecimento">Descrição / O que aconteceu</label>
+                <textarea
+                  id="evAcontecimento"
+                  placeholder="Resumo do evento histórico..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-primary">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                  ></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                  <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Cadastrar Evento
+              </button>
+            </form>
+          </div>
+
+          <!-- TABELA DE EVENTOS -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title brand-font">Gerenciar Eventos</h2>
+            </div>
+
+            <div class="table-toolbar">
+              <div class="search-box">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input
+                  type="text"
+                  id="searchEventoInput"
+                  placeholder="Buscar evento por nome ou local..."
+                  onkeyup="renderizarEventos()"
+                />
+              </div>
+              <select
+                class="filter-select"
+                id="filterPeriodoEvento"
+                onchange="renderizarEventos()"
+              >
+                <option value="">Todos os Períodos</option>
+                <option value="Pré-História">Pré-História</option>
+                <option value="Idade Antiga">Idade Antiga</option>
+                <option value="Idade Média">Idade Média</option>
+                <option value="Idade Moderna">Idade Moderna</option>
+                <option value="Idade Contemporânea">Idade Contemporânea</option>
+              </select>
+            </div>
+
+            <div class="table-container">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Nome do Evento</th>
+                    <th>Período</th>
+                    <th>Ano</th>
+                    <th>Local</th>
+                    <th style="text-align: right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyEventos">
+                  <tr>
+                    <td colspan="5" class="empty-box">Carregando eventos...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ TAB 2: GALERIA DE IMAGENS ═══ -->
+      <section id="tab-imagens" class="tab-panel">
+        <div class="panel-split">
+          <!-- FORM CADASTRO DE IMAGEM -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title brand-font">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Nova Obra / Imagem
+              </h2>
+            </div>
+            <form id="formAddImagem" onsubmit="handleSalvarImagem(event)">
+              <div class="form-group">
+                <label for="imgTitulo">Título da Obra *</label>
+                <input
+                  type="text"
+                  id="imgTitulo"
+                  placeholder="Ex: Monalisa"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="imgPeriodo">Período Histórico *</label>
+                <select id="imgPeriodo" required>
+                  <option value="Pré-História">Pré-História</option>
+                  <option value="Idade Antiga">Idade Antiga</option>
+                  <option value="Idade Média">Idade Média</option>
+                  <option value="Idade Moderna" selected>Idade Moderna</option>
+                  <option value="Idade Contemporânea">
+                    Idade Contemporânea
+                  </option>
+                </select>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="imgPintor">Pintor / Artista</label>
+                  <input
+                    type="text"
+                    id="imgPintor"
+                    placeholder="Ex: Leonardo da Vinci"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="imgAno">Ano / Época</label>
+                  <input type="text" id="imgAno" placeholder="Ex: 1503" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="imgUrl">Caminho / URL da Imagem *</label>
+                <input
+                  type="text"
+                  id="imgUrl"
+                  placeholder="imagens/monalisa.webp ou https://..."
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="imgContexto">Contexto / Descrição</label>
+                <textarea
+                  id="imgContexto"
+                  placeholder="Detalhes sobre a obra de arte..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-primary">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                  ></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                  <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Adicionar à Galeria
+              </button>
+            </form>
+          </div>
+
+          <!-- GRID DA GALERIA -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title brand-font">Obras na Galeria</h2>
+            </div>
+
+            <div class="table-toolbar">
+              <div class="search-box">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input
+                  type="text"
+                  id="searchImagemInput"
+                  placeholder="Buscar por título ou artista..."
+                  onkeyup="renderizarImagens()"
+                />
+              </div>
+            </div>
+
+            <div class="gallery-grid" id="gridImagens">
+              <div class="empty-box" style="grid-column: 1/-1">
+                Carregando obras da galeria...
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ TAB 3: ALUNOS / USUÁRIOS ═══ -->
+      <section id="tab-usuarios" class="tab-panel">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title brand-font">Alunos Cadastrados no Sistema</h2>
+            <button
+              class="btn-icon"
+              onclick="carregarDados()"
+              title="Atualizar Lista"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="table-toolbar">
+            <div class="search-box">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <input
+                type="text"
+                id="searchUsuarioInput"
+                placeholder="Buscar aluno por nome ou usuário..."
+                onkeyup="renderizarUsuarios()"
+              />
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Usuário (@user)</th>
+                  <th>Perfil</th>
+                  <th>Fase no Jogo</th>
+                  <th>Data de Cadastro</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyUsuarios">
+                <tr>
+                  <td colspan="5" class="empty-box">
+                    Carregando lista de alunos...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══ MODAL EDITAR EVENTO ═══ -->
+    <div class="modal-overlay" id="modalEditarEvento">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 class="modal-title brand-font">Editar Evento Histórico</h3>
+          <button
+            class="btn-close-modal"
+            onclick="fecharModal('modalEditarEvento')"
+          >
+            &times;
+          </button>
+        </div>
+        <form id="formEditEvento" onsubmit="handleSalvarEdicaoEvento(event)">
+          <input type="hidden" id="editEvId" />
+          <div class="form-group">
+            <label for="editEvNome">Nome do Evento *</label>
+            <input type="text" id="editEvNome" required />
+          </div>
+          <div class="form-group">
+            <label for="editEvPeriodo">Período Histórico *</label>
+            <select id="editEvPeriodo" required>
+              <option value="Pré-História">Pré-História</option>
+              <option value="Idade Antiga">Idade Antiga</option>
+              <option value="Idade Média">Idade Média</option>
+              <option value="Idade Moderna">Idade Moderna</option>
+              <option value="Idade Contemporânea">Idade Contemporânea</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editEvAnoInicio">Ano Início</label>
+              <input type="text" id="editEvAnoInicio" />
+            </div>
+            <div class="form-group">
+              <label for="editEvAnoFim">Ano Fim</label>
+              <input type="text" id="editEvAnoFim" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editEvLugar">Localização</label>
+            <input type="text" id="editEvLugar" />
+          </div>
+          <div class="form-group">
+            <label for="editEvImagem">URL da Imagem</label>
+            <input type="text" id="editEvImagem" />
+          </div>
+          <div class="form-group">
+            <label for="editEvAcontecimento">Descrição / O que aconteceu</label>
+            <textarea id="editEvAcontecimento"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Salvar Alterações</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ═══ MODAL EDITAR IMAGEM ═══ -->
+    <div class="modal-overlay" id="modalEditarImagem">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 class="modal-title brand-font">Editar Obra da Galeria</h3>
+          <button
+            class="btn-close-modal"
+            onclick="fecharModal('modalEditarImagem')"
+          >
+            &times;
+          </button>
+        </div>
+        <form id="formEditImagem" onsubmit="handleSalvarEdicaoImagem(event)">
+          <input type="hidden" id="editImgId" />
+          <div class="form-group">
+            <label for="editImgTitulo">Título *</label>
+            <input type="text" id="editImgTitulo" required />
+          </div>
+          <div class="form-group">
+            <label for="editImgPeriodo">Período *</label>
+            <select id="editImgPeriodo" required>
+              <option value="Pré-História">Pré-História</option>
+              <option value="Idade Antiga">Idade Antiga</option>
+              <option value="Idade Média">Idade Média</option>
+              <option value="Idade Moderna">Idade Moderna</option>
+              <option value="Idade Contemporânea">Idade Contemporânea</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editImgPintor">Pintor / Artista</label>
+              <input type="text" id="editImgPintor" />
+            </div>
+            <div class="form-group">
+              <label for="editImgAno">Ano</label>
+              <input type="text" id="editImgAno" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editImgUrl">URL da Imagem *</label>
+            <input type="text" id="editImgUrl" required />
+          </div>
+          <div class="form-group">
+            <label for="editImgContexto">Descrição / Contexto</label>
+            <textarea id="editImgContexto"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Salvar Alterações</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ═══ SCRIPTS LÓGICA DO PAINEL ═══ -->
+    <script>
+      const API_URL =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+          ? "http://127.0.0.1:5000"
+          : "https://backend-tcc-cronohistory.onrender.com";
+
+      let cacheEventos = [];
+      let cacheImagens = [];
+      let cacheUsuarios = [];
+
+      // Helper Headers com Token JWT
+      function getAuthHeaders() {
+        const token =
+          localStorage.getItem("chronohistory_token") ||
+          localStorage.getItem("token");
+        const headers = { "Content-Type": "application/json" };
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+        return headers;
+      }
+
+      // ─── NAVEGAÇÃO DE TABS ───
+      function switchTab(tabId) {
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach((panel) => panel.classList.remove("active"));
+
+        const targetBtn = document.querySelector(
+          `.tab-btn[onclick="switchTab('${tabId}')"]`,
+        );
+        const targetPanel = document.getElementById(`tab-${tabId}`);
+
+        if (targetBtn) targetBtn.classList.add("active");
+        if (targetPanel) targetPanel.classList.add("active");
+      }
+
+      // ─── AUTH VERIFICATION ───
+      async function verificarAutenticacao() {
+        try {
+          const res = await fetch(`${API_URL}/me`, {
+            headers: getAuthHeaders(),
+            credentials: "include",
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (
+              data.autenticado &&
+              (data.role === "adm" || data.role === "admin")
+            ) {
+              return true;
+            }
+          }
+        } catch (e) {
+          console.warn(
+            "Servidor inacessível para /me, checando localStorage fallback",
+          );
+        }
+
+        const userLocal = JSON.parse(
+          localStorage.getItem("chronohistory_user") || "{}",
+        );
+        if (userLocal.role === "adm" || userLocal.role === "admin") {
+          return true;
+        }
+
+        window.location.href = "login.html";
+        return false;
+      }
+
+      async function logoutAdmin() {
+        try {
+          await fetch(`${API_URL}/logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+        } catch (_) {}
+        // Limpa tudo do localStorage e sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+        // Redireciona com ?logout=1 para evitar loop de redirecionamento no login
+        window.location.href = "login.html?logout=1";
+      }
+
+      // ─── CARREGAR DADOS GERAIS ───
+      async function carregarDados() {
+        // 1. Carregar Eventos
+        try {
+          const res = await fetch(`${API_URL}/eventos`);
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              cacheEventos = data;
+            } else if (data && Array.isArray(data.data)) {
+              cacheEventos = data.data;
+            }
+          }
+        } catch (err) {
+          console.error("Erro ao buscar eventos:", err);
+        }
+
+        // 2. Carregar Imagens
+        try {
+          const res = await fetch(`${API_URL}/imagens`);
+          if (res.ok) {
+            const data = await res.json();
+            cacheImagens = Array.isArray(data) ? data : [];
+          }
+        } catch (err) {
+          console.error("Erro ao buscar imagens:", err);
+        }
+
+        // 3. Carregar Usuários
+        try {
+          const res = await fetch(`${API_URL}/admin/usuarios`, {
+            headers: getAuthHeaders(),
+            credentials: "include",
+          });
+          if (res.ok) {
+            const data = await res.json();
+            cacheUsuarios = data.usuarios || [];
+          }
+        } catch (err) {
+          console.error("Erro ao buscar usuários:", err);
+        }
+
+        atualizarInterface();
+      }
+
+      function atualizarInterface() {
+        // KPIs e Badges
+        document.getElementById("kpiEventosVal").textContent =
+          cacheEventos.length;
+        document.getElementById("countEventosBadge").textContent =
+          cacheEventos.length;
+
+        document.getElementById("kpiImagensVal").textContent =
+          cacheImagens.length;
+        document.getElementById("countImagensBadge").textContent =
+          cacheImagens.length;
+
+        document.getElementById("kpiUsuariosVal").textContent =
+          cacheUsuarios.length;
+        document.getElementById("countUsuariosBadge").textContent =
+          cacheUsuarios.length;
+
+        // Calcular fase média
+        if (cacheUsuarios.length > 0) {
+          const somaFases = cacheUsuarios.reduce(
+            (acc, u) => acc + (u.fase_jogo || 1),
+            0,
+          );
+          const media = (somaFases / cacheUsuarios.length).toFixed(1);
+          document.getElementById("kpiFaseMediaVal").textContent = media;
+        }
+
+        renderizarEventos();
+        renderizarImagens();
+        renderizarUsuarios();
+      }
+
+      // ─── RENDERIZAR EVENTOS ───
+      function renderizarEventos() {
+        const tbody = document.getElementById("tbodyEventos");
+        const search = document
+          .getElementById("searchEventoInput")
+          .value.toLowerCase()
+          .trim();
+        const periodoFiltro = document.getElementById(
+          "filterPeriodoEvento",
+        ).value;
+
+        const filtrados = cacheEventos.filter((ev) => {
+          const matchNome = (ev.nome || "").toLowerCase().includes(search);
+          const matchLugar = (ev.lugar || "").toLowerCase().includes(search);
+          const matchPeriodo =
+            !periodoFiltro || (ev.periodo || "") === periodoFiltro;
+          return (matchNome || matchLugar) && matchPeriodo;
+        });
+
+        if (filtrados.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="empty-box">Nenhum evento encontrado.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtrados
+          .map(
+            (ev) => `
+                <tr>
+                    <td><strong>${ev.nome || "Sem título"}</strong></td>
+                    <td><span class="item-period-badge">${ev.periodo || "N/A"}</span></td>
+                    <td>${ev.ano_inicio || ev.ano || "—"}</td>
+                    <td>${ev.lugar || "—"}</td>
+                    <td style="text-align: right;">
+                        <div class="action-btns" style="justify-content: flex-end;">
+                            <button class="btn-icon" title="Editar" onclick="abrirModalEditarEvento(${ev.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Excluir" onclick="deletarEvento(${ev.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      // ─── RENDERIZAR IMAGENS ───
+      function renderizarImagens() {
+        const grid = document.getElementById("gridImagens");
+        const search = document
+          .getElementById("searchImagemInput")
+          .value.toLowerCase()
+          .trim();
+
+        const filtradas = cacheImagens.filter((img) => {
+          const matchTitulo = (img.titulo || "").toLowerCase().includes(search);
+          const matchPintor = (img.pintor || "").toLowerCase().includes(search);
+          return matchTitulo || matchPintor;
+        });
+
+        if (filtradas.length === 0) {
+          grid.innerHTML = `<div class="empty-box" style="grid-column: 1/-1;">Nenhuma obra na galeria encontrada.</div>`;
+          return;
+        }
+
+        grid.innerHTML = filtradas
+          .map(
+            (img) => `
+                <div class="gallery-card">
+                    <div class="gallery-img-wrapper">
+                        <img src="${img.url || "imagens/placeholder.webp"}" alt="${img.titulo}" onerror="this.src='https://via.placeholder.com/300x200?text=Imagem+indisponivel'">
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">${img.titulo || "Sem Título"}</span>
+                        <span class="gallery-meta">${img.pintor || "Autor Desconhecido"} · ${img.ano || "S/D"}</span>
+                        <div class="gallery-actions">
+                            <button class="btn-icon" title="Editar" onclick="abrirModalEditarImagem(${img.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Excluir" onclick="deletarImagem(${img.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      // ─── RENDERIZAR USUÁRIOS ───
+      function renderizarUsuarios() {
+        const tbody = document.getElementById("tbodyUsuarios");
+        const search = document
+          .getElementById("searchUsuarioInput")
+          .value.toLowerCase()
+          .trim();
+
+        const filtrados = cacheUsuarios.filter((u) => {
+          const matchNome = (u.nome || "").toLowerCase().includes(search);
+          const matchUser = (u.user || "").toLowerCase().includes(search);
+          return matchNome || matchUser;
+        });
+
+        if (filtrados.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="empty-box">Nenhum aluno encontrado.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtrados
+          .map((u) => {
+            const dataFormatada = u.created_at
+              ? new Date(u.created_at).toLocaleDateString("pt-BR")
+              : "—";
+
+            return `
+                    <tr>
+                        <td><strong>${u.nome || u.user}</strong></td>
+                        <td style="color: var(--gold-light);">@${u.user}</td>
+                        <td><span class="item-period-badge">${u.perfil || "aluno"}</span></td>
+                        <td>Fase ${u.fase_jogo || 1}</td>
+                        <td>${dataFormatada}</td>
+                    </tr>
+                `;
+          })
+          .join("");
+      }
+
+      // ─── SALVAR EVENTO (POST) ───
+      async function handleSalvarEvento(e) {
+        e.preventDefault();
+
+        const eventoPayload = {
+          nome: document.getElementById("evNome").value.trim(),
+          periodo: document.getElementById("evPeriodo").value,
+          ano_inicio: document.getElementById("evAnoInicio").value.trim(),
+          ano_fim: document.getElementById("evAnoFim").value.trim(),
+          lugar: document.getElementById("evLugar").value.trim(),
+          figuras_historicas: document.getElementById("evFiguras").value.trim(),
+          imagem: document.getElementById("evImagem").value.trim(),
+          acontecimento: document
+            .getElementById("evAcontecimento")
+            .value.trim(),
+        };
+
+        try {
+          const res = await fetch(`${API_URL}/adicionar_evento`, {
+            method: "POST",
+            headers: getAuthHeaders(),
+            credentials: "include",
+            body: JSON.stringify(eventoPayload),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.status === "success") {
+            mostrarToast(data.message || "Evento adicionado com sucesso!");
+            document.getElementById("formAddEvento").reset();
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao adicionar evento", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro de conexão ao salvar evento", "error");
+        }
+      }
+
+      // ─── DELETAR EVENTO ───
+      async function deletarEvento(id) {
+        if (!confirm("Deseja realmente excluir este evento histórico?")) return;
+
+        try {
+          const res = await fetch(`${API_URL}/deletar_evento/${id}`, {
+            method: "DELETE",
+            headers: getAuthHeaders(),
+            credentials: "include",
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            mostrarToast("Evento excluído com sucesso!");
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao excluir evento", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro ao comunicar com o servidor", "error");
+        }
+      }
+
+      // ─── MODAL & SALVAR EDIÇÃO EVENTO (PATCH) ───
+      function abrirModalEditarEvento(id) {
+        const ev = cacheEventos.find((item) => item.id == id);
+        if (!ev) return;
+
+        document.getElementById("editEvId").value = ev.id;
+        document.getElementById("editEvNome").value = ev.nome || "";
+        document.getElementById("editEvPeriodo").value =
+          ev.periodo || "Idade Contemporânea";
+        document.getElementById("editEvAnoInicio").value =
+          ev.ano_inicio || ev.ano || "";
+        document.getElementById("editEvAnoFim").value = ev.ano_fim || "";
+        document.getElementById("editEvLugar").value = ev.lugar || "";
+        document.getElementById("editEvImagem").value = ev.imagem || "";
+        document.getElementById("editEvAcontecimento").value =
+          ev.acontecimento || "";
+
+        document.getElementById("modalEditarEvento").classList.add("open");
+      }
+
+      async function handleSalvarEdicaoEvento(e) {
+        e.preventDefault();
+        const id = document.getElementById("editEvId").value;
+
+        const patchPayload = {
+          nome: document.getElementById("editEvNome").value.trim(),
+          periodo: document.getElementById("editEvPeriodo").value,
+          ano_inicio: document.getElementById("editEvAnoInicio").value.trim(),
+          ano_fim: document.getElementById("editEvAnoFim").value.trim(),
+          lugar: document.getElementById("editEvLugar").value.trim(),
+          imagem: document.getElementById("editEvImagem").value.trim(),
+          acontecimento: document
+            .getElementById("editEvAcontecimento")
+            .value.trim(),
+        };
+
+        try {
+          const res = await fetch(`${API_URL}/editar_evento/${id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            credentials: "include",
+            body: JSON.stringify(patchPayload),
+          });
+          const data = await res.json();
+
+          if (res.ok && data.status === "success") {
+            mostrarToast("Evento atualizado com sucesso!");
+            fecharModal("modalEditarEvento");
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao atualizar evento", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro de rede ao editar evento", "error");
+        }
+      }
+
+      // ─── SALVAR IMAGEM (POST) ───
+      async function handleSalvarImagem(e) {
+        e.preventDefault();
+
+        const imgPayload = {
+          titulo: document.getElementById("imgTitulo").value.trim(),
+          periodo: document.getElementById("imgPeriodo").value,
+          pintor: document.getElementById("imgPintor").value.trim(),
+          ano: document.getElementById("imgAno").value.trim(),
+          url: document.getElementById("imgUrl").value.trim(),
+          contexto: document.getElementById("imgContexto").value.trim(),
+        };
+
+        try {
+          const res = await fetch(`${API_URL}/imagens`, {
+            method: "POST",
+            headers: getAuthHeaders(),
+            credentials: "include",
+            body: JSON.stringify(imgPayload),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.status === "success") {
+            mostrarToast(data.message || "Obra adicionada à galeria!");
+            document.getElementById("formAddImagem").reset();
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao adicionar imagem", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro de rede ao salvar imagem", "error");
+        }
+      }
+
+      // ─── DELETAR IMAGEM ───
+      async function deletarImagem(id) {
+        if (!confirm("Deseja realmente remover esta obra da galeria?")) return;
+
+        try {
+          const res = await fetch(`${API_URL}/imagens/${id}`, {
+            method: "DELETE",
+            headers: getAuthHeaders(),
+            credentials: "include",
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            mostrarToast("Obra removida da galeria!");
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao remover imagem", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro de rede ao excluir imagem", "error");
+        }
+      }
+
+      // ─── MODAL & SALVAR EDIÇÃO IMAGEM (PATCH) ───
+      function abrirModalEditarImagem(id) {
+        const img = cacheImagens.find((item) => item.id == id);
+        if (!img) return;
+
+        document.getElementById("editImgId").value = img.id;
+        document.getElementById("editImgTitulo").value = img.titulo || "";
+        document.getElementById("editImgPeriodo").value =
+          img.periodo || "Idade Moderna";
+        document.getElementById("editImgPintor").value = img.pintor || "";
+        document.getElementById("editImgAno").value = img.ano || "";
+        document.getElementById("editImgUrl").value = img.url || "";
+        document.getElementById("editImgContexto").value = img.contexto || "";
+
+        document.getElementById("modalEditarImagem").classList.add("open");
+      }
+
+      async function handleSalvarEdicaoImagem(e) {
+        e.preventDefault();
+        const id = document.getElementById("editImgId").value;
+
+        const patchPayload = {
+          titulo: document.getElementById("editImgTitulo").value.trim(),
+          periodo: document.getElementById("editImgPeriodo").value,
+          pintor: document.getElementById("editImgPintor").value.trim(),
+          ano: document.getElementById("editImgAno").value.trim(),
+          url: document.getElementById("editImgUrl").value.trim(),
+          contexto: document.getElementById("editImgContexto").value.trim(),
+        };
+
+        try {
+          const res = await fetch(`${API_URL}/imagens/${id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            credentials: "include",
+            body: JSON.stringify(patchPayload),
+          });
+          const data = await res.json();
+
+          if (res.ok && data.status === "success") {
+            mostrarToast("Obra atualizada com sucesso!");
+            fecharModal("modalEditarImagem");
+            await carregarDados();
+          } else {
+            mostrarToast(data.message || "Erro ao atualizar imagem", "error");
+          }
+        } catch (err) {
+          mostrarToast("Erro de rede ao editar imagem", "error");
+        }
+      }
+
+      // ─── MODAL CONTROL ───
+      function fecharModal(modalId) {
+        document.getElementById(modalId).classList.remove("open");
+      }
+
+      // ─── TOAST NOTIFICATIONS ───
+      function mostrarToast(msg, tipo = "success") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast ${tipo === "error" ? "toast-error" : ""}`;
+        toast.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>${msg}</span>
+            `;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateX(50px)";
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      }
+
+      // ─── INICIALIZAÇÃO ───
+      document.addEventListener("DOMContentLoaded", async () => {
+        await verificarAutenticacao();
+        await carregarDados();
+      });
+    </script>
+  </body>
+</html>

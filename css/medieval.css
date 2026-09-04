@@ -1,0 +1,722 @@
+/* ============================================================
+   CHRONOHISTORY — ESTILOS MEDIEVAIS (Login, Cadastro & Jogo)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ===== BASE MEDIEVAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    background: #1a1410;
+    color: #3d2c1e;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ===== VÍDEO DE FUNDO ===== */
+.video-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.video-bg-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 15, 10, 0.78);
+    background-image: radial-gradient(circle at 30% 40%, rgba(139, 105, 20, 0.15) 0%, transparent 60%);
+}
+
+/* ===== PARTÍCULAS MEDIEVAIS ===== */
+.medieval-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+    user-select: none;
+    animation: floatUp linear infinite;
+    opacity: 0;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(720deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* ===== BOTÃO DE VOLTAR ===== */
+.back-button {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    margin: 0 auto 1.5rem auto;
+    background: rgba(139, 105, 20, 0.15);
+    border: 1px solid rgba(139, 105, 20, 0.3);
+    border-radius: 24px;
+    color: #f5efe4;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+.back-button:hover {
+    background: rgba(139, 105, 20, 0.25);
+    border-color: rgba(139, 105, 20, 0.5);
+    transform: translateX(-3px);
+}
+
+.back-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+}
+
+/* ===== CONTAINER DO LOGIN & CADASTRO ===== */
+.login-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 480px;
+    margin: 3rem auto;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: linear-gradient(145deg, #f5efe4, #e8ddce);
+    border-radius: 32px;
+    padding: 2.5rem 2rem 2.8rem;
+    box-shadow:
+        0 30px 60px -15px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(139, 105, 20, 0.25),
+        inset 0 1px 0 rgba(255, 245, 220, 0.6);
+    border: 1px solid rgba(212, 197, 169, 0.4);
+    backdrop-filter: blur(2px);
+    transition: transform 0.3s ease;
+}
+
+/* ===== DECORAÇÃO TOPO ===== */
+.login-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    color: #8b6914;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.login-ornament::before,
+.login-ornament::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #b8a082, transparent);
+}
+
+/* ===== LOGO ===== */
+.login-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.8rem;
+    text-decoration: none;
+}
+
+.login-logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.login-logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5c4033;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(255, 215, 150, 0.2);
+}
+
+.login-logo span {
+    font-size: 0.75rem;
+    color: #8b7355;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 0.1rem;
+}
+
+/* ===== TABS ===== */
+.role-tabs {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    background: rgba(212, 197, 169, 0.25);
+    padding: 0.5rem;
+    border-radius: 60px;
+    border: 1px solid rgba(139, 105, 20, 0.15);
+}
+
+.role-tab {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    border: none;
+    border-radius: 40px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    color: #7a6553;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.role-tab:hover {
+    color: #5c4033;
+    background: rgba(139, 105, 20, 0.06);
+}
+
+.role-tab.active {
+    background: linear-gradient(135deg, #8b6914, #a68a56);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(139, 105, 20, 0.35);
+}
+
+.role-tab .tab-icon {
+    font-size: 1.2rem;
+}
+
+/* ===== FORMULÁRIO ===== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5c4033;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group label .label-icon {
+    font-size: 1rem;
+}
+
+.form-group input, .form-group select {
+    padding: 0.9rem 1.2rem;
+    border: 2px solid #d4c5a9;
+    border-radius: 16px;
+    background: rgba(255, 252, 245, 0.7);
+    backdrop-filter: blur(4px);
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    color: #3d2c1e;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #8b6914;
+    box-shadow: 0 0 0 4px rgba(139, 105, 20, 0.12);
+    background: #fffcf5;
+}
+
+.form-group input::placeholder {
+    color: #b09b84;
+    font-weight: 300;
+}
+
+/* ===== OPÇÕES EXTRAS ===== */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #6b5a4a;
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8b6914;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.forgot-link {
+    font-size: 0.85rem;
+    color: #8b6914;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: #5c4033;
+    text-decoration: underline;
+}
+
+.signup-link {
+    font-size: 0.85rem;
+    color: #8b6914;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.signup-link:hover {
+    color: #5c4033;
+    text-decoration: underline;
+}
+
+/* ===== BOTÃO ===== */
+.btn-login {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 60px;
+    background: linear-gradient(135deg, #8b6914, #a68a56);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(139, 105, 20, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(139, 105, 20, 0.4);
+    background: linear-gradient(135deg, #6b4f0e, #8b6914);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(139, 105, 20, 0.2);
+}
+
+/* ===== RODAPÉ DO CARD ===== */
+.login-footer {
+    margin-top: 1.8rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #8b7355;
+    border-top: 1px solid rgba(139, 105, 20, 0.12);
+    padding-top: 1.5rem;
+}
+
+.login-footer a {
+    color: #8b6914;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.8rem 1.2rem 2rem;
+    }
+    .login-logo h1 {
+        font-size: 1.6rem;
+    }
+    .role-tab {
+        font-size: 0.8rem;
+        padding: 0.6rem 0.3rem;
+    }
+    .login-logo img {
+        width: 60px;
+        height: 60px;
+    }
+    .form-options {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+}
+
+/* ===== ANIMAÇÃO DE ENTRADA ===== */
+@keyframes fadeSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.login-wrapper {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #2a201a;
+}
+::-webkit-scrollbar-thumb {
+    background: #8b6914;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a68a56;
+}
+
+/* ===== CONTROLES DO JOGO ===== */
+.controles-jogo {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    background: rgba(89, 68, 38, 0.3);
+    border: 1px solid rgba(139, 105, 20, 0.4);
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.titulo-controles {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #d4af37;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+    margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+    text-align: center;
+}
+
+.grade-controles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.grupo-controle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(30, 22, 16, 0.6);
+    border: 1px solid rgba(139, 105, 20, 0.3);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.grupo-controle:hover {
+    background: rgba(139, 105, 20, 0.2);
+    border-color: rgba(139, 105, 20, 0.6);
+}
+
+.tecla {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient(135deg, #8b6914, #a68a56);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    min-width: 40px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.descricao-tecla {
+    font-size: 0.8rem;
+    color: rgba(245, 239, 228, 0.8);
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ===== INFORMAÇÃO DO JOGO ===== */
+.info-jogo {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(245, 239, 228, 0.6);
+    font-style: italic;
+}
+
+/* ===== OVERLAY DO JOGO ===== */
+.game-overlay-btns {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.game-overlay-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(139, 105, 20, 0.2);
+    border: 1px solid rgba(139, 105, 20, 0.4);
+    border-radius: 8px;
+    color: #f5efe4;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.game-overlay-btn:hover {
+    background: rgba(139, 105, 20, 0.4);
+    border-color: rgba(139, 105, 20, 0.7);
+}
+
+.game-overlay-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+/* ===== PLAY OVERLAY ===== */
+.play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    z-index: 20;
+    backdrop-filter: blur(2px);
+}
+
+#btn-play {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(135deg, #8b6914, #a68a56);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+#btn-play:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(139, 105, 20, 0.4);
+}
+
+.play-icon {
+    font-size: 1.5rem;
+}
+
+/* ===== CANVAS DO GAMEMAKER ===== */
+.gm4html5_div_class {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    aspect-ratio: 2 / 1;
+}
+
+.gm4html5_div_class:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+}
+
+#canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/* ===== RESPONSIVO — MOBILE ===== */
+@media (max-width: 640px) {
+    .pagina-jogo {
+        padding: 1rem 0.75rem;
+    }
+
+    .game-card {
+        padding: 0.75rem;
+    }
+
+    .controles-jogo {
+        margin-top: 1rem;
+        padding: 1rem;
+    }
+
+    .titulo-controles {
+        font-size: 0.85rem;
+    }
+
+    .grade-controles {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .grupo-controle {
+        padding: 0.5rem;
+    }
+
+    .tecla {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .descricao-tecla {
+        font-size: 0.7rem;
+    }
+
+    .game-overlay-btns {
+        top: 8px;
+        right: 8px;
+        gap: 6px;
+    }
+
+    .game-overlay-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    #btn-play {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        gap: 0.75rem;
+    }
+}
+
+/* ===== ESTILOS DO JOGO (INTEGRADOS) ===== */
+.pagina-jogo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 3vw, 2.5rem) clamp(0.75rem, 2vw, 1.5rem);
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.topo-jogo {
+    text-align: center;
+    margin-bottom: clamp(1.25rem, 2vw, 2rem);
+}
+
+.topo-jogo h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #f5efe4;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+}
+
+.topo-jogo p {
+    font-family: 'Lato', sans-serif;
+    color: rgba(245, 239, 228, 0.75);
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+}
+
+.game-card {
+    background: rgba(30, 22, 16, 0.8);
+    border: 1px solid rgba(139, 105, 20, 0.35);
+    border-radius: 16px;
+    padding: clamp(1rem, 2vw, 1.75rem);
+    width: 100%;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.game-area {
+    border: 1px solid rgba(139, 105, 20, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    position: relative;
+    width: 100%;
+    background: #0c0a08;
+    overflow: hidden;
+}

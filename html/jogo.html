@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Chronohistory - Jogo Interativo</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/chronohistory.css" />
+    <link rel="stylesheet" href="../css/medieval.css" />
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
+
+  <body>
+    <!-- VÍDEO DE FUNDO -->
+    <div class="video-bg-container">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="../vei.mp4" type="video/mp4" />
+      </video>
+
+      <div class="video-bg-overlay"></div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 lg:py-4">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Logo -->
+          <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <img
+              src="../logo.png"
+              alt="Logo Chronohistory"
+              class="h-8 w-8 sm:h-10 sm:w-10 lg:h-14 lg:w-14 object-contain"
+            />
+
+            <span class="logo-title">Chronohistory</span>
+          </div>
+
+          <!-- Desktop Nav -->
+          <nav
+            class="hidden lg:flex items-center gap-3 xl:gap-4"
+            id="desktopNav"
+          >
+            <a class="nav-link" href="../index.html"> Linha do Tempo </a>
+            <a class="nav-link" data-requires-auth href="galeria.html">
+              Galeria Histórica
+            </a>
+            <a class="nav-link active" data-requires-auth href="jogo.html">
+              Jogo Interativo
+            </a>
+            <a class="nav-link" href="login.html" id="navLoginBtn"> Login </a>
+          </nav>
+
+          <!-- Mobile Toggle -->
+          <button id="menuBtn" class="menu-toggle" aria-label="Menu">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobileMenu" class="mobile-menu">
+          <a class="mobile-link" href="../index.html"> Linha do Tempo </a>
+          <a class="mobile-link" data-requires-auth href="galeria.html">
+            Galeria Histórica
+          </a>
+          <a class="mobile-link active" data-requires-auth href="jogo.html">
+            Jogo Interativo
+          </a>
+          <a class="mobile-link" href="login.html" id="mobileLoginBtn">
+            Login
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <script src="../js/auth.js"></script>
+
+    <!-- JOGO -->
+    <main class="pagina-jogo">
+      <section class="game-card">
+        <div class="game-area" id="gameArea">
+          <div class="gm4html5_div_class" id="gm4html5_div_id">
+            <canvas id="canvas" width="1000" height="500">
+              <p>Seu navegador não suporta HTML5 canvas.</p>
+            </canvas>
+          </div>
+
+          <!-- BOTÕES OVERLAY -->
+          <div class="game-overlay-btns">
+            <!-- Tela Cheia -->
+            <button
+              class="game-overlay-btn"
+              id="fullscreenBtn"
+              title="Tela cheia"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+            </button>
+
+            <!-- Sair -->
+            <a
+              href="../index.html"
+              class="game-overlay-btn"
+              id="exitBtn"
+              title="Voltar à Linha do Tempo"
+              onclick="return tratarSaida(event);"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 6l-12 12"></path>
+                <path d="M6 6l12 12"></path>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Play Overlay -->
+          <div class="play-overlay" id="play-overlay">
+            <button id="btn-play" type="button" onclick="esconderTelaPlay()">
+              <span class="play-icon">▶</span>
+
+              Executar jogo
+            </button>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="controles-jogo">
+          <div class="titulo-controles">CONTROLES DO JOGO</div>
+
+          <div class="grade-controles">
+            <div class="grupo-controle">
+              <div class="tecla">A / D</div>
+              <div class="descricao-tecla">Andar</div>
+            </div>
+
+            <div class="grupo-controle">
+              <div class="tecla">W</div>
+              <div class="descricao-tecla">Pular</div>
+            </div>
+
+            <div class="grupo-controle">
+              <div class="tecla">E</div>
+              <div class="descricao-tecla">Interagir</div>
+            </div>
+
+            <div class="grupo-controle">
+              <div class="tecla">Backspace</div>
+              <div class="descricao-tecla">Voltar</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-jogo">
+          Clique no jogo para ativar os controles. Use WASD ou setas!
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="max-w-7xl mx-auto text-center">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+          "
+        >
+          <span class="footer-brand">
+            Desvendando o passado, construindo o futuro
+          </span>
+        </div>
+
+        <p class="footer-copy">
+          © 2026 - Uma jornada através do tempo com sabedoria ancestral
+        </p>
+      </div>
+    </footer>
+
+    <!-- GAMEMAKER -->
+    <script
+      type="text/javascript"
+      src="html5game/BLANK GAME.js?cachebust=1200711930"
+    ></script>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+      // ==========================================
+      // TELA CHEIA
+      // ==========================================
+      const gameArea = document.getElementById("gameArea");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+      function redimensionarCanvas() {
+        const canvas = document.getElementById("canvas");
+        if (!canvas) return;
+
+        setTimeout(() => {
+          if (typeof window.dispatchEvent === "function") {
+            window.dispatchEvent(new Event("resize"));
+          }
+        }, 100);
+      }
+
+      function toggleFullscreen() {
+        if (!gameArea) return;
+
+        const isFullscreen =
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement;
+
+        if (isFullscreen) {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen)
+            document.webkitExitFullscreen();
+          else if (document.msExitFullscreen) document.msExitFullscreen();
+        } else {
+          if (gameArea.requestFullscreen)
+            gameArea
+              .requestFullscreen()
+              .then(redimensionarCanvas)
+              .catch((e) => console.error(e));
+          else if (gameArea.webkitRequestFullscreen)
+            gameArea.webkitRequestFullscreen();
+          else if (gameArea.msRequestFullscreen) gameArea.msRequestFullscreen();
+        }
+      }
+
+      function updateFullscreenButton() {
+        const isFullscreen =
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement;
+        if (fullscreenBtn) {
+          fullscreenBtn.textContent = isFullscreen ? "⛶" : "⛶";
+        }
+        // Redimensiona o canvas sempre que fullscreen muda
+        redimensionarCanvas();
+      }
+
+      document.addEventListener("fullscreenchange", updateFullscreenButton);
+      document.addEventListener(
+        "webkitfullscreenchange",
+        updateFullscreenButton,
+      );
+      document.addEventListener("msfullscreenchange", updateFullscreenButton);
+      window.addEventListener("resize", redimensionarCanvas);
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+        console.log("✅ Botão Tela Cheia funcionando!");
+      }
+
+      // ==========================================
+      // PLAY OVERLAY
+      // ==========================================
+      window.onload = function () {
+        if (typeof GameMaker_Init !== "undefined") {
+          GameMaker_Init();
+        }
+        const canvas = document.getElementById("canvas");
+        if (canvas) {
+          canvas.setAttribute("tabindex", "0");
+        }
+      };
+
+      function esconderTelaPlay() {
+        const overlay = document.getElementById("play-overlay");
+        const canvas = document.getElementById("canvas");
+
+        if (overlay) {
+          overlay.classList.add("escondido");
+          setTimeout(function () {
+            if (overlay && overlay.parentNode) overlay.remove();
+          }, 300);
+        }
+
+        if (canvas) {
+          canvas.focus();
+          setTimeout(() => {
+            redimensionarCanvas();
+          }, 100);
+        }
+      }
+
+      // ==========================================
+      // MENU MOBILE
+      // ==========================================
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (menuBtn && mobileMenu) {
+          menuBtn.addEventListener("click", function () {
+            mobileMenu.classList.toggle("open");
+            menuBtn.textContent = mobileMenu.classList.contains("open")
+              ? "✕"
+              : "☰";
+          });
+
+          mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+              mobileMenu.classList.remove("open");
+              if (menuBtn) menuBtn.textContent = "☰";
+            });
+          });
+
+          window.addEventListener("resize", function () {
+            if (window.innerWidth >= 1024 && mobileMenu) {
+              mobileMenu.classList.remove("open");
+              if (menuBtn) menuBtn.textContent = "☰";
+            }
+          });
+        }
+      });
+
+      // ==========================================
+      // HEADER SCROLL & PARTÍCULAS
+      // ==========================================
+      (function () {
+        const header = document.querySelector("header");
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (window.scrollY > 40) {
+              header.classList.add("scrolled");
+            } else {
+              header.classList.remove("scrolled");
+            }
+          },
+          { passive: true },
+        );
+
+        const particleSymbols = ["✦", "✧", "⬥", "⬦", "◆", "◇", "⚜"];
+        const colors = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
+
+        function createParticle() {
+          const p = document.createElement("div");
+          p.className = "medieval-particle";
+          p.textContent =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-20px";
+          p.style.color = colors[Math.floor(Math.random() * colors.length)];
+          p.style.animationDuration = 6 + Math.random() * 10 + "s";
+          p.style.animationDelay = Math.random() * 4 + "s";
+          p.style.fontSize = 8 + Math.random() * 10 + "px";
+          p.style.opacity = "0";
+          document.body.appendChild(p);
+          setTimeout(() => {
+            if (p.parentNode) p.parentNode.removeChild(p);
+          }, 18000);
+        }
+
+        setInterval(createParticle, 2200);
+        for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 400);
+      })();
+
+      console.log(
+        "🎮 Jogo carregado! Botões: Tela Cheia (⛶) e Sair (✕) funcionando.",
+      );
+    </script>
+  </body>
+</html>
