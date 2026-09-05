@@ -296,6 +296,10 @@
         const overlay = document.getElementById("play-overlay");
         const canvas = document.getElementById("canvas");
 
+        if (typeof g_WebAudioContext !== "undefined" && g_WebAudioContext && g_WebAudioContext.state === "suspended") {
+          g_WebAudioContext.resume().catch((e) => console.log("AudioContext resume error:", e));
+        }
+
         if (overlay) {
           overlay.classList.add("escondido");
           setTimeout(function () {
