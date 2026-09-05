@@ -1,318 +1,249 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galeria Histórica — Chronohistory</title>
-    <meta
-      name="description"
-      content="Explore imagens relacionadas aos principais acontecimentos históricos presentes na Linha do Tempo do Chronohistory."
-    />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../css/chronohistory.css" />
-    <link rel="stylesheet" href="../css/galeria.css" />
-    <link rel="icon" type="image/png" href="logo.png" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria Histórica — Chronohistory</title>
+  <meta name="description"
+    content="Explore imagens relacionadas aos principais acontecimentos históricos presentes na Linha do Tempo do Chronohistory." />
 
-  <body>
-    <!-- ═══ HEADER ═══ -->
-    <header>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
-        <div class="flex items-center justify-between gap-2">
-          <!-- Logo -->
-          <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <img
-              src="../logo.png"
-              alt="Logo Chronohistory"
-              class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain"
-            />
-            <span class="logo-title">Chronohistory</span>
-          </div>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../css/chronohistory.css" />
+  <link rel="stylesheet" href="../css/galeria.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
+</head>
 
-          <!-- Desktop Nav -->
-          <nav class="hidden lg:flex items-center" id="desktopNav">
-            <a class="nav-link" href="../index.html">Linha do Tempo</a>
-            <a class="nav-link active" data-requires-auth href="galeria.html"
-              >Galeria Histórica</a
-            >
-            <a class="nav-link" data-requires-auth href="jogo.html"
-              >Jogo Interativo</a
-            >
-            <a class="nav-link" href="login.html" id="navLoginBtn">Login</a>
-          </nav>
-
-          <!-- Mobile Toggle -->
-          <button id="menuBtn" class="menu-toggle" aria-label="Menu">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
+<body>
+  <!-- ═══ HEADER ═══ -->
+  <header>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
+      <div class="flex items-center justify-between gap-2">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <img src="../logo.png" alt="Logo Chronohistory"
+            class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain" />
+          <span class="logo-title">Chronohistory</span>
         </div>
 
-        <!-- Mobile Menu -->
-        <nav id="mobileMenu" class="mobile-menu">
-          <a class="mobile-link" href="../index.html">Linha do Tempo</a>
-          <a class="mobile-link active" data-requires-auth href="galeria.html"
-            >Galeria Histórica</a
-          >
-          <a class="mobile-link" data-requires-auth href="jogo.html"
-            >Jogo Interativo</a
-          >
-          <a class="mobile-link" href="login.html" id="mobileLoginBtn">Login</a>
+        <!-- Desktop Nav -->
+        <nav class="hidden lg:flex items-center" id="desktopNav">
+          <a class="nav-link" href="../index.html">Linha do Tempo</a>
+          <a class="nav-link active" data-requires-auth href="galeria.html">Galeria Histórica</a>
+          <a class="nav-link" data-requires-auth href="jogo.html">Jogo Interativo</a>
+          <a class="nav-link" href="login.html" id="navLoginBtn">Login</a>
         </nav>
-      </div>
-    </header>
 
-    <!-- ═══ MAIN ═══ -->
-    <main>
-      <div class="galeria-wrapper">
-        <!-- ── HERO ── -->
-        <div class="galeria-hero">
-          <h1 class="galeria-hero-titulo">Galeria <span>Histórica</span></h1>
-          <p class="galeria-hero-desc">
-            Explore imagens relacionadas aos principais acontecimentos
-            históricos presentes na Linha do Tempo.
+        <!-- Mobile Toggle -->
+        <button id="menuBtn" class="menu-toggle" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <nav id="mobileMenu" class="mobile-menu">
+        <a class="mobile-link" href="../index.html">Linha do Tempo</a>
+        <a class="mobile-link active" data-requires-auth href="galeria.html">Galeria Histórica</a>
+        <a class="mobile-link" data-requires-auth href="jogo.html">Jogo Interativo</a>
+        <a class="mobile-link" href="login.html" id="mobileLoginBtn">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main>
+    <div class="galeria-wrapper">
+      <!-- ── HERO ── -->
+      <div class="galeria-hero">
+        <h1 class="galeria-hero-titulo">Galeria <span>Histórica</span></h1>
+        <p class="galeria-hero-desc">
+          Explore imagens relacionadas aos principais acontecimentos
+          históricos presentes na Linha do Tempo.
+        </p>
+      </div>
+
+      <!-- ── BUSCA ── -->
+      <div class="galeria-busca-wrapper">
+        <input type="text" id="galeriaSearch" class="galeria-busca-input"
+          placeholder="Pesquisar eventos, períodos, locais..." autocomplete="off"
+          aria-label="Pesquisar eventos históricos" />
+      </div>
+
+      <!-- ── FILTROS ── -->
+      <div class="galeria-filtros-header">
+        <span class="galeria-filtros-label">Filtrar por período</span>
+        <!-- contador mantido no DOM (o JS escreve nele), só não aparece mais na tela -->
+        <p class="galeria-contador-texto sr-only">
+          Exibindo <span id="contadorEventos">0 eventos</span>
+        </p>
+      </div>
+      <div class="galeria-filtros" role="group" aria-label="Filtrar por período histórico">
+        <button class="filtro-btn filtro-ativo" data-filtro="todos" aria-pressed="true">
+          Todos
+        </button>
+        <button class="filtro-btn" data-filtro="pre-historia" aria-pressed="false">
+          Pré-História
+        </button>
+        <button class="filtro-btn" data-filtro="idade-antiga" aria-pressed="false">
+          Idade Antiga
+        </button>
+        <button class="filtro-btn" data-filtro="idade-media" aria-pressed="false">
+          Idade Média
+        </button>
+        <button class="filtro-btn" data-filtro="idade-moderna" aria-pressed="false">
+          Idade Moderna
+        </button>
+        <button class="filtro-btn" data-filtro="idade-contemporanea" aria-pressed="false">
+          Idade Contemporânea
+        </button>
+      </div>
+
+      <!-- ── GRADE ── -->
+      <div id="galeriaGrid" class="galeria-grid">
+        <div class="sem-resultados">
+          <p>Carregando a Galeria Histórica...</p>
+          <p style="margin-top: 0.5rem; opacity: 0.6; font-size: 0.85rem">
+            A sabedoria ancestral está sendo revelada
           </p>
         </div>
-
-        <!-- ── BUSCA ── -->
-        <div class="galeria-busca-wrapper">
-          <input
-            type="text"
-            id="galeriaSearch"
-            class="galeria-busca-input"
-            placeholder="Pesquisar eventos, períodos, locais..."
-            autocomplete="off"
-            aria-label="Pesquisar eventos históricos"
-          />
-        </div>
-
-        <!-- ── FILTROS ── -->
-        <div class="galeria-filtros-header">
-          <span class="galeria-filtros-label">Filtrar por período</span>
-          <!-- contador mantido no DOM (o JS escreve nele), só não aparece mais na tela -->
-          <p class="galeria-contador-texto sr-only">
-            Exibindo <span id="contadorEventos">0 eventos</span>
-          </p>
-        </div>
-        <div
-          class="galeria-filtros"
-          role="group"
-          aria-label="Filtrar por período histórico"
-        >
-          <button
-            class="filtro-btn filtro-ativo"
-            data-filtro="todos"
-            aria-pressed="true"
-          >
-            Todos
-          </button>
-          <button
-            class="filtro-btn"
-            data-filtro="pre-historia"
-            aria-pressed="false"
-          >
-            Pré-História
-          </button>
-          <button
-            class="filtro-btn"
-            data-filtro="idade-antiga"
-            aria-pressed="false"
-          >
-            Idade Antiga
-          </button>
-          <button
-            class="filtro-btn"
-            data-filtro="idade-media"
-            aria-pressed="false"
-          >
-            Idade Média
-          </button>
-          <button
-            class="filtro-btn"
-            data-filtro="idade-moderna"
-            aria-pressed="false"
-          >
-            Idade Moderna
-          </button>
-          <button
-            class="filtro-btn"
-            data-filtro="idade-contemporanea"
-            aria-pressed="false"
-          >
-            Idade Contemporânea
-          </button>
-        </div>
-
-        <!-- ── GRADE ── -->
-        <div id="galeriaGrid" class="galeria-grid">
-          <div class="sem-resultados">
-            <p>Carregando a Galeria Histórica...</p>
-            <p style="margin-top: 0.5rem; opacity: 0.6; font-size: 0.85rem">
-              A sabedoria ancestral está sendo revelada
-            </p>
-          </div>
-        </div>
-
-        <!-- ── SEM RESULTADOS ── -->
-        <div id="semResultados" class="hidden">
-          <div class="sem-resultados">
-            <p>
-              Nenhum evento encontrado para a pesquisa ou filtro selecionado.
-            </p>
-            <p style="margin-top: 0.5rem; opacity: 0.6; font-size: 0.85rem">
-              Tente outros termos ou selecione um período diferente.
-            </p>
-          </div>
-        </div>
       </div>
-    </main>
 
-    <!-- ═══ MODAL DE DETALHES ═══ -->
-    <div
-      id="galeriaModal"
-      class="fixed inset-0 hidden items-center justify-center p-4"
-      style="z-index: 99999"
-    >
-      <div class="modal-galeria-container">
-        <!-- Header do modal -->
-        <div class="modal-galeria-header">
-          <h3 class="modal-galeria-header-titulo">Detalhes do Evento</h3>
-          <button
-            id="fecharGaleriaModal"
-            class="modal-galeria-fechar"
-            aria-label="Fechar"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Imagem grande -->
-        <div class="modal-galeria-imagem-wrapper">
-          <img id="modalImagem" src="" alt="" class="modal-galeria-imagem" />
-          <div class="modal-galeria-imagem-legenda">
-            <h2 id="modalTitulo" class="modal-galeria-titulo"></h2>
-            <div id="modalPeriodo" class="modal-galeria-periodo-badge"></div>
-          </div>
-        </div>
-
-        <!-- Corpo do modal -->
-        <div class="modal-galeria-corpo">
-          <!-- Meta-informações -->
-          <div class="modal-galeria-meta">
-            <span class="modal-meta-pill"><span id="modalAno"></span></span>
-            <span class="modal-meta-pill"><span id="modalLugar"></span></span>
-          </div>
-
-          <!-- O que aconteceu -->
-          <div class="modal-secao">
-            <h4 class="modal-secao-titulo">O que aconteceu</h4>
-            <p id="modalDescricao" class="modal-secao-texto"></p>
-          </div>
-
-          <!-- O que mudou -->
-          <div id="secaoMudou" class="modal-secao hidden">
-            <h4 class="modal-secao-titulo">O que mudou</h4>
-            <p id="modalMudou" class="modal-secao-texto"></p>
-          </div>
-
-          <!-- Legado -->
-          <div id="secaoLegado" class="modal-secao hidden">
-            <h4 class="modal-secao-titulo">Legado</h4>
-            <p id="modalLegado" class="modal-secao-texto"></p>
-          </div>
-
-          <!-- Curiosidades -->
-          <div id="secaoCuriosidades" class="modal-secao hidden">
-            <h4 class="modal-secao-titulo">Curiosidades Históricas</h4>
-            <ul id="modalCuriosidades" class="modal-curiosidades-lista"></ul>
-          </div>
-
-          <!-- Fonte -->
-          <p id="modalFonte" class="modal-galeria-fonte"></p>
-
-          <!-- Ações do modal -->
-          <div class="modal-galeria-acoes">
-            <button class="btn-modal-voltar" onclick="fecharDetalhe()">
-              ← Voltar à Galeria
-            </button>
-          </div>
+      <!-- ── SEM RESULTADOS ── -->
+      <div id="semResultados" class="hidden">
+        <div class="sem-resultados">
+          <p>
+            Nenhum evento encontrado para a pesquisa ou filtro selecionado.
+          </p>
+          <p style="margin-top: 0.5rem; opacity: 0.6; font-size: 0.85rem">
+            Tente outros termos ou selecione um período diferente.
+          </p>
         </div>
       </div>
     </div>
+  </main>
 
-    <!-- ═══ FOOTER ═══ -->
-    <footer>
-      <div class="max-w-7xl mx-auto text-center">
-        <p class="footer-brand">Chronohistory</p>
-        <p class="footer-copy">© 2026 · Todos os direitos reservados</p>
+  <!-- ═══ MODAL DE DETALHES ═══ -->
+  <div id="galeriaModal" class="fixed inset-0 hidden items-center justify-center p-4" style="z-index: 99999">
+    <div class="modal-galeria-container">
+      <!-- Header do modal -->
+      <div class="modal-galeria-header">
+        <h3 class="modal-galeria-header-titulo">Detalhes do Evento</h3>
+        <button id="fecharGaleriaModal" class="modal-galeria-fechar" aria-label="Fechar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
-    </footer>
 
-    <script src="../js/auth.js"></script>
-    <script src="../js/galeria.js"></script>
+      <!-- Imagem grande -->
+      <div class="modal-galeria-imagem-wrapper">
+        <img id="modalImagem" src="" alt="" class="modal-galeria-imagem" />
+        <div class="modal-galeria-imagem-legenda">
+          <h2 id="modalTitulo" class="modal-galeria-titulo"></h2>
+          <div id="modalPeriodo" class="modal-galeria-periodo-badge"></div>
+        </div>
+      </div>
 
-    <!-- ═══ HEADER SCROLL ═══ -->
-    <script>
-      (function () {
-        var header = document.querySelector("header");
-        window.addEventListener(
-          "scroll",
-          function () {
-            if (window.scrollY > 40) {
-              header.classList.add("scrolled");
-            } else {
-              header.classList.remove("scrolled");
-            }
-          },
-          { passive: true },
-        );
+      <!-- Corpo do modal -->
+      <div class="modal-galeria-corpo">
+        <!-- Meta-informações -->
+        <div class="modal-galeria-meta">
+          <span class="modal-meta-pill"><span id="modalAno"></span></span>
+          <span class="modal-meta-pill"><span id="modalLugar"></span></span>
+        </div>
 
-        const menuBtn = document.getElementById("menuBtn");
-        const mobileMenu = document.getElementById("mobileMenu");
+        <!-- O que aconteceu -->
+        <div class="modal-secao">
+          <h4 class="modal-secao-titulo">O que aconteceu</h4>
+          <p id="modalDescricao" class="modal-secao-texto"></p>
+        </div>
 
-        if (menuBtn) {
-          menuBtn.addEventListener("click", function () {
-            mobileMenu.classList.toggle("open");
+        <!-- O que mudou -->
+        <div id="secaoMudou" class="modal-secao hidden">
+          <h4 class="modal-secao-titulo">O que mudou</h4>
+          <p id="modalMudou" class="modal-secao-texto"></p>
+        </div>
+
+        <!-- Legado -->
+        <div id="secaoLegado" class="modal-secao hidden">
+          <h4 class="modal-secao-titulo">Legado</h4>
+          <p id="modalLegado" class="modal-secao-texto"></p>
+        </div>
+
+        <!-- Curiosidades -->
+        <div id="secaoCuriosidades" class="modal-secao hidden">
+          <h4 class="modal-secao-titulo">Curiosidades Históricas</h4>
+          <ul id="modalCuriosidades" class="modal-curiosidades-lista"></ul>
+        </div>
+
+        <!-- Fonte -->
+        <p id="modalFonte" class="modal-galeria-fonte"></p>
+
+        <!-- Ações do modal -->
+        <div class="modal-galeria-acoes">
+          <button class="btn-modal-voltar" onclick="fecharDetalhe()">
+            ← Voltar à Galeria
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="footer-brand">Chronohistory</p>
+      <p class="footer-copy">© 2026 · Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/galeria.js"></script>
+
+  <!-- ═══ HEADER SCROLL ═══ -->
+  <script>
+    (function () {
+      var header = document.querySelector("header");
+      window.addEventListener(
+        "scroll",
+        function () {
+          if (window.scrollY > 40) {
+            header.classList.add("scrolled");
+          } else {
+            header.classList.remove("scrolled");
+          }
+        },
+        { passive: true },
+      );
+
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      if (menuBtn) {
+        menuBtn.addEventListener("click", function () {
+          mobileMenu.classList.toggle("open");
+        });
+      }
+
+      if (mobileMenu) {
+        mobileMenu.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            mobileMenu.classList.remove("open");
           });
-        }
+        });
+      }
+    })();
+  </script>
+</body>
 
-        if (mobileMenu) {
-          mobileMenu.querySelectorAll("a").forEach(function (link) {
-            link.addEventListener("click", function () {
-              mobileMenu.classList.remove("open");
-            });
-          });
-        }
-      })();
-    </script>
-  </body>
 </html>

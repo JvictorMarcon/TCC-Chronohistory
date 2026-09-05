@@ -7,6 +7,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
     <title>Chronohistory - Jogo Interativo</title>
+    <base href="../" />
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -15,56 +16,376 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../css/chronohistory.css" />
-    <link rel="stylesheet" href="../css/medieval.css" />
-    <link rel="icon" type="image/png" href="../logo.png" />
+    <link rel="stylesheet" href="css/chronohistory.css" />
+    <link rel="stylesheet" href="css/medieval.css" />
+    <link rel="icon" type="image/png" href="logo.png" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+      }
+
+      .pagina-jogo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .game-card {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(8px);
+        border-radius: 2rem;
+        padding: 1.5rem;
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        transition: all 0.3s;
+      }
+
+      .game-area {
+        position: relative;
+        width: 100%;
+        background: #1a1a1a;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      }
+
+      .gm4html5_div_class {
+        position: relative;
+        width: 100%;
+        padding-bottom: 50%;
+        background: #000;
+      }
+
+      #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        background: #000;
+        cursor: pointer;
+      }
+
+      /* ═══ PLAY OVERLAY ═══ */
+      .play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        z-index: 20;
+        transition: opacity 0.3s ease;
+        border-radius: 1.5rem;
+      }
+
+      .play-overlay button {
+        background: linear-gradient(135deg, #8B6914, #A68A56);
+        border: none;
+        padding: 1rem 2.5rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+        border-radius: 60px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .play-overlay button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+      }
+
+      .play-overlay.escondido {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      /* ═══ BOTÕES OVERLAY ═══ */
+      .game-overlay-btns {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+        z-index: 30;
+      }
+
+      .game-overlay-btn {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        user-select: none;
+        font-weight: 400;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .game-overlay-btn:hover {
+        background: rgba(139, 105, 20, 0.85);
+        transform: scale(1.15);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 25px rgba(139, 105, 20, 0.4);
+      }
+
+      .game-overlay-btn:active {
+        transform: scale(0.9);
+      }
+
+      #exitBtn:hover {
+        background: rgba(200, 50, 50, 0.85) !important;
+        border-color: #ff6666;
+      }
+
+      /* ═══ CONTROLES ═══ */
+      .controles-jogo {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: rgba(139, 105, 20, 0.15);
+        border-radius: 1rem;
+        backdrop-filter: blur(4px);
+      }
+
+      .titulo-controles {
+        text-align: center;
+        font-weight: bold;
+        color: #5C4033;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .grade-controles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .grupo-controle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .tecla {
+        background: #2c2c2c;
+        color: #f5e6c8;
+        font-weight: bold;
+        font-family: monospace;
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        box-shadow: 0 3px 0 #5c5c5c;
+        min-width: 60px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+
+      .descricao-tecla {
+        font-size: 0.75rem;
+        color: #5C4033;
+        font-weight: 500;
+      }
+
+      .info-jogo {
+        text-align: center;
+        margin-top: 1rem;
+        padding: 0.6rem;
+        background: #E8DCC8;
+        border-radius: 60px;
+        color: #5C4033;
+        font-weight: 500;
+        font-size: 0.85rem;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* ═══ TELA CHEIA SEM BORDAS PRETAS ═══ */
+      :is(.game-area, #gameArea):is(
+          :fullscreen,
+          :-webkit-full-screen,
+          :-moz-full-screen,
+          :-ms-fullscreen
+        ) {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        background: #000 !important;
+        overflow: hidden !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 999999 !important;
+      }
+
+      :is(.game-area, #gameArea):is(
+          :fullscreen,
+          :-webkit-full-screen,
+          :-moz-full-screen,
+          :-ms-fullscreen
+        )
+        .gm4html5_div_class {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        padding: 0 !important;
+        padding-bottom: 0 !important;
+        margin: 0 !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+      }
+
+      :is(.game-area, #gameArea):is(
+          :fullscreen,
+          :-webkit-full-screen,
+          :-moz-full-screen,
+          :-ms-fullscreen
+        )
+        #canvas {
+        width: 100vw !important;
+        height: 100vh !important;
+        min-width: 100vw !important;
+        min-height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        object-fit: fill !important;
+        transform: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .pagina-jogo {
+          padding: 1rem;
+        }
+
+        .game-card {
+          padding: 0.8rem;
+        }
+
+        .play-overlay button {
+          padding: 0.6rem 1.5rem;
+          font-size: 1rem;
+        }
+
+        .game-overlay-btn {
+          width: 34px;
+          height: 34px;
+          font-size: 1rem;
+        }
+
+        .tecla {
+          font-size: 0.9rem;
+          padding: 0.4rem 0.8rem;
+          min-width: 45px;
+        }
+
+        .descricao-tecla {
+          font-size: 0.65rem;
+        }
+
+        .grade-controles {
+          gap: 0.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .gm4html5_div_class {
+          padding-bottom: 56.25%;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <!-- VÍDEO DE FUNDO -->
     <div class="video-bg-container">
       <video autoplay muted loop playsinline preload="auto">
-        <source src="../vei.mp4" type="video/mp4" />
+        <source src="vei.mp4" type="video/mp4" />
       </video>
-
       <div class="video-bg-overlay"></div>
     </div>
 
-    <!-- HEADER -->
+    <!-- HEADER (Design TCC Novo) -->
     <header>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 lg:py-4">
         <div class="flex items-center justify-between gap-2">
           <!-- Logo -->
           <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <img
-              src="../logo.png"
+              src="logo.png"
               alt="Logo Chronohistory"
-              class="h-8 w-8 sm:h-10 sm:w-10 lg:h-14 lg:w-14 object-contain"
+              class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain"
             />
-
             <span class="logo-title">Chronohistory</span>
           </div>
 
           <!-- Desktop Nav -->
-          <nav
-            class="hidden lg:flex items-center gap-3 xl:gap-4"
-            id="desktopNav"
-          >
-            <a class="nav-link" href="../index.html"> Linha do Tempo </a>
-            <a class="nav-link" data-requires-auth href="galeria.html">
+          <nav class="hidden lg:flex items-center" id="desktopNav">
+            <a class="nav-link" href="index.html"> Linha do Tempo </a>
+            <a class="nav-link" data-requires-auth href="html/galeria.html">
               Galeria Histórica
             </a>
-            <a class="nav-link active" data-requires-auth href="jogo.html">
+            <a class="nav-link active" data-requires-auth href="html/jogo.html">
               Jogo Interativo
             </a>
-            <a class="nav-link" href="login.html" id="navLoginBtn"> Login </a>
+            <a class="nav-link" href="html/login.html" id="navLoginBtn"> Login </a>
           </nav>
 
           <!-- Mobile Toggle -->
           <button id="menuBtn" class="menu-toggle" aria-label="Menu">
             <svg
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -81,21 +402,21 @@
 
         <!-- Mobile Menu -->
         <nav id="mobileMenu" class="mobile-menu">
-          <a class="mobile-link" href="../index.html"> Linha do Tempo </a>
-          <a class="mobile-link" data-requires-auth href="galeria.html">
+          <a class="mobile-link" href="index.html"> Linha do Tempo </a>
+          <a class="mobile-link" data-requires-auth href="html/galeria.html">
             Galeria Histórica
           </a>
-          <a class="mobile-link active" data-requires-auth href="jogo.html">
+          <a class="mobile-link active" data-requires-auth href="html/jogo.html">
             Jogo Interativo
           </a>
-          <a class="mobile-link" href="login.html" id="mobileLoginBtn">
+          <a class="mobile-link" href="html/login.html" id="mobileLoginBtn">
             Login
           </a>
         </nav>
       </div>
     </header>
 
-    <script src="../js/auth.js"></script>
+    <script src="js/auth.js"></script>
 
     <!-- JOGO -->
     <main class="pagina-jogo">
@@ -134,7 +455,7 @@
 
             <!-- Sair -->
             <a
-              href="../index.html"
+              href="index.html"
               class="game-overlay-btn"
               id="exitBtn"
               title="Voltar à Linha do Tempo"
@@ -185,7 +506,7 @@
             </div>
 
             <div class="grupo-controle">
-              <div class="tecla">Backspace</div>
+              <div class="tecla">Backspace / ESC</div>
               <div class="descricao-tecla">Voltar / Menu</div>
             </div>
           </div>
@@ -197,7 +518,7 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (Design TCC Novo) -->
     <footer>
       <div class="max-w-7xl mx-auto text-center">
         <div
@@ -222,21 +543,85 @@
     </footer>
 
     <!-- GAMEMAKER -->
-    <script>
-      window.g_GameMakerHTML5Dir = "../html5game/";
-    </script>
     <script
       type="text/javascript"
-      src="../html5game/BLANK GAME.js?cachebust=1200711930"
+      src="html5game/BLANK GAME.js?cachebust=1200711930"
     ></script>
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
       // ==========================================
-      // TELA CHEIA
+      // TELA CHEIA E REDIMENSIONAMENTO DINÂMICO
       // ==========================================
       const gameArea = document.getElementById("gameArea");
       const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+      function enforceFullscreenCanvasSize() {
+        const isFullscreen = !!(
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement
+        );
+        const canvas = document.getElementById("canvas");
+        const gmDiv = document.getElementById("gm4html5_div_id");
+        const area = document.getElementById("gameArea");
+
+        if (isFullscreen) {
+          if (area) {
+            area.style.setProperty("width", "100vw", "important");
+            area.style.setProperty("height", "100vh", "important");
+            area.style.setProperty("margin", "0px", "important");
+            area.style.setProperty("padding", "0px", "important");
+            area.style.setProperty("border-radius", "0px", "important");
+          }
+          if (gmDiv) {
+            gmDiv.style.setProperty("width", "100vw", "important");
+            gmDiv.style.setProperty("height", "100vh", "important");
+            gmDiv.style.setProperty("padding-bottom", "0px", "important");
+            gmDiv.style.setProperty("top", "0px", "important");
+            gmDiv.style.setProperty("left", "0px", "important");
+            gmDiv.style.setProperty("position", "absolute", "important");
+          }
+          if (canvas) {
+            canvas.style.setProperty("width", "100vw", "important");
+            canvas.style.setProperty("height", "100vh", "important");
+            canvas.style.setProperty("min-height", "100vh", "important");
+            canvas.style.setProperty("max-height", "100vh", "important");
+            canvas.style.setProperty("object-fit", "fill", "important");
+            canvas.style.setProperty("top", "0px", "important");
+            canvas.style.setProperty("left", "0px", "important");
+            canvas.style.setProperty("margin", "0px", "important");
+            canvas.style.setProperty("position", "absolute", "important");
+          }
+        } else {
+          if (area) {
+            area.style.removeProperty("width");
+            area.style.removeProperty("height");
+            area.style.removeProperty("margin");
+            area.style.removeProperty("padding");
+            area.style.removeProperty("border-radius");
+          }
+          if (gmDiv) {
+            gmDiv.style.removeProperty("width");
+            gmDiv.style.removeProperty("height");
+            gmDiv.style.removeProperty("padding-bottom");
+            gmDiv.style.removeProperty("top");
+            gmDiv.style.removeProperty("left");
+            gmDiv.style.removeProperty("position");
+          }
+          if (canvas) {
+            canvas.style.removeProperty("width");
+            canvas.style.removeProperty("height");
+            canvas.style.removeProperty("min-height");
+            canvas.style.removeProperty("max-height");
+            canvas.style.removeProperty("object-fit");
+            canvas.style.removeProperty("top");
+            canvas.style.removeProperty("left");
+            canvas.style.removeProperty("margin");
+            canvas.style.removeProperty("position");
+          }
+        }
+      }
 
       function toggleFullscreen() {
         if (!gameArea) return;
@@ -259,33 +644,38 @@
           else if (gameArea.msRequestFullscreen)
             gameArea.msRequestFullscreen();
         }
-      }
 
-      function updateFullscreenButton() {
         setTimeout(() => {
+          enforceFullscreenCanvasSize();
           if (typeof window.dispatchEvent === "function") {
             window.dispatchEvent(new Event("resize"));
           }
         }, 100);
       }
 
-      document.addEventListener("fullscreenchange", updateFullscreenButton);
-      document.addEventListener(
-        "webkitfullscreenchange",
-        updateFullscreenButton
-      );
-      document.addEventListener("msfullscreenchange", updateFullscreenButton);
+      document.addEventListener("fullscreenchange", () => {
+        enforceFullscreenCanvasSize();
+        setTimeout(() => {
+          if (typeof window.dispatchEvent === "function") {
+            window.dispatchEvent(new Event("resize"));
+          }
+        }, 100);
+      });
+      document.addEventListener("webkitfullscreenchange", enforceFullscreenCanvasSize);
+      document.addEventListener("msfullscreenchange", enforceFullscreenCanvasSize);
+      window.addEventListener("resize", enforceFullscreenCanvasSize);
 
       if (fullscreenBtn) {
         fullscreenBtn.addEventListener("click", toggleFullscreen);
       }
 
       // ==========================================
-      // GAMEMAKER INIT & PLAY OVERLAY
+      // INICIALIZAÇÃO GAMEMAKER
       // ==========================================
-      let gameStarted = false;
-
       window.onload = function () {
+        if (typeof GameMaker_Init !== "undefined") {
+          GameMaker_Init();
+        }
         const canvas = document.getElementById("canvas");
         if (canvas) {
           canvas.setAttribute("tabindex", "0");
@@ -296,8 +686,14 @@
         const overlay = document.getElementById("play-overlay");
         const canvas = document.getElementById("canvas");
 
-        if (typeof g_WebAudioContext !== "undefined" && g_WebAudioContext && g_WebAudioContext.state === "suspended") {
-          g_WebAudioContext.resume().catch((e) => console.log("AudioContext resume error:", e));
+        if (
+          typeof g_WebAudioContext !== "undefined" &&
+          g_WebAudioContext &&
+          g_WebAudioContext.state === "suspended"
+        ) {
+          g_WebAudioContext.resume().catch((e) =>
+            console.log("AudioContext resume error:", e)
+          );
         }
 
         if (overlay) {
@@ -305,17 +701,6 @@
           setTimeout(function () {
             if (overlay && overlay.parentNode) overlay.remove();
           }, 300);
-        }
-
-        if (!gameStarted) {
-          gameStarted = true;
-          if (typeof GameMaker_Init !== "undefined") {
-            try {
-              GameMaker_Init();
-            } catch (e) {
-              console.error("GameMaker_Init error:", e);
-            }
-          }
         }
 
         if (canvas) {
@@ -397,8 +782,6 @@
         setInterval(createParticle, 2200);
         for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 400);
       })();
-
-      console.log("🎮 Jogo carregado! Botões: Tela Cheia (⛶) e Sair (✕) funcionando.");
     </script>
   </body>
 </html>
