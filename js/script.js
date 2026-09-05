@@ -46,26 +46,7 @@ async function verificarSessao() {
     }
 }
 
-function atualizarNavSessao(sessao) {
-    const btnDesktop = document.getElementById('navLoginBtn');
-    const btnMobile = document.getElementById('mobileLoginBtn');
-    if (!sessao || !sessao.user) return;
-    [btnDesktop, btnMobile].forEach(btn => {
-        if (!btn) return;
-        btn.textContent = 'Logout';
-        btn.href = '#';
-        btn.onclick = async event => {
-            event.preventDefault();
-            try {
-                await fetch(`${API_BASE}/logout`, { method: 'POST', credentials: 'include' });
-            } finally {
-                localStorage.removeItem('chronohistory_token');
-                localStorage.removeItem('chronohistory_user');
-                window.location.href = 'html/login.html';
-            }
-        };
-    });
-}
+
 
 // ============================================
 // Inicialização
@@ -845,38 +826,7 @@ function setupEventListeners() {
 }
 
 // ============================================
-// Verificar Estado de Login na Navegação
-// ============================================
-function verificarStatusAuthNav() {
-    const userJson = localStorage.getItem('chronohistory_user');
-    if (!userJson) return;
 
-    try {
-        const userObj = JSON.parse(userJson);
-        const desktopBtn = document.getElementById('navLoginBtn');
-        const mobileBtn = document.getElementById('mobileLoginBtn');
-
-        if (userObj && userObj.user) {
-            const label = userObj.role === 'admin' ? '👑 Painel Admin' : `👤 ${userObj.user}`;
-            const targetUrl = userObj.role === 'admin' ? 'html/adm.html' : '#';
-
-            if (desktopBtn) {
-                desktopBtn.textContent = label;
-                desktopBtn.href = targetUrl;
-            }
-            if (mobileBtn) {
-                mobileBtn.textContent = label;
-                mobileBtn.href = targetUrl;
-            }
-        }
-    } catch (e) {
-        console.warn('Erro ao ler estado de login:', e);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    verificarStatusAuthNav();
-});
 
 // ============================================
 // Mostrar Erro
