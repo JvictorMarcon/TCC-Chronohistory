@@ -82,12 +82,9 @@ function atualizarNavegacao(sessao) {
             link.onclick = null;
             link.title = 'Entrar na sua conta';
         } else {
-            const username = userObj.user || userObj.nome || 'Usuário';
-            const isAdm = (userObj.role === 'adm' || userObj.role === 'admin');
-            
-            link.textContent = isAdm ? `👑 ${username} (Sair)` : `👤 ${username} (Sair)`;
+            link.textContent = 'Logout';
             link.href = '#';
-            link.title = 'Clique para deslogar';
+            link.title = 'Clique para sair da conta';
             link.onclick = fazerLogout;
         }
     });

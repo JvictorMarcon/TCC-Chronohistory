@@ -283,14 +283,9 @@
       // ==========================================
       // GAMEMAKER INIT & PLAY OVERLAY
       // ==========================================
+      let gameStarted = false;
+
       window.onload = function () {
-        if (typeof GameMaker_Init !== "undefined") {
-          try {
-            GameMaker_Init();
-          } catch (e) {
-            console.error("GameMaker_Init error:", e);
-          }
-        }
         const canvas = document.getElementById("canvas");
         if (canvas) {
           canvas.setAttribute("tabindex", "0");
@@ -306,6 +301,17 @@
           setTimeout(function () {
             if (overlay && overlay.parentNode) overlay.remove();
           }, 300);
+        }
+
+        if (!gameStarted) {
+          gameStarted = true;
+          if (typeof GameMaker_Init !== "undefined") {
+            try {
+              GameMaker_Init();
+            } catch (e) {
+              console.error("GameMaker_Init error:", e);
+            }
+          }
         }
 
         if (canvas) {
