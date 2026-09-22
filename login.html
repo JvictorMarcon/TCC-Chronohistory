@@ -7,8 +7,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/medieval.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="css/medieval.css">
+    <link rel="stylesheet" href="css/login.css">
     <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
@@ -16,14 +16,14 @@
     <!-- VÍDEO DE FUNDO -->
     <div class="video-bg-container">
         <video autoplay muted loop playsinline preload="auto">
-            <source src="../vei.mp4" type="video/mp4">
+            <source src="vei.mp4" type="video/mp4">
         </video>
         <div class="video-bg-overlay"></div>
     </div>
 
     <!-- CONTAINER DO LOGIN -->
     <div class="login-wrapper">
-        <a href="../index.html" class="back-button" title="Voltar para a Página Inicial">
+        <a href="index.html" class="back-button" title="Voltar para a Página Inicial">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M15 18l-6-6 6-6"/>
             </svg>
@@ -33,8 +33,8 @@
 
             <div class="login-ornament">Portal de Acesso</div>
 
-            <a href="../index.html" class="login-logo">
-                <img src="../logo.png" alt="Chronohistory Logo">
+            <a href="index.html" class="login-logo">
+                <img src="logo.png" alt="Chronohistory Logo">
                 <h1>CHRONOHISTORY</h1>
                 <span>Linha do Tempo</span>
             </a>
@@ -101,7 +101,7 @@
                     if (resp.ok) {
                         const sessao = await resp.json();
                         if (sessao.autenticado) {
-                            window.location.href = sessao.role === 'adm' ? 'adm.html' : '../index.html';
+                            window.location.href = sessao.role === 'adm' ? 'adm.html' : 'index.html';
                             return;
                         }
                     }
@@ -154,7 +154,7 @@
                             }));
 
                             loginSucesso = true;
-                            window.location.href = role === 'adm' ? 'adm.html' : '../index.html';
+                            window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
                             return;
                         } else if (response.status === 401) {
                             alert(data.message || 'Usuário ou senha incorretos.');
@@ -185,7 +185,7 @@
                         fase_jogo: 1
                     }));
 
-                    window.location.href = role === 'adm' ? 'adm.html' : '../index.html';
+                    window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
                 }
             });
         });

@@ -472,7 +472,7 @@ async function carregarDados() {
     }
 
     // 2. Tenta ler periodos.json (tentando caminho relativo e absoluto)
-    const jsonPaths = ['../periodos.json', 'periodos.json', '/periodos.json'];
+    const jsonPaths = ['periodos.json', '../periodos.json', '/periodos.json'];
     for (const path of jsonPaths) {
         try {
             const response = await fetch(path);

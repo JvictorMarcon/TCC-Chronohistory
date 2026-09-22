@@ -19,9 +19,7 @@ function limparSessaoLocal() {
 }
 
 function resolverCaminhoLogin() {
-    const path = window.location.pathname;
-    if (path.includes('/html/')) return 'login.html';
-    return 'html/login.html';
+    return 'login.html';
 }
 
 async function obterSessao() {
