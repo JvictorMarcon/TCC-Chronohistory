@@ -2121,7 +2121,7 @@
               periodo: ev.periodo || ev.periodoNome || "História",
               ano: ev.ano || ev.ano_inicio || "—",
               ano_inicio: ev.ano_inicio || ev.ano || "",
-              ano_fim: ev.ano_fim || "",
+              ano_fim: ev.ano_termino || ev.ano_fim || "",
               lugar: ev.lugar || "—",
               acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
               oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
@@ -2178,7 +2178,7 @@
               periodoId: pId,
               ano: anoOriginal,
               ano_inicio: ev.ano_inicio || anoOriginal,
-              ano_fim: ev.ano_fim || "",
+              ano_fim: ev.ano_termino || ev.ano_fim || "",
               lugar: ev.lugar || "Diversas regiões",
               acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
               oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
@@ -2706,20 +2706,19 @@
             8000,
           );
 
-          if (res.ok) {
-            mostrarToast("Evento salvo com sucesso!");
-          } else {
-            // Salva localmente se backend offline
-            payload.id = Date.now();
-            payload.ano = payload.ano_inicio;
-            cacheEventos.unshift(payload);
-            mostrarToast("Evento adicionado (armazenado localmente)!");
+          const json = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            throw new Error(json.message || `Falha ao salvar (HTTP ${res.status})`);
           }
+
+          const salvo = json.data || payload;
+          salvo.id = salvo.id ?? Date.now();
+          salvo.ano = salvo.ano_inicio || payload.ano_inicio;
+          cacheEventos.unshift(salvo);
+          mostrarToast("Evento salvo com sucesso!");
         } catch (err) {
-          payload.id = Date.now();
-          payload.ano = payload.ano_inicio;
-          cacheEventos.unshift(payload);
-          mostrarToast("Evento adicionado (armazenado localmente)!");
+          mostrarToast(`Erro ao salvar evento: ${err.message}`, "error");
+          return;
         }
 
         document.getElementById("formAddEvento").reset();
@@ -2729,7 +2728,7 @@
       async function deletarEvento(id) {
         if (!confirm("Deseja realmente excluir este evento histórico?")) return;
         try {
-          await fetchComTimeout(
+          const res = await fetchComTimeout(
             `${API_URL}/deletar_evento/${id}`,
             {
               method: "DELETE",
@@ -2738,7 +2737,14 @@
             },
             8000,
           );
-        } catch (_) {}
+          if (!res.ok) {
+            const erro = await res.json().catch(() => ({}));
+            throw new Error(erro.message || `Falha ao excluir (HTTP ${res.status})`);
+          }
+        } catch (err) {
+          mostrarToast(`Erro ao excluir evento: ${err.message}`, "error");
+          return;
+        }
 
         cacheEventos = cacheEventos.filter((e) => String(e.id) !== String(id));
         mostrarToast("Evento excluído com sucesso!");
@@ -2778,7 +2784,7 @@
         };
 
         try {
-          await fetchComTimeout(
+          const res = await fetchComTimeout(
             `${API_URL}/editar_evento/${id}`,
             {
               method: "PATCH",
@@ -2788,7 +2794,14 @@
             },
             8000,
           );
-        } catch (_) {}
+          if (!res.ok) {
+            const erro = await res.json().catch(() => ({}));
+            throw new Error(erro.message || `Falha ao editar (HTTP ${res.status})`);
+          }
+        } catch (err) {
+          mostrarToast(`Erro ao atualizar evento: ${err.message}`, "error");
+          return;
+        }
 
         // Atualiza no cache local
         const idx = cacheEventos.findIndex((i) => String(i.id) === String(id));
@@ -2818,7 +2831,7 @@
         };
 
         try {
-          await fetchComTimeout(
+          const res = await fetchComTimeout(
             `${API_URL}/imagens`,
             {
               method: "POST",
@@ -2828,10 +2841,18 @@
             },
             8000,
           );
-        } catch (_) {}
+          const json = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            throw new Error(json.message || `Falha ao salvar (HTTP ${res.status})`);
+          }
+          const salvo = json.data || payload;
+          salvo.id = salvo.id ?? Date.now();
+          cacheImagens.unshift(salvo);
+        } catch (err) {
+          mostrarToast(`Erro ao adicionar obra: ${err.message}`, "error");
+          return;
+        }
 
-        payload.id = Date.now();
-        cacheImagens.unshift(payload);
         mostrarToast("Obra adicionada à galeria!");
         document.getElementById("formAddImagem").reset();
         atualizarInterface();
@@ -2840,7 +2861,7 @@
       async function deletarImagem(id) {
         if (!confirm("Deseja realmente remover esta obra da galeria?")) return;
         try {
-          await fetchComTimeout(
+          const res = await fetchComTimeout(
             `${API_URL}/imagens/${id}`,
             {
               method: "DELETE",
@@ -2849,7 +2870,14 @@
             },
             8000,
           );
-        } catch (_) {}
+          if (!res.ok) {
+            const erro = await res.json().catch(() => ({}));
+            throw new Error(erro.message || `Falha ao remover (HTTP ${res.status})`);
+          }
+        } catch (err) {
+          mostrarToast(`Erro ao remover obra: ${err.message}`, "error");
+          return;
+        }
 
         cacheImagens = cacheImagens.filter((i) => String(i.id) !== String(id));
         mostrarToast("Obra removida da galeria!");
@@ -2883,7 +2911,7 @@
         };
 
         try {
-          await fetchComTimeout(
+          const res = await fetchComTimeout(
             `${API_URL}/imagens/${id}`,
             {
               method: "PATCH",
@@ -2893,7 +2921,14 @@
             },
             8000,
           );
-        } catch (_) {}
+          if (!res.ok) {
+            const erro = await res.json().catch(() => ({}));
+            throw new Error(erro.message || `Falha ao editar (HTTP ${res.status})`);
+          }
+        } catch (err) {
+          mostrarToast(`Erro ao atualizar obra: ${err.message}`, "error");
+          return;
+        }
 
         const idx = cacheImagens.findIndex((i) => String(i.id) === String(id));
         if (idx !== -1) {
@@ -2934,7 +2969,7 @@
       }
 
       // ─── INICIALIZAÇÃO ───
-      document.addEventListener("DOMContentLoaded"adm.html, async () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         await verificarAutenticacao();
         await carregarDados();
       });
