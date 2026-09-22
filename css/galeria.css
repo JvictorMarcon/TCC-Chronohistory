@@ -177,6 +177,9 @@
     position: relative;
     transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .galeria-card:hover {
@@ -232,6 +235,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    flex: 1;
 }
 
 .card-titulo {
