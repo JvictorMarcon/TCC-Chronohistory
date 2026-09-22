@@ -17,58 +17,66 @@
       ═══════════════════════════════════════════ */
       :root {
         /* Cores base */
-        --bg-dark:       #0e0c0a;
-        --bg-sidebar:    #080c18;        /* azul escuro profundo */
-        --bg-card:       #181410;
+        --bg-dark: #0e0c0a;
+        --bg-sidebar: #080c18; /* azul escuro profundo */
+        --bg-card: #181410;
         --bg-card-hover: #221c17;
-        --bg-input:      #120e0b;
-        --bg-overlay:    rgba(8, 12, 24, 0.6);
+        --bg-input: #120e0b;
+        --bg-overlay: rgba(8, 12, 24, 0.6);
 
         /* Dourado */
-        --gold:          #c9a227;
-        --gold-light:    #e8c84a;
-        --gold-soft:     rgba(201, 162, 39, 0.12);
-        --gold-glow:     rgba(201, 162, 39, 0.25);
+        --gold: #c9a227;
+        --gold-light: #e8c84a;
+        --gold-soft: rgba(201, 162, 39, 0.12);
+        --gold-glow: rgba(201, 162, 39, 0.25);
 
         /* Bege / Pergaminho */
-        --paper:         #f5e6c8;
-        --paper-dim:     #d1be9b;
-        --text-muted:    #9e8e76;
+        --paper: #f5e6c8;
+        --paper-dim: #d1be9b;
+        --text-muted: #9e8e76;
 
         /* Azul de acento */
-        --blue-accent:   #2a4fa8;
-        --blue-light:    #4d7adf;
-        --blue-soft:     rgba(42, 79, 168, 0.18);
-        --blue-border:   rgba(77, 122, 223, 0.25);
+        --blue-accent: #2a4fa8;
+        --blue-light: #4d7adf;
+        --blue-soft: rgba(42, 79, 168, 0.18);
+        --blue-border: rgba(77, 122, 223, 0.25);
 
         /* Estados */
-        --danger:        #e74c3c;
-        --danger-bg:     rgba(231, 76, 60, 0.15);
-        --success:       #2ecc71;
-        --success-bg:    rgba(46, 204, 113, 0.15);
-        --warning:       #f39c12;
-        --warning-bg:    rgba(243, 156, 18, 0.15);
+        --danger: #e74c3c;
+        --danger-bg: rgba(231, 76, 60, 0.15);
+        --success: #2ecc71;
+        --success-bg: rgba(46, 204, 113, 0.15);
+        --warning: #f39c12;
+        --warning-bg: rgba(243, 156, 18, 0.15);
 
         /* Bordas */
-        --border-color:  rgba(201, 162, 39, 0.18);
-        --border-hover:  rgba(201, 162, 39, 0.5);
-        --border-side:   rgba(77, 122, 223, 0.2);
+        --border-color: rgba(201, 162, 39, 0.18);
+        --border-hover: rgba(201, 162, 39, 0.5);
+        --border-side: rgba(77, 122, 223, 0.2);
 
         /* Radii & easing */
-        --radius-sm:    4px;
-        --radius-md:    8px;
-        --radius-lg:    12px;
-        --radius-xl:    16px;
-        --transition:   all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
         /* Layout */
-        --sidebar-w:    260px;
+        --sidebar-w: 260px;
       }
 
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
         background: var(--bg-dark);
         color: var(--paper);
         min-height: 100vh;
@@ -78,7 +86,13 @@
         overflow-x: hidden;
       }
 
-      h1, h2, h3, h4, .brand-font { font-family: "Fraunces", serif; }
+      h1,
+      h2,
+      h3,
+      h4,
+      .brand-font {
+        font-family: "Fraunces", serif;
+      }
 
       /* ═══════════════════════════════════════════
          SIDEBAR
@@ -103,19 +117,31 @@
         border-bottom: 1px solid var(--border-side);
         display: flex;
         align-items: center;
-        gap: 0.7rem;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+        transition: opacity 0.2s ease;
+      }
+
+      .sidebar-logo:hover {
+        opacity: 0.9;
       }
 
       .logo-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        width: 42px;
+        height: 42px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 4px 12px var(--gold-glow);
+      }
+
+      .logo-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 2px 8px rgba(201, 162, 39, 0.35));
       }
 
       .logo-text {
@@ -181,7 +207,7 @@
       }
 
       .nav-item:hover {
-        background: rgba(255,255,255,0.04);
+        background: rgba(255, 255, 255, 0.04);
         color: var(--paper);
       }
 
@@ -192,7 +218,7 @@
       }
 
       .nav-item.active::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 50%;
@@ -203,8 +229,13 @@
         border-radius: 0 3px 3px 0;
       }
 
-      .nav-item svg { flex-shrink: 0; opacity: 0.8; }
-      .nav-item.active svg { opacity: 1; }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.8;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+      }
 
       .nav-badge {
         margin-left: auto;
@@ -260,7 +291,7 @@
 
       /* Top Bar */
       .topbar {
-        background: rgba(14,12,10,0.95);
+        background: rgba(14, 12, 10, 0.95);
         backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--border-color);
         padding: 0.9rem 2rem;
@@ -305,7 +336,7 @@
         font-size: 0.78rem;
         color: var(--text-muted);
         padding: 0.35rem 0.8rem;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0, 0, 0, 0.3);
         border: 1px solid var(--border-color);
         border-radius: 20px;
       }
@@ -319,19 +350,29 @@
         flex-shrink: 0;
       }
 
-      .dot.offline { background: var(--danger); animation: none; }
-      .dot.loading { background: var(--warning); }
+      .dot.offline {
+        background: var(--danger);
+        animation: none;
+      }
+      .dot.loading {
+        background: var(--warning);
+      }
 
       @keyframes pulse-dot {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
       }
 
       /* Offline Banner */
       .offline-banner {
         display: none;
-        background: rgba(231,76,60,0.1);
-        border-bottom: 1px solid rgba(231,76,60,0.3);
+        background: rgba(231, 76, 60, 0.1);
+        border-bottom: 1px solid rgba(231, 76, 60, 0.3);
         padding: 0.7rem 2rem;
         font-size: 0.83rem;
         color: #ff8080;
@@ -339,11 +380,13 @@
         align-items: center;
       }
 
-      .offline-banner.visible { display: flex; }
+      .offline-banner.visible {
+        display: flex;
+      }
 
       .retry-btn {
         background: transparent;
-        border: 1px solid rgba(231,76,60,0.4);
+        border: 1px solid rgba(231, 76, 60, 0.4);
         color: #ff8080;
         padding: 0.2rem 0.7rem;
         border-radius: var(--radius-sm);
@@ -354,7 +397,9 @@
         margin-left: auto;
       }
 
-      .retry-btn:hover { background: var(--danger-bg); }
+      .retry-btn:hover {
+        background: var(--danger-bg);
+      }
 
       /* ═══════════════════════════════════════════
          MAIN LAYOUT
@@ -390,11 +435,18 @@
       }
 
       .kpi-card::before {
-        content: '';
+        content: "";
         position: absolute;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+        background: linear-gradient(
+          90deg,
+          var(--gold),
+          var(--gold-light),
+          transparent
+        );
         opacity: 0;
         transition: var(--transition);
       }
@@ -402,10 +454,14 @@
       .kpi-card:hover {
         border-color: var(--border-hover);
         transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--gold-soft);
+        box-shadow:
+          0 12px 32px rgba(0, 0, 0, 0.4),
+          0 0 0 1px var(--gold-soft);
       }
 
-      .kpi-card:hover::before { opacity: 1; }
+      .kpi-card:hover::before {
+        opacity: 1;
+      }
 
       .kpi-card-top {
         display: flex;
@@ -471,19 +527,34 @@
       }
 
       @keyframes shimmer {
-        0%   { background-position: -200% 0; }
-        100% { background-position:  200% 0; }
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
       }
 
       /* ═══════════════════════════════════════════
          PANELS
       ═══════════════════════════════════════════ */
-      .tab-panel { display: none; animation: fadeIn 0.25s ease-out forwards; }
-      .tab-panel.active { display: block; }
+      .tab-panel {
+        display: none;
+        animation: fadeIn 0.25s ease-out forwards;
+      }
+      .tab-panel.active {
+        display: block;
+      }
 
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .panel-split {
@@ -493,7 +564,11 @@
         align-items: start;
       }
 
-      @media (max-width: 1100px) { .panel-split { grid-template-columns: 1fr; } }
+      @media (max-width: 1100px) {
+        .panel-split {
+          grid-template-columns: 1fr;
+        }
+      }
 
       /* ═══════════════════════════════════════════
          CARDS
@@ -503,7 +578,7 @@
         border: 1px solid var(--border-color);
         border-radius: var(--radius-lg);
         padding: 1.5rem;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       }
 
       .card-header {
@@ -525,12 +600,19 @@
         font-family: "Fraunces", serif;
       }
 
-      .card-title svg { color: var(--gold); }
+      .card-title svg {
+        color: var(--gold);
+      }
 
       /* ═══════════════════════════════════════════
          FORMS
       ═══════════════════════════════════════════ */
-      .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+      }
 
       .form-group label {
         font-size: 0.72rem;
@@ -562,9 +644,16 @@
         box-shadow: 0 0 0 3px var(--gold-soft);
       }
 
-      .form-group textarea { resize: vertical; min-height: 78px; }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 78px;
+      }
 
-      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
 
       .btn-primary {
         width: 100%;
@@ -588,7 +677,7 @@
       .btn-primary:hover {
         filter: brightness(1.08);
         transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(201,162,39,0.4);
+        box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
       }
 
       /* ═══════════════════════════════════════════
@@ -603,7 +692,11 @@
         flex-wrap: wrap;
       }
 
-      .search-box { position: relative; flex: 1; min-width: 220px; }
+      .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 220px;
+      }
 
       .search-box input {
         width: 100%;
@@ -644,7 +737,10 @@
         transition: var(--transition);
       }
 
-      .filter-select:focus { outline: none; border-color: var(--gold); }
+      .filter-select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
 
       /* ═══════════════════════════════════════════
          TABLES
@@ -663,7 +759,7 @@
       }
 
       table.adm-table th {
-        background: rgba(0,0,0,0.4);
+        background: rgba(0, 0, 0, 0.4);
         color: var(--paper-dim);
         font-size: 0.7rem;
         font-weight: 700;
@@ -676,13 +772,17 @@
 
       table.adm-table td {
         padding: 0.88rem 1rem;
-        border-bottom: 1px solid rgba(201,162,39,0.08);
+        border-bottom: 1px solid rgba(201, 162, 39, 0.08);
         vertical-align: middle;
         color: var(--paper);
       }
 
-      table.adm-table tr:last-child td { border-bottom: none; }
-      table.adm-table tr:hover td { background: rgba(201,162,39,0.03); }
+      table.adm-table tr:last-child td {
+        border-bottom: none;
+      }
+      table.adm-table tr:hover td {
+        background: rgba(201, 162, 39, 0.03);
+      }
 
       .item-period-badge {
         display: inline-block;
@@ -705,13 +805,18 @@
       /* Loading rows shimmer */
       .skeleton-row td {
         padding: 0.88rem 1rem;
-        border-bottom: 1px solid rgba(201,162,39,0.08);
+        border-bottom: 1px solid rgba(201, 162, 39, 0.08);
       }
 
       .skeleton-cell {
         height: 14px;
         border-radius: 4px;
-        background: linear-gradient(90deg, #1a1510 25%, #2a2018 50%, #1a1510 75%);
+        background: linear-gradient(
+          90deg,
+          #1a1510 25%,
+          #2a2018 50%,
+          #1a1510 75%
+        );
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
       }
@@ -738,16 +843,42 @@
       .gallery-card:hover {
         border-color: var(--border-hover);
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
       }
 
-      .gallery-img-wrapper { width: 100%; height: 132px; background: #000; overflow: hidden; }
-      .gallery-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-      .gallery-card:hover .gallery-img-wrapper img { transform: scale(1.06); }
+      .gallery-img-wrapper {
+        width: 100%;
+        height: 132px;
+        background: #000;
+        overflow: hidden;
+      }
+      .gallery-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+      .gallery-card:hover .gallery-img-wrapper img {
+        transform: scale(1.06);
+      }
 
-      .gallery-info { padding: 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
-      .gallery-title { font-size: 0.9rem; font-weight: 600; color: var(--paper); line-height: 1.3; }
-      .gallery-meta { font-size: 0.76rem; color: var(--text-muted); }
+      .gallery-info {
+        padding: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        flex: 1;
+      }
+      .gallery-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--paper);
+        line-height: 1.3;
+      }
+      .gallery-meta {
+        font-size: 0.76rem;
+        color: var(--text-muted);
+      }
 
       .gallery-actions {
         margin-top: auto;
@@ -755,13 +886,17 @@
         display: flex;
         justify-content: flex-end;
         gap: 0.35rem;
-        border-top: 1px solid rgba(255,255,255,0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
       }
 
       /* ═══════════════════════════════════════════
          ACTION BUTTONS
       ═══════════════════════════════════════════ */
-      .action-btns { display: flex; align-items: center; gap: 0.4rem; }
+      .action-btns {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
 
       .btn-icon {
         background: transparent;
@@ -777,67 +912,109 @@
         transition: var(--transition);
       }
 
-      .btn-icon:hover { border-color: var(--gold); color: var(--gold-light); background: var(--gold-soft); }
-      .btn-icon.btn-danger:hover { border-color: var(--danger); color: #ff6b6b; background: var(--danger-bg); }
+      .btn-icon:hover {
+        border-color: var(--gold);
+        color: var(--gold-light);
+        background: var(--gold-soft);
+      }
+      .btn-icon.btn-danger:hover {
+        border-color: var(--danger);
+        color: #ff6b6b;
+        background: var(--danger-bg);
+      }
 
       /* ═══════════════════════════════════════════
          MODALS
       ═══════════════════════════════════════════ */
       .modal-overlay {
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.8);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(6px);
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 1000;
-        opacity: 0; pointer-events: none;
+        opacity: 0;
+        pointer-events: none;
         transition: opacity 0.2s ease;
       }
 
-      .modal-overlay.open { opacity: 1; pointer-events: auto; }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
 
       .modal-box {
         background: var(--bg-card);
         border: 1px solid var(--border-hover);
         border-radius: var(--radius-lg);
-        width: 90%; max-width: 560px;
-        max-height: 90vh; overflow-y: auto;
+        width: 90%;
+        max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
         padding: 1.75rem;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
         transform: scale(0.95);
         transition: transform 0.2s ease;
       }
 
-      .modal-overlay.open .modal-box { transform: scale(1); }
+      .modal-overlay.open .modal-box {
+        transform: scale(1);
+      }
 
       .modal-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 1.4rem; padding-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.4rem;
+        padding-bottom: 0.8rem;
         border-bottom: 1px solid var(--border-color);
       }
 
-      .modal-title { font-size: 1.15rem; color: var(--paper); font-family: "Fraunces", serif; }
-
-      .btn-close-modal {
-        background: transparent; border: none;
-        color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1;
+      .modal-title {
+        font-size: 1.15rem;
+        color: var(--paper);
+        font-family: "Fraunces", serif;
       }
 
-      .btn-close-modal:hover { color: var(--paper); }
+      .btn-close-modal {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .btn-close-modal:hover {
+        color: var(--paper);
+      }
 
       /* ═══════════════════════════════════════════
          EMPTY & STATES
       ═══════════════════════════════════════════ */
       .empty-box {
-        text-align: center; padding: 3rem 1.5rem;
-        color: var(--text-muted); font-size: 0.88rem;
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--text-muted);
+        font-size: 0.88rem;
       }
 
       /* ═══════════════════════════════════════════
          TOAST
       ═══════════════════════════════════════════ */
       .toast-container {
-        position: fixed; bottom: 2rem; right: 2rem;
-        z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
       }
 
       .toast {
@@ -846,27 +1023,47 @@
         color: var(--paper);
         padding: 0.85rem 1.3rem;
         border-radius: var(--radius-md);
-        font-size: 0.86rem; font-weight: 500;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        display: flex; align-items: center; gap: 0.7rem;
-        animation: slideIn 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
-        transition: opacity 0.3s, transform 0.3s;
+        font-size: 0.86rem;
+        font-weight: 500;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
       }
 
-      .toast.toast-error { border-color: var(--danger); background: #2a1210; }
+      .toast.toast-error {
+        border-color: var(--danger);
+        background: #2a1210;
+      }
 
       @keyframes slideIn {
-        from { opacity: 0; transform: translateX(50px); }
-        to   { opacity: 1; transform: translateX(0); }
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
 
       /* ═══════════════════════════════════════════
          MOBILE
       ═══════════════════════════════════════════ */
       @media (max-width: 900px) {
-        .sidebar { display: none; }
-        main.adm-main { padding: 1rem; }
-        .topbar { padding: 0.8rem 1rem; }
+        .sidebar {
+          display: none;
+        }
+        main.adm-main {
+          padding: 1rem;
+        }
+        .topbar {
+          padding: 0.8rem 1rem;
+        }
       }
     </style>
   </head>
@@ -875,66 +1072,157 @@
     <!-- ═══ SIDEBAR ═══ -->
     <aside class="sidebar">
       <!-- Logo -->
-      <div class="sidebar-logo">
+      <a
+        href="index.html"
+        class="sidebar-logo"
+        title="Ir para a Página Inicial"
+      >
         <div class="logo-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0e0c0a" stroke-width="2.5">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
+          <img src="logo.png" alt="Logo Chronohistory" />
         </div>
         <div class="logo-text">
           <span class="logo-name">Chronohistory</span>
           <span class="logo-sub">Painel Admin</span>
         </div>
-      </div>
+      </a>
 
       <!-- Navigation -->
       <nav class="sidebar-nav">
         <span class="nav-section-label">Conteúdo</span>
 
-        <button class="nav-item active" onclick="switchTab('eventos')" id="navEventos">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8"  y1="2" x2="8"  y2="6"/>
-            <line x1="3"  y1="10" x2="21" y2="10"/>
+        <button
+          class="nav-item active"
+          onclick="switchTab('eventos')"
+          id="navEventos"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           Eventos Históricos
           <span class="nav-badge" id="countEventosBadge">0</span>
         </button>
 
         <button class="nav-item" onclick="switchTab('imagens')" id="navImagens">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
           </svg>
           Galeria de Obras
           <span class="nav-badge" id="countImagensBadge">0</span>
         </button>
 
-        <button class="nav-item" onclick="switchTab('usuarios')" id="navUsuarios">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        <button
+          class="nav-item"
+          onclick="switchTab('usuarios')"
+          id="navUsuarios"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
           Alunos
           <span class="nav-badge" id="countUsuariosBadge">0</span>
         </button>
 
-        <span class="nav-section-label" style="margin-top:0.5rem">Informações</span>
+        <span class="nav-section-label" style="margin-top: 0.5rem"
+          >Informações</span
+        >
 
         <!-- KPI Mini cards na sidebar -->
-        <div style="padding:0.5rem 0.2rem; display:flex; flex-direction:column; gap:0.5rem;">
-          <div style="background:var(--gold-soft); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:0.7rem 0.85rem; display:flex; align-items:center; justify-content:space-between;">
-            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Fase Média Jogo</span>
-            <span id="kpiFaseMediaVal" style="font-size:1rem; font-weight:700; color:var(--gold-light); font-family:'Fraunces',serif;">—</span>
+        <div
+          style="
+            padding: 0.5rem 0.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+          "
+        >
+          <div
+            style="
+              background: var(--gold-soft);
+              border: 1px solid var(--border-color);
+              border-radius: var(--radius-md);
+              padding: 0.7rem 0.85rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <span
+              style="
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                font-weight: 600;
+              "
+              >Fase Média Jogo</span
+            >
+            <span
+              id="kpiFaseMediaVal"
+              style="
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--gold-light);
+                font-family: &quot;Fraunces&quot;, serif;
+              "
+              >—</span
+            >
           </div>
-          <div style="background:var(--blue-soft); border:1px solid var(--blue-border); border-radius:var(--radius-md); padding:0.7rem 0.85rem; display:flex; align-items:center; justify-content:space-between;">
-            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Períodos Cobertos</span>
-            <span id="kpiPeriodosVal" style="font-size:1rem; font-weight:700; color:var(--blue-light); font-family:'Fraunces',serif;">5</span>
+          <div
+            style="
+              background: var(--blue-soft);
+              border: 1px solid var(--blue-border);
+              border-radius: var(--radius-md);
+              padding: 0.7rem 0.85rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <span
+              style="
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                font-weight: 600;
+              "
+              >Períodos Cobertos</span
+            >
+            <span
+              id="kpiPeriodosVal"
+              style="
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--blue-light);
+                font-family: &quot;Fraunces&quot;, serif;
+              "
+              >5</span
+            >
           </div>
         </div>
       </nav>
@@ -942,10 +1230,17 @@
       <!-- Logout -->
       <div class="sidebar-footer">
         <button class="btn-logout" onclick="logoutAdmin()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" y1="12" x2="9" y2="12"/>
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
           </svg>
           Sair da sessão
         </button>
@@ -954,22 +1249,35 @@
 
     <!-- ═══ CONTENT AREA ═══ -->
     <div class="content-area">
-
       <!-- Top Bar -->
       <header class="topbar">
         <div class="topbar-left">
           <h1 class="topbar-title" id="topbarTitle">Eventos Históricos</h1>
-          <span class="topbar-subtitle" id="topbarSub">Gerencie e adicione eventos à linha do tempo</span>
+          <span class="topbar-subtitle" id="topbarSub"
+            >Gerencie e adicione eventos à linha do tempo</span
+          >
         </div>
         <div class="topbar-right">
           <div class="status-dot" id="statusDot">
             <span class="dot loading" id="dotIndicator"></span>
             <span id="statusText">Conectando...</span>
           </div>
-          <button class="btn-icon" onclick="carregarDados(true)" title="Atualizar dados" style="width:36px;height:36px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="23 4 23 10 17 10"/>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          <button
+            class="btn-icon"
+            onclick="carregarDados(true)"
+            title="Atualizar dados"
+            style="width: 36px; height: 36px"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
             </svg>
           </button>
         </div>
@@ -977,24 +1285,44 @@
 
       <!-- Offline Banner -->
       <div class="offline-banner" id="offlineBanner">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        Backend offline ou em cold-start (Render.com). Tentando reconectar automaticamente…
-        <button class="retry-btn" onclick="carregarDados(true)">Tentar agora</button>
+        Backend offline ou em cold-start (Render.com). Tentando reconectar
+        automaticamente…
+        <button class="retry-btn" onclick="carregarDados(true)">
+          Tentar agora
+        </button>
       </div>
 
       <!-- Main -->
       <main class="adm-main">
-
         <!-- KPI CARDS -->
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-card-top">
               <div class="kpi-icon-box">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                  <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
               </div>
             </div>
@@ -1005,9 +1333,17 @@
           <div class="kpi-card">
             <div class="kpi-card-top">
               <div class="kpi-icon-box blue">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/>
-                  <circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
                 </svg>
               </div>
             </div>
@@ -1018,9 +1354,16 @@
           <div class="kpi-card">
             <div class="kpi-card-top">
               <div class="kpi-icon-box blue">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
                 </svg>
               </div>
             </div>
@@ -1031,8 +1374,17 @@
           <div class="kpi-card">
             <div class="kpi-card-top">
               <div class="kpi-icon-box">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  />
                 </svg>
               </div>
             </div>
@@ -1048,8 +1400,16 @@
             <div class="card">
               <div class="card-header">
                 <h2 class="card-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
                   </svg>
                   Novo Evento Histórico
                 </h2>
@@ -1057,7 +1417,12 @@
               <form id="formAddEvento" onsubmit="handleSalvarEvento(event)">
                 <div class="form-group">
                   <label for="evNome">Nome do Evento *</label>
-                  <input type="text" id="evNome" placeholder="Ex: Queda da Bastilha" required />
+                  <input
+                    type="text"
+                    id="evNome"
+                    placeholder="Ex: Queda da Bastilha"
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label for="evPeriodo">Período Histórico *</label>
@@ -1066,13 +1431,19 @@
                     <option value="Idade Antiga">Idade Antiga</option>
                     <option value="Idade Média">Idade Média</option>
                     <option value="Idade Moderna">Idade Moderna</option>
-                    <option value="Idade Contemporânea" selected>Idade Contemporânea</option>
+                    <option value="Idade Contemporânea" selected>
+                      Idade Contemporânea
+                    </option>
                   </select>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label for="evAnoInicio">Ano Início</label>
-                    <input type="text" id="evAnoInicio" placeholder="Ex: 1789" />
+                    <input
+                      type="text"
+                      id="evAnoInicio"
+                      placeholder="Ex: 1789"
+                    />
                   </div>
                   <div class="form-group">
                     <label for="evAnoFim">Ano Fim</label>
@@ -1081,24 +1452,51 @@
                 </div>
                 <div class="form-group">
                   <label for="evLugar">Localização / País</label>
-                  <input type="text" id="evLugar" placeholder="Ex: Paris, França" />
+                  <input
+                    type="text"
+                    id="evLugar"
+                    placeholder="Ex: Paris, França"
+                  />
                 </div>
                 <div class="form-group">
                   <label for="evFiguras">Figuras Históricas (vírgula)</label>
-                  <input type="text" id="evFiguras" placeholder="Ex: Napoleão Bonaparte, Luís XVI" />
+                  <input
+                    type="text"
+                    id="evFiguras"
+                    placeholder="Ex: Napoleão Bonaparte, Luís XVI"
+                  />
                 </div>
                 <div class="form-group">
                   <label for="evImagem">URL da Imagem (opcional)</label>
-                  <input type="text" id="evImagem" placeholder="imagens/exemplo.webp ou https://..." />
+                  <input
+                    type="text"
+                    id="evImagem"
+                    placeholder="imagens/exemplo.webp ou https://..."
+                  />
                 </div>
                 <div class="form-group">
-                  <label for="evAcontecimento">Descrição / O que aconteceu</label>
-                  <textarea id="evAcontecimento" placeholder="Resumo do evento histórico..."></textarea>
+                  <label for="evAcontecimento"
+                    >Descrição / O que aconteceu</label
+                  >
+                  <textarea
+                    id="evAcontecimento"
+                    placeholder="Resumo do evento histórico..."
+                  ></textarea>
                 </div>
                 <button type="submit" class="btn-primary">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                    <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                    />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
                   </svg>
                   Cadastrar Evento
                 </button>
@@ -1112,18 +1510,37 @@
               </div>
               <div class="table-toolbar">
                 <div class="search-box">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
                   </svg>
-                  <input type="text" id="searchEventoInput" placeholder="Buscar evento por nome ou local..." onkeyup="renderizarEventos()" />
+                  <input
+                    type="text"
+                    id="searchEventoInput"
+                    placeholder="Buscar evento por nome ou local..."
+                    onkeyup="renderizarEventos()"
+                  />
                 </div>
-                <select class="filter-select" id="filterPeriodoEvento" onchange="renderizarEventos()">
+                <select
+                  class="filter-select"
+                  id="filterPeriodoEvento"
+                  onchange="renderizarEventos()"
+                >
                   <option value="">Todos os Períodos</option>
                   <option value="Pré-História">Pré-História</option>
                   <option value="Idade Antiga">Idade Antiga</option>
                   <option value="Idade Média">Idade Média</option>
                   <option value="Idade Moderna">Idade Moderna</option>
-                  <option value="Idade Contemporânea">Idade Contemporânea</option>
+                  <option value="Idade Contemporânea">
+                    Idade Contemporânea
+                  </option>
                 </select>
               </div>
               <div class="table-container">
@@ -1134,23 +1551,49 @@
                       <th>Período</th>
                       <th>Ano</th>
                       <th>Local</th>
-                      <th style="text-align:right">Ações</th>
+                      <th style="text-align: right">Ações</th>
                     </tr>
                   </thead>
                   <tbody id="tbodyEventos">
                     <tr class="skeleton-row">
-                      <td><div class="skeleton-cell" style="width:140px"></div></td>
-                      <td><div class="skeleton-cell" style="width:90px"></div></td>
-                      <td><div class="skeleton-cell" style="width:50px"></div></td>
-                      <td><div class="skeleton-cell" style="width:80px"></div></td>
-                      <td><div class="skeleton-cell" style="width:60px;margin-left:auto"></div></td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 140px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 90px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 50px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 80px"></div>
+                      </td>
+                      <td>
+                        <div
+                          class="skeleton-cell"
+                          style="width: 60px; margin-left: auto"
+                        ></div>
+                      </td>
                     </tr>
                     <tr class="skeleton-row">
-                      <td><div class="skeleton-cell" style="width:110px"></div></td>
-                      <td><div class="skeleton-cell" style="width:80px"></div></td>
-                      <td><div class="skeleton-cell" style="width:50px"></div></td>
-                      <td><div class="skeleton-cell" style="width:70px"></div></td>
-                      <td><div class="skeleton-cell" style="width:60px;margin-left:auto"></div></td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 110px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 80px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 50px"></div>
+                      </td>
+                      <td>
+                        <div class="skeleton-cell" style="width: 70px"></div>
+                      </td>
+                      <td>
+                        <div
+                          class="skeleton-cell"
+                          style="width: 60px; margin-left: auto"
+                        ></div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -1166,8 +1609,16 @@
             <div class="card">
               <div class="card-header">
                 <h2 class="card-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
                   </svg>
                   Nova Obra / Imagem
                 </h2>
@@ -1175,7 +1626,12 @@
               <form id="formAddImagem" onsubmit="handleSalvarImagem(event)">
                 <div class="form-group">
                   <label for="imgTitulo">Título da Obra *</label>
-                  <input type="text" id="imgTitulo" placeholder="Ex: Monalisa" required />
+                  <input
+                    type="text"
+                    id="imgTitulo"
+                    placeholder="Ex: Monalisa"
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label for="imgPeriodo">Período Histórico *</label>
@@ -1183,14 +1639,22 @@
                     <option value="Pré-História">Pré-História</option>
                     <option value="Idade Antiga">Idade Antiga</option>
                     <option value="Idade Média">Idade Média</option>
-                    <option value="Idade Moderna" selected>Idade Moderna</option>
-                    <option value="Idade Contemporânea">Idade Contemporânea</option>
+                    <option value="Idade Moderna" selected>
+                      Idade Moderna
+                    </option>
+                    <option value="Idade Contemporânea">
+                      Idade Contemporânea
+                    </option>
                   </select>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label for="imgPintor">Pintor / Artista</label>
-                    <input type="text" id="imgPintor" placeholder="Ex: Leonardo da Vinci" />
+                    <input
+                      type="text"
+                      id="imgPintor"
+                      placeholder="Ex: Leonardo da Vinci"
+                    />
                   </div>
                   <div class="form-group">
                     <label for="imgAno">Ano / Época</label>
@@ -1199,16 +1663,34 @@
                 </div>
                 <div class="form-group">
                   <label for="imgUrl">Caminho / URL da Imagem *</label>
-                  <input type="text" id="imgUrl" placeholder="imagens/monalisa.webp ou https://..." required />
+                  <input
+                    type="text"
+                    id="imgUrl"
+                    placeholder="imagens/monalisa.webp ou https://..."
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label for="imgContexto">Contexto / Descrição</label>
-                  <textarea id="imgContexto" placeholder="Detalhes sobre a obra de arte..."></textarea>
+                  <textarea
+                    id="imgContexto"
+                    placeholder="Detalhes sobre a obra de arte..."
+                  ></textarea>
                 </div>
                 <button type="submit" class="btn-primary">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                    <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                    />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
                   </svg>
                   Adicionar à Galeria
                 </button>
@@ -1222,14 +1704,29 @@
               </div>
               <div class="table-toolbar">
                 <div class="search-box">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
                   </svg>
-                  <input type="text" id="searchImagemInput" placeholder="Buscar por título ou artista..." onkeyup="renderizarImagens()" />
+                  <input
+                    type="text"
+                    id="searchImagemInput"
+                    placeholder="Buscar por título ou artista..."
+                    onkeyup="renderizarImagens()"
+                  />
                 </div>
               </div>
               <div class="gallery-grid" id="gridImagens">
-                <div class="empty-box" style="grid-column:1/-1">Carregando obras da galeria...</div>
+                <div class="empty-box" style="grid-column: 1/-1">
+                  Carregando obras da galeria...
+                </div>
               </div>
             </div>
           </div>
@@ -1240,26 +1737,59 @@
           <div class="card">
             <div class="card-header">
               <h2 class="card-title">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
                 Alunos Cadastrados no Sistema
               </h2>
-              <button class="btn-icon" onclick="carregarDados(true)" title="Atualizar Lista" style="width:34px;height:34px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="23 4 23 10 17 10"/>
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              <button
+                class="btn-icon"
+                onclick="carregarDados(true)"
+                title="Atualizar Lista"
+                style="width: 34px; height: 34px"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="23 4 23 10 17 10" />
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                 </svg>
               </button>
             </div>
             <div class="table-toolbar">
               <div class="search-box">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
                 </svg>
-                <input type="text" id="searchUsuarioInput" placeholder="Buscar aluno por nome ou usuário..." onkeyup="renderizarUsuarios()" />
+                <input
+                  type="text"
+                  id="searchUsuarioInput"
+                  placeholder="Buscar aluno por nome ou usuário..."
+                  onkeyup="renderizarUsuarios()"
+                />
               </div>
             </div>
             <div class="table-container">
@@ -1275,31 +1805,49 @@
                 </thead>
                 <tbody id="tbodyUsuarios">
                   <tr class="skeleton-row">
-                    <td><div class="skeleton-cell" style="width:120px"></div></td>
-                    <td><div class="skeleton-cell" style="width:90px"></div></td>
-                    <td><div class="skeleton-cell" style="width:60px"></div></td>
-                    <td><div class="skeleton-cell" style="width:50px"></div></td>
-                    <td><div class="skeleton-cell" style="width:80px"></div></td>
+                    <td>
+                      <div class="skeleton-cell" style="width: 120px"></div>
+                    </td>
+                    <td>
+                      <div class="skeleton-cell" style="width: 90px"></div>
+                    </td>
+                    <td>
+                      <div class="skeleton-cell" style="width: 60px"></div>
+                    </td>
+                    <td>
+                      <div class="skeleton-cell" style="width: 50px"></div>
+                    </td>
+                    <td>
+                      <div class="skeleton-cell" style="width: 80px"></div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </section>
-
       </main>
-    </div><!-- /content-area -->
+    </div>
+    <!-- /content-area -->
 
     <!-- ═══ MODAL EDITAR EVENTO ═══ -->
     <div class="modal-overlay" id="modalEditarEvento">
       <div class="modal-box">
         <div class="modal-header">
           <h3 class="modal-title">Editar Evento Histórico</h3>
-          <button class="btn-close-modal" onclick="fecharModal('modalEditarEvento')">&times;</button>
+          <button
+            class="btn-close-modal"
+            onclick="fecharModal('modalEditarEvento')"
+          >
+            &times;
+          </button>
         </div>
         <form id="formEditEvento" onsubmit="handleSalvarEdicaoEvento(event)">
           <input type="hidden" id="editEvId" />
-          <div class="form-group"><label for="editEvNome">Nome do Evento *</label><input type="text" id="editEvNome" required /></div>
+          <div class="form-group">
+            <label for="editEvNome">Nome do Evento *</label
+            ><input type="text" id="editEvNome" required />
+          </div>
           <div class="form-group">
             <label for="editEvPeriodo">Período Histórico *</label>
             <select id="editEvPeriodo" required>
@@ -1311,12 +1859,27 @@
             </select>
           </div>
           <div class="form-row">
-            <div class="form-group"><label for="editEvAnoInicio">Ano Início</label><input type="text" id="editEvAnoInicio" /></div>
-            <div class="form-group"><label for="editEvAnoFim">Ano Fim</label><input type="text" id="editEvAnoFim" /></div>
+            <div class="form-group">
+              <label for="editEvAnoInicio">Ano Início</label
+              ><input type="text" id="editEvAnoInicio" />
+            </div>
+            <div class="form-group">
+              <label for="editEvAnoFim">Ano Fim</label
+              ><input type="text" id="editEvAnoFim" />
+            </div>
           </div>
-          <div class="form-group"><label for="editEvLugar">Localização</label><input type="text" id="editEvLugar" /></div>
-          <div class="form-group"><label for="editEvImagem">URL da Imagem</label><input type="text" id="editEvImagem" /></div>
-          <div class="form-group"><label for="editEvAcontecimento">Descrição / O que aconteceu</label><textarea id="editEvAcontecimento"></textarea></div>
+          <div class="form-group">
+            <label for="editEvLugar">Localização</label
+            ><input type="text" id="editEvLugar" />
+          </div>
+          <div class="form-group">
+            <label for="editEvImagem">URL da Imagem</label
+            ><input type="text" id="editEvImagem" />
+          </div>
+          <div class="form-group">
+            <label for="editEvAcontecimento">Descrição / O que aconteceu</label
+            ><textarea id="editEvAcontecimento"></textarea>
+          </div>
           <button type="submit" class="btn-primary">Salvar Alterações</button>
         </form>
       </div>
@@ -1327,11 +1890,19 @@
       <div class="modal-box">
         <div class="modal-header">
           <h3 class="modal-title">Editar Obra da Galeria</h3>
-          <button class="btn-close-modal" onclick="fecharModal('modalEditarImagem')">&times;</button>
+          <button
+            class="btn-close-modal"
+            onclick="fecharModal('modalEditarImagem')"
+          >
+            &times;
+          </button>
         </div>
         <form id="formEditImagem" onsubmit="handleSalvarEdicaoImagem(event)">
           <input type="hidden" id="editImgId" />
-          <div class="form-group"><label for="editImgTitulo">Título *</label><input type="text" id="editImgTitulo" required /></div>
+          <div class="form-group">
+            <label for="editImgTitulo">Título *</label
+            ><input type="text" id="editImgTitulo" required />
+          </div>
           <div class="form-group">
             <label for="editImgPeriodo">Período *</label>
             <select id="editImgPeriodo" required>
@@ -1343,11 +1914,23 @@
             </select>
           </div>
           <div class="form-row">
-            <div class="form-group"><label for="editImgPintor">Pintor / Artista</label><input type="text" id="editImgPintor" /></div>
-            <div class="form-group"><label for="editImgAno">Ano</label><input type="text" id="editImgAno" /></div>
+            <div class="form-group">
+              <label for="editImgPintor">Pintor / Artista</label
+              ><input type="text" id="editImgPintor" />
+            </div>
+            <div class="form-group">
+              <label for="editImgAno">Ano</label
+              ><input type="text" id="editImgAno" />
+            </div>
           </div>
-          <div class="form-group"><label for="editImgUrl">URL da Imagem *</label><input type="text" id="editImgUrl" required /></div>
-          <div class="form-group"><label for="editImgContexto">Descrição / Contexto</label><textarea id="editImgContexto"></textarea></div>
+          <div class="form-group">
+            <label for="editImgUrl">URL da Imagem *</label
+            ><input type="text" id="editImgUrl" required />
+          </div>
+          <div class="form-group">
+            <label for="editImgContexto">Descrição / Contexto</label
+            ><textarea id="editImgContexto"></textarea>
+          </div>
           <button type="submit" class="btn-primary">Salvar Alterações</button>
         </form>
       </div>
@@ -1360,21 +1943,23 @@
     <script>
       // ─── CONFIGURAÇÃO DE API ───
       // Usa a API de produção do Render por padrão, com fallback para ambiente local
-      const API_RENDER = 'https://backend-tcc-cronohistory.onrender.com';
-      const API_LOCAL  = 'http://127.0.0.1:5000';
-      let API_URL      = API_RENDER;
+      const API_RENDER = "https://backend-tcc-cronohistory.onrender.com";
+      const API_LOCAL = "http://127.0.0.1:5000";
+      let API_URL = API_RENDER;
 
-      let cacheEventos  = [];
-      let cacheImagens  = [];
+      let cacheEventos = [];
+      let cacheImagens = [];
       let cacheUsuarios = [];
-      let retryTimer    = null;
+      let retryTimer = null;
 
       // ─── AUTH HEADERS ───
       function getAuthHeaders() {
-        const token = localStorage.getItem('chronohistory_token') || localStorage.getItem('token');
-        const h = { 'Content-Type': 'application/json' };
-        if (token && token !== 'sessao_ativa' && token !== 'dev_token_adm') {
-          h['Authorization'] = `Bearer ${token}`;
+        const token =
+          localStorage.getItem("chronohistory_token") ||
+          localStorage.getItem("token");
+        const h = { "Content-Type": "application/json" };
+        if (token && token !== "sessao_ativa" && token !== "dev_token_adm") {
+          h["Authorization"] = `Bearer ${token}`;
         }
         return h;
       }
@@ -1394,46 +1979,62 @@
       }
 
       // ─── STATUS UI ───
-      function setStatus(state, customLabel = '') {
-        const dot    = document.getElementById('dotIndicator');
-        const text   = document.getElementById('statusText');
-        const banner = document.getElementById('offlineBanner');
+      function setStatus(state, customLabel = "") {
+        const dot = document.getElementById("dotIndicator");
+        const text = document.getElementById("statusText");
+        const banner = document.getElementById("offlineBanner");
         if (!dot || !text || !banner) return;
 
-        dot.className = 'dot';
-        if (state === 'online') {
-          text.textContent = customLabel || 'Online (Render)';
-          banner.classList.remove('visible');
-        } else if (state === 'offline') {
-          dot.classList.add('offline');
-          text.textContent = customLabel || 'Offline';
-          banner.classList.add('visible');
+        dot.className = "dot";
+        if (state === "online") {
+          text.textContent = customLabel || "Online (Render)";
+          banner.classList.remove("visible");
+        } else if (state === "offline") {
+          dot.classList.add("offline");
+          text.textContent = customLabel || "Offline";
+          banner.classList.add("visible");
         } else {
-          dot.classList.add('loading');
-          text.textContent = customLabel || 'Conectando ao Render...';
-          banner.classList.remove('visible');
+          dot.classList.add("loading");
+          text.textContent = customLabel || "Conectando ao Render...";
+          banner.classList.remove("visible");
         }
       }
 
       // ─── NAVEGAÇÃO DE ABAS ───
       const tabMeta = {
-        eventos:  { title: 'Eventos Históricos', sub: 'Gerencie e adicione eventos à linha do tempo' },
-        imagens:  { title: 'Galeria de Obras',   sub: 'Imagens e pinturas por período histórico' },
-        usuarios: { title: 'Alunos Cadastrados', sub: 'Acompanhe o progresso dos alunos no sistema' },
+        eventos: {
+          title: "Eventos Históricos",
+          sub: "Gerencie e adicione eventos à linha do tempo",
+        },
+        imagens: {
+          title: "Galeria de Obras",
+          sub: "Imagens e pinturas por período histórico",
+        },
+        usuarios: {
+          title: "Alunos Cadastrados",
+          sub: "Acompanhe o progresso dos alunos no sistema",
+        },
       };
 
       function switchTab(tabId) {
-        document.querySelectorAll('.tab-btn, .nav-item').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document
+          .querySelectorAll(".tab-btn, .nav-item")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach((p) => p.classList.remove("active"));
 
-        const navEl = document.getElementById(`nav${tabId.charAt(0).toUpperCase()}${tabId.slice(1)}`);
+        const navEl = document.getElementById(
+          `nav${tabId.charAt(0).toUpperCase()}${tabId.slice(1)}`,
+        );
         const panel = document.getElementById(`tab-${tabId}`);
-        if (navEl)  navEl.classList.add('active');
-        if (panel)  panel.classList.add('active');
+        if (navEl) navEl.classList.add("active");
+        if (panel) panel.classList.add("active");
 
         if (tabMeta[tabId]) {
-          document.getElementById('topbarTitle').textContent = tabMeta[tabId].title;
-          document.getElementById('topbarSub').textContent   = tabMeta[tabId].sub;
+          document.getElementById("topbarTitle").textContent =
+            tabMeta[tabId].title;
+          document.getElementById("topbarSub").textContent = tabMeta[tabId].sub;
         }
       }
 
@@ -1441,40 +2042,63 @@
       async function verificarAutenticacao() {
         // Tenta checar sessão ativa na API
         try {
-          const res = await fetchComTimeout(`${API_URL}/me`, { headers: getAuthHeaders(), credentials: 'include' }, 8000);
+          const res = await fetchComTimeout(
+            `${API_URL}/me`,
+            { headers: getAuthHeaders(), credentials: "include" },
+            8000,
+          );
           if (res.ok) {
             const data = await res.json();
-            if (data.autenticado && (data.role === 'adm' || data.role === 'admin')) return true;
+            if (
+              data.autenticado &&
+              (data.role === "adm" || data.role === "admin")
+            )
+              return true;
           }
         } catch (e) {
-          console.warn('Servidor indisponível para /me, validando sessão local.');
+          console.warn(
+            "Servidor indisponível para /me, validando sessão local.",
+          );
         }
 
         // Validação local no localStorage
-        const userLocal = JSON.parse(localStorage.getItem('chronohistory_user') || '{}');
-        if (userLocal.role === 'adm' || userLocal.role === 'admin') return true;
+        const userLocal = JSON.parse(
+          localStorage.getItem("chronohistory_user") || "{}",
+        );
+        if (userLocal.role === "adm" || userLocal.role === "admin") return true;
 
         // Se estiver rodando localmente ou abrindo o arquivo, inicializa sessão de dev
-        const isLocalOrFile = window.location.protocol === 'file:' ||
-          window.location.hostname === 'localhost' ||
-          window.location.hostname === '127.0.0.1';
+        const isLocalOrFile =
+          window.location.protocol === "file:" ||
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1";
 
         if (isLocalOrFile) {
-          const devAdmin = { user: 'admin', nome: 'Administrador (Painel)', role: 'adm', fase_jogo: 5 };
-          localStorage.setItem('chronohistory_user', JSON.stringify(devAdmin));
-          localStorage.setItem('chronohistory_token', 'dev_token_adm');
+          const devAdmin = {
+            user: "admin",
+            nome: "Administrador (Painel)",
+            role: "adm",
+            fase_jogo: 5,
+          };
+          localStorage.setItem("chronohistory_user", JSON.stringify(devAdmin));
+          localStorage.setItem("chronohistory_token", "dev_token_adm");
           return true;
         }
 
-        window.location.href = 'login.html';
+        window.location.href = "login.html";
         return false;
       }
 
       async function logoutAdmin() {
-        try { await fetch(`${API_URL}/logout`, { method: 'POST', credentials: 'include' }); } catch (_) {}
+        try {
+          await fetch(`${API_URL}/logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+        } catch (_) {}
         localStorage.clear();
         sessionStorage.clear();
-        window.location.href = 'login.html?logout=1';
+        window.location.href = "login.html?logout=1";
       }
 
       // ─── NORMALIZADORES DE DADOS ───
@@ -1485,29 +2109,40 @@
         // Caso A: Array direto
         if (Array.isArray(data)) {
           // Se já for lista de eventos diretos planos (Supabase)
-          if (data.length > 0 && !data[0].acontecimentos && !data[0].eventos && (data[0].nome || data[0].ano_inicio || data[0].ano)) {
+          if (
+            data.length > 0 &&
+            !data[0].acontecimentos &&
+            !data[0].eventos &&
+            (data[0].nome || data[0].ano_inicio || data[0].ano)
+          ) {
             return data.map((ev, idx) => ({
-              id: ev.id ?? (idx + 1),
-              nome: ev.nome || 'Sem título',
-              periodo: ev.periodo || ev.periodoNome || 'História',
-              ano: ev.ano || ev.ano_inicio || '—',
-              ano_inicio: ev.ano_inicio || ev.ano || '',
-              ano_fim: ev.ano_fim || '',
-              lugar: ev.lugar || '—',
-              acontecimento: ev.acontecimento || ev.oque_aconteceu || '',
-              oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || '',
-              oque_mudou: ev.oque_mudou || '',
-              imagem: ev.imagem || ev.imagemUrl || '',
+              id: ev.id ?? idx + 1,
+              nome: ev.nome || "Sem título",
+              periodo: ev.periodo || ev.periodoNome || "História",
+              ano: ev.ano || ev.ano_inicio || "—",
+              ano_inicio: ev.ano_inicio || ev.ano || "",
+              ano_fim: ev.ano_fim || "",
+              lugar: ev.lugar || "—",
+              acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
+              oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
+              oque_mudou: ev.oque_mudou || "",
+              imagem: ev.imagem || ev.imagemUrl || "",
               figuras_historicas: Array.isArray(ev.figuras_historicas)
-                ? ev.figuras_historicas.map(f => (typeof f === 'object' ? f.nome : f)).join(', ')
-                : (ev.figuras_historicas || '')
+                ? ev.figuras_historicas
+                    .map((f) => (typeof f === "object" ? f.nome : f))
+                    .join(", ")
+                : ev.figuras_historicas || "",
             }));
           }
           periodos = data;
-        } else if (typeof data === 'object') {
+        } else if (typeof data === "object") {
           if (Array.isArray(data.periodos)) periodos = data.periodos;
           else if (Array.isArray(data.data)) {
-            if (data.data.length > 0 && !data.data[0].acontecimentos && !data.data[0].eventos) {
+            if (
+              data.data.length > 0 &&
+              !data.data[0].acontecimentos &&
+              !data.data[0].eventos
+            ) {
               return normalizarEventos(data.data);
             }
             periodos = data.data;
@@ -1520,33 +2155,37 @@
         const eventosPlanos = [];
         periodos.forEach((p, pIdx) => {
           const pNome = p.nome || `Período ${pIdx + 1}`;
-          const pId   = p.id || (pIdx + 1);
+          const pId = p.id || pIdx + 1;
           const lista = p.acontecimentos || p.eventos || [];
 
           lista.forEach((ev, evIdx) => {
-            const anoOriginal = ev.ano || ev.ano_inicio || '—';
-            let figurasStr = '';
+            const anoOriginal = ev.ano || ev.ano_inicio || "—";
+            let figurasStr = "";
             if (Array.isArray(ev.figuras_principais)) {
-              figurasStr = ev.figuras_principais.map(f => (typeof f === 'object' ? `${f.nome} (${f.papel || ''})` : f)).join(', ');
+              figurasStr = ev.figuras_principais
+                .map((f) =>
+                  typeof f === "object" ? `${f.nome} (${f.papel || ""})` : f,
+                )
+                .join(", ");
             } else if (ev.figuras_historicas) {
               figurasStr = ev.figuras_historicas;
             }
 
             eventosPlanos.push({
-              id: ev.id ?? (pIdx * 100 + evIdx + 1),
+              id: ev.id ?? pIdx * 100 + evIdx + 1,
               nome: ev.nome || `Evento ${evIdx + 1}`,
               periodo: ev.periodo || pNome,
               periodoId: pId,
               ano: anoOriginal,
               ano_inicio: ev.ano_inicio || anoOriginal,
-              ano_fim: ev.ano_fim || '',
-              lugar: ev.lugar || 'Diversas regiões',
-              acontecimento: ev.acontecimento || ev.oque_aconteceu || '',
-              oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || '',
-              oque_mudou: ev.oque_mudou || '',
-              imagem: ev.imagem || ev.imagemUrl || '',
+              ano_fim: ev.ano_fim || "",
+              lugar: ev.lugar || "Diversas regiões",
+              acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
+              oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
+              oque_mudou: ev.oque_mudou || "",
+              imagem: ev.imagem || ev.imagemUrl || "",
               figuras_historicas: figurasStr,
-              curiosidades: ev.curiosidades || []
+              curiosidades: ev.curiosidades || [],
             });
           });
         });
@@ -1555,29 +2194,93 @@
       }
 
       function normalizarImagens(rawImgs, listaEventos) {
-        if (Array.isArray(rawImgs) && rawImgs.length > 0 && !rawImgs[0]?.message) {
+        if (
+          Array.isArray(rawImgs) &&
+          rawImgs.length > 0 &&
+          !rawImgs[0]?.message
+        ) {
           return rawImgs.map((img, idx) => ({
-            id: img.id ?? (idx + 1),
-            titulo: img.titulo || img.nome || 'Sem título',
-            periodo: img.periodo || 'Idade Moderna',
-            pintor: img.pintor || img.artista || 'Autor Desconhecido',
-            ano: img.ano || 'S/D',
-            url: img.url || (img.imagem ? (img.imagem.startsWith('http') ? img.imagem : `imagens/${img.imagem}`) : 'imagens/placeholder.webp'),
-            contexto: img.contexto || img.descricao || ''
+            id: img.id ?? idx + 1,
+            titulo: img.titulo || img.nome || "Sem título",
+            periodo: img.periodo || "Idade Moderna",
+            pintor: img.pintor || img.artista || "Autor Desconhecido",
+            ano: img.ano || "S/D",
+            url:
+              img.url ||
+              (img.imagem
+                ? img.imagem.startsWith("http")
+                  ? img.imagem
+                  : `imagens/${img.imagem}`
+                : "imagens/placeholder.webp"),
+            contexto: img.contexto || img.descricao || "",
           }));
         }
 
         // Acervo complementar de alta resolução
         const acervoObras = [
-          { titulo: 'Domínio do Fogo', periodo: 'Pré-História', pintor: 'Homo erectus', ano: 'c. 1.5M a.C.', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Campsite_at_dusk.jpg/800px-Campsite_at_dusk.jpg' },
-          { titulo: 'Pinturas de Lascaux', periodo: 'Pré-História', pintor: 'Homo sapiens', ano: 'c. 17.000 a.C.', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Caverna_de_Lascaux.jpg/800px-Caverna_de_Lascaux.jpg' },
-          { titulo: 'Código de Hamurabi', periodo: 'Idade Antiga', pintor: 'Babilônia Antiga', ano: 'c. 1754 a.C.', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Code-de-Hammurabi-1.jpg/960px-Code-de-Hammurabi-1.jpg' },
-          { titulo: 'Escola de Atenas', periodo: 'Idade Antiga', pintor: 'Rafael Sanzio', ano: '1509-1511', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Escola_de_Atenas_-_Vaticano_2.jpg/960px-Escola_de_Atenas_-_Vaticano_2.jpg' },
-          { titulo: 'A Queda de Constantinopla', periodo: 'Idade Média', pintor: 'Fausto Zonaro', ano: '1453', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Constantinople_1453.jpg/800px-Constantinople_1453.jpg' },
-          { titulo: 'Mona Lisa (La Gioconda)', periodo: 'Idade Moderna', pintor: 'Leonardo da Vinci', ano: '1503', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg' },
-          { titulo: 'A Criação de Adão', periodo: 'Idade Moderna', pintor: 'Michelangelo', ano: '1512', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg' },
-          { titulo: 'A Liberdade Guiando o Povo', periodo: 'Idade Contemporânea', pintor: 'Eugène Delacroix', ano: '1830', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg/800px-Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg' },
-          { titulo: 'Guernica', periodo: 'Idade Contemporânea', pintor: 'Pablo Picasso', ano: '1937', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Guernica_after_the_1937_bombing.jpg/800px-Guernica_after_the_1937_bombing.jpg' }
+          {
+            titulo: "Domínio do Fogo",
+            periodo: "Pré-História",
+            pintor: "Homo erectus",
+            ano: "c. 1.5M a.C.",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Campsite_at_dusk.jpg/800px-Campsite_at_dusk.jpg",
+          },
+          {
+            titulo: "Pinturas de Lascaux",
+            periodo: "Pré-História",
+            pintor: "Homo sapiens",
+            ano: "c. 17.000 a.C.",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Caverna_de_Lascaux.jpg/800px-Caverna_de_Lascaux.jpg",
+          },
+          {
+            titulo: "Código de Hamurabi",
+            periodo: "Idade Antiga",
+            pintor: "Babilônia Antiga",
+            ano: "c. 1754 a.C.",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Code-de-Hammurabi-1.jpg/960px-Code-de-Hammurabi-1.jpg",
+          },
+          {
+            titulo: "Escola de Atenas",
+            periodo: "Idade Antiga",
+            pintor: "Rafael Sanzio",
+            ano: "1509-1511",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Escola_de_Atenas_-_Vaticano_2.jpg/960px-Escola_de_Atenas_-_Vaticano_2.jpg",
+          },
+          {
+            titulo: "A Queda de Constantinopla",
+            periodo: "Idade Média",
+            pintor: "Fausto Zonaro",
+            ano: "1453",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Constantinople_1453.jpg/800px-Constantinople_1453.jpg",
+          },
+          {
+            titulo: "Mona Lisa (La Gioconda)",
+            periodo: "Idade Moderna",
+            pintor: "Leonardo da Vinci",
+            ano: "1503",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+          },
+          {
+            titulo: "A Criação de Adão",
+            periodo: "Idade Moderna",
+            pintor: "Michelangelo",
+            ano: "1512",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg",
+          },
+          {
+            titulo: "A Liberdade Guiando o Povo",
+            periodo: "Idade Contemporânea",
+            pintor: "Eugène Delacroix",
+            ano: "1830",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg/800px-Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg",
+          },
+          {
+            titulo: "Guernica",
+            periodo: "Idade Contemporânea",
+            pintor: "Pablo Picasso",
+            ano: "1937",
+            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Guernica_after_the_1937_bombing.jpg/800px-Guernica_after_the_1937_bombing.jpg",
+          },
         ];
 
         const imgsExtraidas = [];
@@ -1587,15 +2290,17 @@
         listaEventos.forEach((ev, idx) => {
           if (ev.imagem && !titulosVistos.has(ev.nome)) {
             titulosVistos.add(ev.nome);
-            const imgUrl = ev.imagem.startsWith('http') ? ev.imagem : `imagens/${ev.imagem}`;
+            const imgUrl = ev.imagem.startsWith("http")
+              ? ev.imagem
+              : `imagens/${ev.imagem}`;
             imgsExtraidas.push({
               id: idx + 1,
               titulo: ev.nome,
-              periodo: ev.periodo || 'História',
-              pintor: ev.lugar || 'Acervo Histórico',
-              ano: ev.ano || 'S/D',
+              periodo: ev.periodo || "História",
+              pintor: ev.lugar || "Acervo Histórico",
+              ano: ev.ano || "S/D",
               url: imgUrl,
-              contexto: ev.acontecimento || ev.oque_aconteceu || ''
+              contexto: ev.acontecimento || ev.oque_aconteceu || "",
             });
           }
         });
@@ -1606,7 +2311,7 @@
             imgsExtraidas.push({
               id: imgsExtraidas.length + idx + 1,
               ...ob,
-              contexto: `Obra histórica representativa do período ${ob.periodo}.`
+              contexto: `Obra histórica representativa do período ${ob.periodo}.`,
             });
           }
         });
@@ -1617,27 +2322,69 @@
       function normalizarUsuarios(rawUsers) {
         let lista = [];
         if (Array.isArray(rawUsers)) lista = rawUsers;
-        else if (rawUsers && Array.isArray(rawUsers.usuarios)) lista = rawUsers.usuarios;
-        else if (rawUsers && Array.isArray(rawUsers.data)) lista = rawUsers.data;
+        else if (rawUsers && Array.isArray(rawUsers.usuarios))
+          lista = rawUsers.usuarios;
+        else if (rawUsers && Array.isArray(rawUsers.data))
+          lista = rawUsers.data;
 
         if (lista.length > 0) return lista;
 
         // Roster representativo com a conta de admin e alunos
-        const userLogado = JSON.parse(localStorage.getItem('chronohistory_user') || '{}');
-        const adminName = userLogado.nome || userLogado.user || 'Administrador';
+        const userLogado = JSON.parse(
+          localStorage.getItem("chronohistory_user") || "{}",
+        );
+        const adminName = userLogado.nome || userLogado.user || "Administrador";
         return [
-          { id: 1, nome: adminName, user: userLogado.user || "admin", perfil: "adm", fase_jogo: 5, created_at: "2026-09-01T10:00:00Z" },
-          { id: 2, nome: "Ana Clara Silva", user: "anaclara", perfil: "aluno", fase_jogo: 3, created_at: "2026-09-05T14:30:00Z" },
-          { id: 3, nome: "Lucas Rodrigues", user: "lucasr", perfil: "aluno", fase_jogo: 4, created_at: "2026-09-10T09:15:00Z" },
-          { id: 4, nome: "Beatriz Santos", user: "beatriz_s", perfil: "aluno", fase_jogo: 2, created_at: "2026-09-12T16:45:00Z" },
-          { id: 5, nome: "Mateus Oliveira", user: "mateus_o", perfil: "aluno", fase_jogo: 1, created_at: "2026-09-15T11:20:00Z" }
+          {
+            id: 1,
+            nome: adminName,
+            user: userLogado.user || "admin",
+            perfil: "adm",
+            fase_jogo: 5,
+            created_at: "2026-09-01T10:00:00Z",
+          },
+          {
+            id: 2,
+            nome: "Ana Clara Silva",
+            user: "anaclara",
+            perfil: "aluno",
+            fase_jogo: 3,
+            created_at: "2026-09-05T14:30:00Z",
+          },
+          {
+            id: 3,
+            nome: "Lucas Rodrigues",
+            user: "lucasr",
+            perfil: "aluno",
+            fase_jogo: 4,
+            created_at: "2026-09-10T09:15:00Z",
+          },
+          {
+            id: 4,
+            nome: "Beatriz Santos",
+            user: "beatriz_s",
+            perfil: "aluno",
+            fase_jogo: 2,
+            created_at: "2026-09-12T16:45:00Z",
+          },
+          {
+            id: 5,
+            nome: "Mateus Oliveira",
+            user: "mateus_o",
+            perfil: "aluno",
+            fase_jogo: 1,
+            created_at: "2026-09-15T11:20:00Z",
+          },
         ];
       }
 
       // ─── CARREGAR DADOS COM RESILIÊNCIA E FALLBACK ───
       async function carregarDados(manual = false) {
-        if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
-        setStatus('loading');
+        if (retryTimer) {
+          clearTimeout(retryTimer);
+          retryTimer = null;
+        }
+        setStatus("loading");
 
         let rawEventos = null;
         let rawImagens = null;
@@ -1656,12 +2403,19 @@
             }
           }
         } catch (err) {
-          console.warn('API /eventos indisponível ou bloqueada por CORS:', err.message);
+          console.warn(
+            "API /eventos indisponível ou bloqueada por CORS:",
+            err.message,
+          );
         }
 
         // 1.1 Se Render falhou ou retornou vazio, tenta fallback local garantido
         if (!rawEventos || rawEventos.length === 0) {
-          const caminhos = ['periodos.json', '../periodos.json', '/periodos.json'];
+          const caminhos = [
+            "periodos.json",
+            "../periodos.json",
+            "/periodos.json",
+          ];
           for (const p of caminhos) {
             try {
               const res = await fetch(p);
@@ -1691,7 +2445,7 @@
             }
           }
         } catch (err) {
-          console.warn('API /imagens indisponível:', err.message);
+          console.warn("API /imagens indisponível:", err.message);
         }
 
         cacheImagens = normalizarImagens(rawImagens, cacheEventos);
@@ -1700,8 +2454,8 @@
         try {
           const res = await fetchComTimeout(
             `${API_URL}/admin/usuarios`,
-            { headers: getAuthHeaders(), credentials: 'include' },
-            10000
+            { headers: getAuthHeaders(), credentials: "include" },
+            10000,
           );
           if (res.ok) {
             const json = await res.json();
@@ -1711,18 +2465,20 @@
             }
           }
         } catch (err) {
-          console.warn('API /admin/usuarios indisponível:', err.message);
+          console.warn("API /admin/usuarios indisponível:", err.message);
         }
 
         cacheUsuarios = normalizarUsuarios(rawUsuarios);
 
         // Atualização da UI
         if (cacheEventos.length > 0) {
-          const statusLabel = conectouRender ? 'Online (Render.com)' : 'Online (Sincronizado)';
-          setStatus('online', statusLabel);
+          const statusLabel = conectouRender
+            ? "Online (Render.com)"
+            : "Online (Sincronizado)";
+          setStatus("online", statusLabel);
           atualizarInterface();
         } else {
-          setStatus('offline');
+          setStatus("offline");
           if (!manual) {
             retryTimer = setTimeout(() => carregarDados(), 12000);
           }
@@ -1733,23 +2489,38 @@
       }
 
       function atualizarInterface() {
-        document.getElementById('kpiEventosVal').textContent  = cacheEventos.length;
-        document.getElementById('kpiImagensVal').textContent  = cacheImagens.length;
-        document.getElementById('kpiUsuariosVal').textContent = cacheUsuarios.length;
-        document.getElementById('countEventosBadge').textContent  = cacheEventos.length;
-        document.getElementById('countImagensBadge').textContent  = cacheImagens.length;
-        document.getElementById('countUsuariosBadge').textContent = cacheUsuarios.length;
+        document.getElementById("kpiEventosVal").textContent =
+          cacheEventos.length;
+        document.getElementById("kpiImagensVal").textContent =
+          cacheImagens.length;
+        document.getElementById("kpiUsuariosVal").textContent =
+          cacheUsuarios.length;
+        document.getElementById("countEventosBadge").textContent =
+          cacheEventos.length;
+        document.getElementById("countImagensBadge").textContent =
+          cacheImagens.length;
+        document.getElementById("countUsuariosBadge").textContent =
+          cacheUsuarios.length;
 
         // Fase média
         if (cacheUsuarios.length > 0) {
-          const soma  = cacheUsuarios.reduce((a, u) => a + (Number(u.fase_jogo) || 1), 0);
+          const soma = cacheUsuarios.reduce(
+            (a, u) => a + (Number(u.fase_jogo) || 1),
+            0,
+          );
           const media = (soma / cacheUsuarios.length).toFixed(1);
-          document.getElementById('kpiFaseMediaVal').textContent = media;
+          document.getElementById("kpiFaseMediaVal").textContent = media;
         }
 
         // Eventos contemporâneos ou do ano
-        const contemp = cacheEventos.filter(ev => (ev.periodo || '').includes('Contemporânea') || (ev.ano || '').includes('19') || (ev.ano || '').includes('20')).length;
-        document.getElementById('kpiEventosVal2').textContent = contemp || cacheEventos.length;
+        const contemp = cacheEventos.filter(
+          (ev) =>
+            (ev.periodo || "").includes("Contemporânea") ||
+            (ev.ano || "").includes("19") ||
+            (ev.ano || "").includes("20"),
+        ).length;
+        document.getElementById("kpiEventosVal2").textContent =
+          contemp || cacheEventos.length;
 
         renderizarEventos();
         renderizarImagens();
@@ -1758,30 +2529,38 @@
 
       // ─── RENDERIZAR TABELA DE EVENTOS ───
       function renderizarEventos() {
-        const tbody = document.getElementById('tbodyEventos');
-        const search = (document.getElementById('searchEventoInput')?.value || '').toLowerCase().trim();
-        const periodoFiltro = document.getElementById('filterPeriodoEvento')?.value || '';
+        const tbody = document.getElementById("tbodyEventos");
+        const search = (
+          document.getElementById("searchEventoInput")?.value || ""
+        )
+          .toLowerCase()
+          .trim();
+        const periodoFiltro =
+          document.getElementById("filterPeriodoEvento")?.value || "";
 
-        const filtrados = cacheEventos.filter(ev => {
-          const matchNome    = (ev.nome    || '').toLowerCase().includes(search);
-          const matchLugar   = (ev.lugar   || '').toLowerCase().includes(search);
-          const matchPeriodo = !periodoFiltro || (ev.periodo || '') === periodoFiltro;
+        const filtrados = cacheEventos.filter((ev) => {
+          const matchNome = (ev.nome || "").toLowerCase().includes(search);
+          const matchLugar = (ev.lugar || "").toLowerCase().includes(search);
+          const matchPeriodo =
+            !periodoFiltro || (ev.periodo || "") === periodoFiltro;
           return (matchNome || matchLugar) && matchPeriodo;
         });
 
         if (filtrados.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5" class="empty-box">
-            ${cacheEventos.length === 0 ? 'Aguardando conexão com o servidor...' : 'Nenhum evento encontrado para esta busca.'}
+            ${cacheEventos.length === 0 ? "Aguardando conexão com o servidor..." : "Nenhum evento encontrado para esta busca."}
           </td></tr>`;
           return;
         }
 
-        tbody.innerHTML = filtrados.map(ev => `
+        tbody.innerHTML = filtrados
+          .map(
+            (ev) => `
           <tr>
-            <td><strong>${ev.nome || 'Sem título'}</strong></td>
-            <td><span class="item-period-badge">${ev.periodo || 'História'}</span></td>
-            <td>${ev.ano || ev.ano_inicio || '—'}</td>
-            <td>${ev.lugar || '—'}</td>
+            <td><strong>${ev.nome || "Sem título"}</strong></td>
+            <td><span class="item-period-badge">${ev.periodo || "História"}</span></td>
+            <td>${ev.ano || ev.ano_inicio || "—"}</td>
+            <td>${ev.lugar || "—"}</td>
             <td style="text-align:right">
               <div class="action-btns" style="justify-content:flex-end">
                 <button class="btn-icon" title="Editar" onclick="abrirModalEditarEvento('${ev.id}')">
@@ -1799,36 +2578,45 @@
               </div>
             </td>
           </tr>
-        `).join('');
+        `,
+          )
+          .join("");
       }
 
       // ─── RENDERIZAR GRID DE IMAGENS ───
       function renderizarImagens() {
-        const grid = document.getElementById('gridImagens');
-        const search = (document.getElementById('searchImagemInput')?.value || '').toLowerCase().trim();
+        const grid = document.getElementById("gridImagens");
+        const search = (
+          document.getElementById("searchImagemInput")?.value || ""
+        )
+          .toLowerCase()
+          .trim();
 
-        const filtradas = cacheImagens.filter(img =>
-          (img.titulo  || '').toLowerCase().includes(search) ||
-          (img.pintor  || '').toLowerCase().includes(search) ||
-          (img.periodo || '').toLowerCase().includes(search)
+        const filtradas = cacheImagens.filter(
+          (img) =>
+            (img.titulo || "").toLowerCase().includes(search) ||
+            (img.pintor || "").toLowerCase().includes(search) ||
+            (img.periodo || "").toLowerCase().includes(search),
         );
 
         if (filtradas.length === 0) {
           grid.innerHTML = `<div class="empty-box" style="grid-column:1/-1">
-            ${cacheImagens.length === 0 ? 'Aguardando obras da galeria...' : 'Nenhuma obra encontrada para esta busca.'}
+            ${cacheImagens.length === 0 ? "Aguardando obras da galeria..." : "Nenhuma obra encontrada para esta busca."}
           </div>`;
           return;
         }
 
-        grid.innerHTML = filtradas.map(img => `
+        grid.innerHTML = filtradas
+          .map(
+            (img) => `
           <div class="gallery-card">
             <div class="gallery-img-wrapper">
               <img src="${img.url}" alt="${img.titulo}"
                 onerror="this.src='https://placehold.co/300x200/181410/c9a227?text=${encodeURIComponent(img.titulo.slice(0, 15))}'" />
             </div>
             <div class="gallery-info">
-              <span class="gallery-title">${img.titulo || 'Sem Título'}</span>
-              <span class="gallery-meta">${img.pintor || 'Acervo'} · ${img.ano || 'S/D'}</span>
+              <span class="gallery-title">${img.titulo || "Sem Título"}</span>
+              <span class="gallery-meta">${img.pintor || "Acervo"} · ${img.ano || "S/D"}</span>
               <div class="gallery-actions">
                 <button class="btn-icon" title="Editar" onclick="abrirModalEditarImagem('${img.id}')">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1845,141 +2633,175 @@
               </div>
             </div>
           </div>
-        `).join('');
+        `,
+          )
+          .join("");
       }
 
       // ─── RENDERIZAR TABELA DE ALUNOS ───
       function renderizarUsuarios() {
-        const tbody  = document.getElementById('tbodyUsuarios');
-        const search = (document.getElementById('searchUsuarioInput')?.value || '').toLowerCase().trim();
+        const tbody = document.getElementById("tbodyUsuarios");
+        const search = (
+          document.getElementById("searchUsuarioInput")?.value || ""
+        )
+          .toLowerCase()
+          .trim();
 
-        const filtrados = cacheUsuarios.filter(u =>
-          (u.nome || '').toLowerCase().includes(search) ||
-          (u.user || '').toLowerCase().includes(search)
+        const filtrados = cacheUsuarios.filter(
+          (u) =>
+            (u.nome || "").toLowerCase().includes(search) ||
+            (u.user || "").toLowerCase().includes(search),
         );
 
         if (filtrados.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5" class="empty-box">
-            ${cacheUsuarios.length === 0 ? 'Aguardando lista de alunos...' : 'Nenhum aluno encontrado.'}
+            ${cacheUsuarios.length === 0 ? "Aguardando lista de alunos..." : "Nenhum aluno encontrado."}
           </td></tr>`;
           return;
         }
 
-        tbody.innerHTML = filtrados.map(u => {
-          const data = u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR') : '18/09/2026';
-          const faseClass = (Number(u.fase_jogo) || 1) >= 3 ? 'blue' : '';
-          return `
+        tbody.innerHTML = filtrados
+          .map((u) => {
+            const data = u.created_at
+              ? new Date(u.created_at).toLocaleDateString("pt-BR")
+              : "18/09/2026";
+            const faseClass = (Number(u.fase_jogo) || 1) >= 3 ? "blue" : "";
+            return `
             <tr>
               <td><strong>${u.nome || u.user}</strong></td>
               <td style="color:var(--gold-light)">@${u.user}</td>
-              <td><span class="item-period-badge">${u.perfil || 'aluno'}</span></td>
+              <td><span class="item-period-badge">${u.perfil || "aluno"}</span></td>
               <td><span class="item-period-badge ${faseClass}">Fase ${u.fase_jogo || 1}</span></td>
               <td>${data}</td>
             </tr>`;
-        }).join('');
+          })
+          .join("");
       }
 
       // ─── CRUD EVENTOS ───
       async function handleSalvarEvento(e) {
         e.preventDefault();
         const payload = {
-          nome:               document.getElementById('evNome').value.trim(),
-          periodo:            document.getElementById('evPeriodo').value,
-          ano_inicio:         document.getElementById('evAnoInicio').value.trim(),
-          ano_fim:            document.getElementById('evAnoFim').value.trim(),
-          lugar:              document.getElementById('evLugar').value.trim(),
-          figuras_historicas: document.getElementById('evFiguras').value.trim(),
-          imagem:             document.getElementById('evImagem').value.trim(),
-          acontecimento:      document.getElementById('evAcontecimento').value.trim(),
+          nome: document.getElementById("evNome").value.trim(),
+          periodo: document.getElementById("evPeriodo").value,
+          ano_inicio: document.getElementById("evAnoInicio").value.trim(),
+          ano_fim: document.getElementById("evAnoFim").value.trim(),
+          lugar: document.getElementById("evLugar").value.trim(),
+          figuras_historicas: document.getElementById("evFiguras").value.trim(),
+          imagem: document.getElementById("evImagem").value.trim(),
+          acontecimento: document
+            .getElementById("evAcontecimento")
+            .value.trim(),
         };
 
         try {
-          const res = await fetchComTimeout(`${API_URL}/adicionar_evento`, {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            credentials: 'include',
-            body: JSON.stringify(payload)
-          }, 8000);
+          const res = await fetchComTimeout(
+            `${API_URL}/adicionar_evento`,
+            {
+              method: "POST",
+              headers: getAuthHeaders(),
+              credentials: "include",
+              body: JSON.stringify(payload),
+            },
+            8000,
+          );
 
           if (res.ok) {
-            mostrarToast('Evento salvo com sucesso!');
+            mostrarToast("Evento salvo com sucesso!");
           } else {
             // Salva localmente se backend offline
             payload.id = Date.now();
             payload.ano = payload.ano_inicio;
             cacheEventos.unshift(payload);
-            mostrarToast('Evento adicionado (armazenado localmente)!');
+            mostrarToast("Evento adicionado (armazenado localmente)!");
           }
         } catch (err) {
           payload.id = Date.now();
           payload.ano = payload.ano_inicio;
           cacheEventos.unshift(payload);
-          mostrarToast('Evento adicionado (armazenado localmente)!');
+          mostrarToast("Evento adicionado (armazenado localmente)!");
         }
 
-        document.getElementById('formAddEvento').reset();
+        document.getElementById("formAddEvento").reset();
         atualizarInterface();
       }
 
       async function deletarEvento(id) {
-        if (!confirm('Deseja realmente excluir este evento histórico?')) return;
+        if (!confirm("Deseja realmente excluir este evento histórico?")) return;
         try {
-          await fetchComTimeout(`${API_URL}/deletar_evento/${id}`, {
-            method: 'DELETE',
-            headers: getAuthHeaders(),
-            credentials: 'include'
-          }, 8000);
+          await fetchComTimeout(
+            `${API_URL}/deletar_evento/${id}`,
+            {
+              method: "DELETE",
+              headers: getAuthHeaders(),
+              credentials: "include",
+            },
+            8000,
+          );
         } catch (_) {}
 
-        cacheEventos = cacheEventos.filter(e => String(e.id) !== String(id));
-        mostrarToast('Evento excluído com sucesso!');
+        cacheEventos = cacheEventos.filter((e) => String(e.id) !== String(id));
+        mostrarToast("Evento excluído com sucesso!");
         atualizarInterface();
       }
 
       function abrirModalEditarEvento(id) {
-        const ev = cacheEventos.find(i => String(i.id) === String(id));
+        const ev = cacheEventos.find((i) => String(i.id) === String(id));
         if (!ev) return;
-        document.getElementById('editEvId').value            = ev.id;
-        document.getElementById('editEvNome').value          = ev.nome || '';
-        document.getElementById('editEvPeriodo').value       = ev.periodo || 'Idade Contemporânea';
-        document.getElementById('editEvAnoInicio').value     = ev.ano_inicio || ev.ano || '';
-        document.getElementById('editEvAnoFim').value        = ev.ano_fim || '';
-        document.getElementById('editEvLugar').value         = ev.lugar || '';
-        document.getElementById('editEvImagem').value        = ev.imagem || '';
-        document.getElementById('editEvAcontecimento').value = ev.acontecimento || ev.oque_aconteceu || '';
-        document.getElementById('modalEditarEvento').classList.add('open');
+        document.getElementById("editEvId").value = ev.id;
+        document.getElementById("editEvNome").value = ev.nome || "";
+        document.getElementById("editEvPeriodo").value =
+          ev.periodo || "Idade Contemporânea";
+        document.getElementById("editEvAnoInicio").value =
+          ev.ano_inicio || ev.ano || "";
+        document.getElementById("editEvAnoFim").value = ev.ano_fim || "";
+        document.getElementById("editEvLugar").value = ev.lugar || "";
+        document.getElementById("editEvImagem").value = ev.imagem || "";
+        document.getElementById("editEvAcontecimento").value =
+          ev.acontecimento || ev.oque_aconteceu || "";
+        document.getElementById("modalEditarEvento").classList.add("open");
       }
 
       async function handleSalvarEdicaoEvento(e) {
         e.preventDefault();
-        const id = document.getElementById('editEvId').value;
+        const id = document.getElementById("editEvId").value;
         const payload = {
-          nome:          document.getElementById('editEvNome').value.trim(),
-          periodo:       document.getElementById('editEvPeriodo').value,
-          ano_inicio:    document.getElementById('editEvAnoInicio').value.trim(),
-          ano_fim:       document.getElementById('editEvAnoFim').value.trim(),
-          lugar:         document.getElementById('editEvLugar').value.trim(),
-          imagem:        document.getElementById('editEvImagem').value.trim(),
-          acontecimento: document.getElementById('editEvAcontecimento').value.trim(),
+          nome: document.getElementById("editEvNome").value.trim(),
+          periodo: document.getElementById("editEvPeriodo").value,
+          ano_inicio: document.getElementById("editEvAnoInicio").value.trim(),
+          ano_fim: document.getElementById("editEvAnoFim").value.trim(),
+          lugar: document.getElementById("editEvLugar").value.trim(),
+          imagem: document.getElementById("editEvImagem").value.trim(),
+          acontecimento: document
+            .getElementById("editEvAcontecimento")
+            .value.trim(),
         };
 
         try {
-          await fetchComTimeout(`${API_URL}/editar_evento/${id}`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            credentials: 'include',
-            body: JSON.stringify(payload)
-          }, 8000);
+          await fetchComTimeout(
+            `${API_URL}/editar_evento/${id}`,
+            {
+              method: "PATCH",
+              headers: getAuthHeaders(),
+              credentials: "include",
+              body: JSON.stringify(payload),
+            },
+            8000,
+          );
         } catch (_) {}
 
         // Atualiza no cache local
-        const idx = cacheEventos.findIndex(i => String(i.id) === String(id));
+        const idx = cacheEventos.findIndex((i) => String(i.id) === String(id));
         if (idx !== -1) {
-          cacheEventos[idx] = { ...cacheEventos[idx], ...payload, ano: payload.ano_inicio };
+          cacheEventos[idx] = {
+            ...cacheEventos[idx],
+            ...payload,
+            ano: payload.ano_inicio,
+          };
         }
 
-        mostrarToast('Evento atualizado com sucesso!');
-        fecharModal('modalEditarEvento');
+        mostrarToast("Evento atualizado com sucesso!");
+        fecharModal("modalEditarEvento");
         atualizarInterface();
       }
 
@@ -1987,115 +2809,132 @@
       async function handleSalvarImagem(e) {
         e.preventDefault();
         const payload = {
-          titulo:   document.getElementById('imgTitulo').value.trim(),
-          periodo:  document.getElementById('imgPeriodo').value,
-          pintor:   document.getElementById('imgPintor').value.trim(),
-          ano:      document.getElementById('imgAno').value.trim(),
-          url:      document.getElementById('imgUrl').value.trim(),
-          contexto: document.getElementById('imgContexto').value.trim(),
+          titulo: document.getElementById("imgTitulo").value.trim(),
+          periodo: document.getElementById("imgPeriodo").value,
+          pintor: document.getElementById("imgPintor").value.trim(),
+          ano: document.getElementById("imgAno").value.trim(),
+          url: document.getElementById("imgUrl").value.trim(),
+          contexto: document.getElementById("imgContexto").value.trim(),
         };
 
         try {
-          await fetchComTimeout(`${API_URL}/imagens`, {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            credentials: 'include',
-            body: JSON.stringify(payload)
-          }, 8000);
+          await fetchComTimeout(
+            `${API_URL}/imagens`,
+            {
+              method: "POST",
+              headers: getAuthHeaders(),
+              credentials: "include",
+              body: JSON.stringify(payload),
+            },
+            8000,
+          );
         } catch (_) {}
 
         payload.id = Date.now();
         cacheImagens.unshift(payload);
-        mostrarToast('Obra adicionada à galeria!');
-        document.getElementById('formAddImagem').reset();
+        mostrarToast("Obra adicionada à galeria!");
+        document.getElementById("formAddImagem").reset();
         atualizarInterface();
       }
 
       async function deletarImagem(id) {
-        if (!confirm('Deseja realmente remover esta obra da galeria?')) return;
+        if (!confirm("Deseja realmente remover esta obra da galeria?")) return;
         try {
-          await fetchComTimeout(`${API_URL}/imagens/${id}`, {
-            method: 'DELETE',
-            headers: getAuthHeaders(),
-            credentials: 'include'
-          }, 8000);
+          await fetchComTimeout(
+            `${API_URL}/imagens/${id}`,
+            {
+              method: "DELETE",
+              headers: getAuthHeaders(),
+              credentials: "include",
+            },
+            8000,
+          );
         } catch (_) {}
 
-        cacheImagens = cacheImagens.filter(i => String(i.id) !== String(id));
-        mostrarToast('Obra removida da galeria!');
+        cacheImagens = cacheImagens.filter((i) => String(i.id) !== String(id));
+        mostrarToast("Obra removida da galeria!");
         atualizarInterface();
       }
 
       function abrirModalEditarImagem(id) {
-        const img = cacheImagens.find(i => String(i.id) === String(id));
+        const img = cacheImagens.find((i) => String(i.id) === String(id));
         if (!img) return;
-        document.getElementById('editImgId').value       = img.id;
-        document.getElementById('editImgTitulo').value   = img.titulo || '';
-        document.getElementById('editImgPeriodo').value  = img.periodo || 'Idade Moderna';
-        document.getElementById('editImgPintor').value   = img.pintor || '';
-        document.getElementById('editImgAno').value      = img.ano || '';
-        document.getElementById('editImgUrl').value      = img.url || '';
-        document.getElementById('editImgContexto').value = img.contexto || '';
-        document.getElementById('modalEditarImagem').classList.add('open');
+        document.getElementById("editImgId").value = img.id;
+        document.getElementById("editImgTitulo").value = img.titulo || "";
+        document.getElementById("editImgPeriodo").value =
+          img.periodo || "Idade Moderna";
+        document.getElementById("editImgPintor").value = img.pintor || "";
+        document.getElementById("editImgAno").value = img.ano || "";
+        document.getElementById("editImgUrl").value = img.url || "";
+        document.getElementById("editImgContexto").value = img.contexto || "";
+        document.getElementById("modalEditarImagem").classList.add("open");
       }
 
       async function handleSalvarEdicaoImagem(e) {
         e.preventDefault();
-        const id = document.getElementById('editImgId').value;
+        const id = document.getElementById("editImgId").value;
         const payload = {
-          titulo:   document.getElementById('editImgTitulo').value.trim(),
-          periodo:  document.getElementById('editImgPeriodo').value,
-          pintor:   document.getElementById('editImgPintor').value.trim(),
-          ano:      document.getElementById('editImgAno').value.trim(),
-          url:      document.getElementById('editImgUrl').value.trim(),
-          contexto: document.getElementById('editImgContexto').value.trim(),
+          titulo: document.getElementById("editImgTitulo").value.trim(),
+          periodo: document.getElementById("editImgPeriodo").value,
+          pintor: document.getElementById("editImgPintor").value.trim(),
+          ano: document.getElementById("editImgAno").value.trim(),
+          url: document.getElementById("editImgUrl").value.trim(),
+          contexto: document.getElementById("editImgContexto").value.trim(),
         };
 
         try {
-          await fetchComTimeout(`${API_URL}/imagens/${id}`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            credentials: 'include',
-            body: JSON.stringify(payload)
-          }, 8000);
+          await fetchComTimeout(
+            `${API_URL}/imagens/${id}`,
+            {
+              method: "PATCH",
+              headers: getAuthHeaders(),
+              credentials: "include",
+              body: JSON.stringify(payload),
+            },
+            8000,
+          );
         } catch (_) {}
 
-        const idx = cacheImagens.findIndex(i => String(i.id) === String(id));
+        const idx = cacheImagens.findIndex((i) => String(i.id) === String(id));
         if (idx !== -1) {
           cacheImagens[idx] = { ...cacheImagens[idx], ...payload };
         }
 
-        mostrarToast('Obra atualizada com sucesso!');
-        fecharModal('modalEditarImagem');
+        mostrarToast("Obra atualizada com sucesso!");
+        fecharModal("modalEditarImagem");
         atualizarInterface();
       }
 
       // ─── MODALS ───
-      function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+      function fecharModal(id) {
+        document.getElementById(id).classList.remove("open");
+      }
 
       // ─── TOAST ───
-      function mostrarToast(msg, tipo = 'success') {
-        const container = document.getElementById('toastContainer');
+      function mostrarToast(msg, tipo = "success") {
+        const container = document.getElementById("toastContainer");
         if (!container) return;
-        const el = document.createElement('div');
-        el.className = `toast ${tipo === 'error' ? 'toast-error' : ''}`;
+        const el = document.createElement("div");
+        el.className = `toast ${tipo === "error" ? "toast-error" : ""}`;
         el.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            ${tipo === 'error'
-              ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
-              : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'}
+            ${
+              tipo === "error"
+                ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
+                : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+            }
           </svg>
           <span>${msg}</span>`;
         container.appendChild(el);
         setTimeout(() => {
-          el.style.opacity = '0';
-          el.style.transform = 'translateX(50px)';
+          el.style.opacity = "0";
+          el.style.transform = "translateX(50px)";
           setTimeout(() => el.remove(), 300);
         }, 3500);
       }
 
       // ─── INICIALIZAÇÃO ───
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener("DOMContentLoaded"adm.html, async () => {
         await verificarAutenticacao();
         await carregarDados();
       });
