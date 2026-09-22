@@ -1467,14 +1467,6 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label for="evImagem">URL da Imagem (opcional)</label>
-                  <input
-                    type="text"
-                    id="evImagem"
-                    placeholder="imagens/exemplo.webp ou https://..."
-                  />
-                </div>
-                <div class="form-group">
                   <label for="evAcontecimento"
                     >Descrição / O que aconteceu</label
                   >
@@ -1873,10 +1865,6 @@
             ><input type="text" id="editEvLugar" />
           </div>
           <div class="form-group">
-            <label for="editEvImagem">URL da Imagem</label
-            ><input type="text" id="editEvImagem" />
-          </div>
-          <div class="form-group">
             <label for="editEvAcontecimento">Descrição / O que aconteceu</label
             ><textarea id="editEvAcontecimento"></textarea>
           </div>
@@ -2126,7 +2114,6 @@
               acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
               oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
               oque_mudou: ev.oque_mudou || "",
-              imagem: ev.imagem || ev.imagemUrl || "",
               figuras_historicas: Array.isArray(ev.figuras_historicas)
                 ? ev.figuras_historicas
                     .map((f) => (typeof f === "object" ? f.nome : f))
@@ -2183,7 +2170,6 @@
               acontecimento: ev.acontecimento || ev.oque_aconteceu || "",
               oque_aconteceu: ev.oque_aconteceu || ev.acontecimento || "",
               oque_mudou: ev.oque_mudou || "",
-              imagem: ev.imagem || ev.imagemUrl || "",
               figuras_historicas: figurasStr,
               curiosidades: ev.curiosidades || [],
             });
@@ -2193,7 +2179,7 @@
         return eventosPlanos;
       }
 
-      function normalizarImagens(rawImgs, listaEventos) {
+      function normalizarImagens(rawImgs) {
         if (
           Array.isArray(rawImgs) &&
           rawImgs.length > 0 &&
@@ -2283,40 +2269,11 @@
           },
         ];
 
-        const imgsExtraidas = [];
-        const titulosVistos = new Set();
-
-        // Extrai imagens associadas aos eventos
-        listaEventos.forEach((ev, idx) => {
-          if (ev.imagem && !titulosVistos.has(ev.nome)) {
-            titulosVistos.add(ev.nome);
-            const imgUrl = ev.imagem.startsWith("http")
-              ? ev.imagem
-              : `imagens/${ev.imagem}`;
-            imgsExtraidas.push({
-              id: idx + 1,
-              titulo: ev.nome,
-              periodo: ev.periodo || "História",
-              pintor: ev.lugar || "Acervo Histórico",
-              ano: ev.ano || "S/D",
-              url: imgUrl,
-              contexto: ev.acontecimento || ev.oque_aconteceu || "",
-            });
-          }
-        });
-
-        // Complementa com o acervo ilustre se tiver poucas
-        acervoObras.forEach((ob, idx) => {
-          if (!titulosVistos.has(ob.titulo)) {
-            imgsExtraidas.push({
-              id: imgsExtraidas.length + idx + 1,
-              ...ob,
-              contexto: `Obra histórica representativa do período ${ob.periodo}.`,
-            });
-          }
-        });
-
-        return imgsExtraidas;
+        return acervoObras.map((ob, idx) => ({
+          id: idx + 1,
+          ...ob,
+          contexto: `Obra histórica representativa do período ${ob.periodo}.`,
+        }));
       }
 
       function normalizarUsuarios(rawUsers) {
@@ -2448,7 +2405,7 @@
           console.warn("API /imagens indisponível:", err.message);
         }
 
-        cacheImagens = normalizarImagens(rawImagens, cacheEventos);
+        cacheImagens = normalizarImagens(rawImagens);
 
         // 3. Tentar buscar /admin/usuarios da API
         try {
@@ -2688,7 +2645,6 @@
           ano_fim: document.getElementById("evAnoFim").value.trim(),
           lugar: document.getElementById("evLugar").value.trim(),
           figuras_historicas: document.getElementById("evFiguras").value.trim(),
-          imagem: document.getElementById("evImagem").value.trim(),
           acontecimento: document
             .getElementById("evAcontecimento")
             .value.trim(),
@@ -2762,7 +2718,6 @@
           ev.ano_inicio || ev.ano || "";
         document.getElementById("editEvAnoFim").value = ev.ano_fim || "";
         document.getElementById("editEvLugar").value = ev.lugar || "";
-        document.getElementById("editEvImagem").value = ev.imagem || "";
         document.getElementById("editEvAcontecimento").value =
           ev.acontecimento || ev.oque_aconteceu || "";
         document.getElementById("modalEditarEvento").classList.add("open");
@@ -2777,7 +2732,6 @@
           ano_inicio: document.getElementById("editEvAnoInicio").value.trim(),
           ano_fim: document.getElementById("editEvAnoFim").value.trim(),
           lugar: document.getElementById("editEvLugar").value.trim(),
-          imagem: document.getElementById("editEvImagem").value.trim(),
           acontecimento: document
             .getElementById("editEvAcontecimento")
             .value.trim(),
