@@ -96,7 +96,62 @@ function atualizarNavegacao(sessao) {
     }
 }
 
+function injetarEstiloBoasVindas() {
+    if (document.getElementById('boas-vindas-style')) return;
+    const style = document.createElement('style');
+    style.id = 'boas-vindas-style';
+    style.textContent = `
+        .boas-vindas-toast {
+            position: fixed;
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -10px);
+            background: rgba(20, 16, 12, 0.94);
+            color: #f5e6c8;
+            border: 1px solid rgba(201, 162, 39, 0.5);
+            padding: 1.1rem 2.4rem;
+            border-radius: 10px;
+            font-family: 'Fraunces', 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .boas-vindas-toast.visivel {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function mostrarBoasVindas() {
+    const nome = sessionStorage.getItem('chronohistory_welcome');
+    if (!nome) return;
+    sessionStorage.removeItem('chronohistory_welcome');
+
+    injetarEstiloBoasVindas();
+
+    const toast = document.createElement('div');
+    toast.className = 'boas-vindas-toast';
+    toast.textContent = `Olá, ${nome}!`;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('visivel'));
+
+    setTimeout(() => {
+        toast.classList.remove('visivel');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    }, 2800);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const sessao = await obterSessao();
     atualizarNavegacao(sessao);
+    mostrarBoasVindas();
 });
