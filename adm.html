@@ -2924,12 +2924,12 @@
 
       // ─── BOAS-VINDAS PÓS-LOGIN ───
       function mostrarBoasVindas() {
-        const nome = sessionStorage.getItem("chronohistory_welcome");
-        if (!nome) return;
+        const user = sessionStorage.getItem("chronohistory_welcome");
+        if (!user) return;
         sessionStorage.removeItem("chronohistory_welcome");
 
         const toast = document.createElement("div");
-        toast.textContent = `Olá, ${nome}!`;
+        toast.textContent = `Olá, ${user}!`;
         Object.assign(toast.style, {
           position: "fixed",
           top: "14%",

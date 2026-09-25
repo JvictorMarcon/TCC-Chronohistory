@@ -152,7 +152,7 @@
                                 role: role,
                                 fase_jogo: data.user?.fase_jogo || 1
                             }));
-                            sessionStorage.setItem('chronohistory_welcome', data.user?.nome || usernameInput);
+                            sessionStorage.setItem('chronohistory_welcome', data.user?.user || usernameInput);
 
                             loginSucesso = true;
                             window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
@@ -185,7 +185,7 @@
                         role: role,
                         fase_jogo: 1
                     }));
-                    sessionStorage.setItem('chronohistory_welcome', isAdm ? 'Administrador' : usernameInput);
+                    sessionStorage.setItem('chronohistory_welcome', usernameInput);
 
                     window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
                 }

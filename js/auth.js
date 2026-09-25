@@ -131,15 +131,15 @@ function injetarEstiloBoasVindas() {
 }
 
 function mostrarBoasVindas() {
-    const nome = sessionStorage.getItem('chronohistory_welcome');
-    if (!nome) return;
+    const user = sessionStorage.getItem('chronohistory_welcome');
+    if (!user) return;
     sessionStorage.removeItem('chronohistory_welcome');
 
     injetarEstiloBoasVindas();
 
     const toast = document.createElement('div');
     toast.className = 'boas-vindas-toast';
-    toast.textContent = `Olá, ${nome}!`;
+    toast.textContent = `Olá, ${user}!`;
     document.body.appendChild(toast);
 
     requestAnimationFrame(() => toast.classList.add('visivel'));
