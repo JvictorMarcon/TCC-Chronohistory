@@ -15,35 +15,35 @@
     <link rel="icon" type="image/png" href="logo.png" />
   </head>
   <body>
-    <!-- VÍDEO DE FUNDO -->
-    <div class="video-bg-container">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="vei.mp4" type="video/mp4" />
-      </video>
-      <div class="video-bg-overlay"></div>
-    </div>
+    <div class="auth-split">
+      <!-- IMAGEM DE FUNDO -->
+      <div class="auth-media">
+        <img src="Imagem_login.png" alt="" class="auth-media-img" />
+        <div class="auth-media-overlay"></div>
+      </div>
 
-    <!-- CONTAINER DO CADASTRO -->
-    <div class="login-wrapper">
-      <a
-        href="index.html"
-        class="back-button"
-        title="Voltar para a Página Inicial"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-        <span>Voltar</span>
-      </a>
-      <div class="login-card">
-        <div class="login-ornament">Novo Registro</div>
+      <!-- LADO DO FORMULÁRIO -->
+      <div class="auth-form-side">
+        <div class="login-wrapper">
+          <div class="login-card">
+            <a
+              href="index.html"
+              class="back-button"
+              title="Voltar para a Página Inicial"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+              <span>Voltar</span>
+            </a>
+            <div class="login-ornament">Novo Registro</div>
 
         <a href="index.html" class="login-logo">
           <img src="logo.png" alt="Chronohistory Logo" />
@@ -112,6 +112,35 @@
           </div>
 
           <div class="form-group">
+            <label for="email">
+              <svg
+                class="w-4 h-4 text-gold inline-block mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
+              </svg>
+              E-mail
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="seuemail@exemplo.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
             <label for="password">
               <svg
                 class="w-4 h-4 text-gold inline-block mr-1"
@@ -150,6 +179,8 @@
           Já possui uma conta?
           <a href="login.html" class="signup-link">Faça login aqui</a>
         </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -165,10 +196,11 @@
 
           const fullname = document.getElementById("fullname").value.trim();
           const username = document.getElementById("username").value.trim();
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value.trim();
           const btn = document.getElementById("submitBtn");
 
-          if (!fullname || !username || !password) {
+          if (!fullname || !username || !email || !password) {
             alert("Preencha todos os campos obrigatórios.");
             return;
           }
@@ -179,6 +211,7 @@
           const payload = JSON.stringify({
             nome: fullname,
             user: username,
+            email: email,
             password: password,
             perfil: "aluno",
           });
@@ -199,8 +232,8 @@
               const data = await response.json();
 
               if (response.ok && data.status === "success") {
-                alert(`Conta criada com sucesso! Bem-vindo(a), ${fullname}.`);
-                window.location.href = "login.html";
+                sessionStorage.setItem("chronohistory_welcome", username);
+                window.location.href = "linha-do-tempo.html";
                 return;
               } else if (response.status === 400) {
                 // Usuário duplicado ou erro de validação

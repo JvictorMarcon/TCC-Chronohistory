@@ -58,7 +58,21 @@ function atualizarNavegacao(sessao) {
     const autenticado = Boolean(userObj && (userObj.autenticado || userObj.user));
 
     const loginLinks = document.querySelectorAll('#navLoginBtn, #mobileLoginBtn');
+    const signupLinks = document.querySelectorAll('#navSignupBtn, #mobileSignupBtn');
     const linksRestritos = document.querySelectorAll('[data-requires-auth]');
+    const linksInicio = document.querySelectorAll(
+        '#navInicioBtn, #mobileInicioBtn, #desktopNav a[href*="index.html"], #mobileMenu a[href*="index.html"], a.nav-link[href="index.html"], a.mobile-link[href="index.html"]'
+    );
+
+    // Esconde o link "Início" para quem já está logado
+    linksInicio.forEach(link => {
+        link.style.display = autenticado ? 'none' : '';
+    });
+
+    // Esconde o botão "Criar conta" para quem já está logado
+    signupLinks.forEach(link => {
+        link.style.display = autenticado ? 'none' : '';
+    });
 
     // Exibe / oculta links da Galeria e Jogo
     linksRestritos.forEach(link => {
@@ -151,7 +165,11 @@ function mostrarBoasVindas() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Executa imediatamente com os dados locais salvos (sem esperar rede)
+    atualizarNavegacao(lerUsuarioLocal());
+    mostrarBoasVindas();
+
+    // Depois valida com o backend se disponível
     const sessao = await obterSessao();
     atualizarNavegacao(sessao);
-    mostrarBoasVindas();
 });

@@ -13,73 +13,75 @@
 </head>
 <body>
 
-    <!-- VÍDEO DE FUNDO -->
-    <div class="video-bg-container">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="vei.mp4" type="video/mp4">
-        </video>
-        <div class="video-bg-overlay"></div>
-    </div>
+    <div class="auth-split">
+        <!-- IMAGEM DE FUNDO -->
+        <div class="auth-media">
+            <img src="Imagem_login.png" alt="" class="auth-media-img">
+            <div class="auth-media-overlay"></div>
+        </div>
 
-    <!-- CONTAINER DO LOGIN -->
-    <div class="login-wrapper">
-        <a href="index.html" class="back-button" title="Voltar para a Página Inicial">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M15 18l-6-6 6-6"/>
-            </svg>
-            <span>Voltar</span>
-        </a>
-        <div class="login-card">
-
-            <div class="login-ornament">Portal de Acesso</div>
-
-            <a href="index.html" class="login-logo">
-                <img src="logo.png" alt="Chronohistory Logo">
-                <h1>CHRONOHISTORY</h1>
-                <span>Linha do Tempo</span>
-            </a>
-
-            <!-- FORMULÁRIO -->
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <label for="username">
-                        <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        <!-- LADO DO FORMULÁRIO -->
+        <div class="auth-form-side">
+            <div class="login-wrapper">
+                <div class="login-card">
+                    <a href="index.html" class="back-button" title="Voltar para a Página Inicial">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
                         </svg>
-                        Usuário ou E-mail
-                    </label>
-                    <input type="text" id="username" name="username" placeholder="Digite seu usuário" required autocomplete="username">
+                        <span>Voltar</span>
+                    </a>
+
+                    <div class="login-ornament">Portal de Acesso</div>
+
+                    <a href="index.html" class="login-logo">
+                        <img src="logo.png" alt="Chronohistory Logo">
+                        <h1>CHRONOHISTORY</h1>
+                        <span>Linha do Tempo</span>
+                    </a>
+
+                    <!-- FORMULÁRIO -->
+                    <form class="login-form" id="loginForm">
+                        <div class="form-group">
+                            <label for="username">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Usuário ou E-mail
+                            </label>
+                            <input type="text" id="username" name="username" placeholder="Digite seu usuário" required autocomplete="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                Senha
+                            </label>
+                            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" id="remember" name="remember">
+                                Lembrar de mim
+                            </label>
+
+                            <a href="#" class="forgot-link" onclick="alert('Entre em contato com o suporte para redefinir sua senha.'); return false;">Esqueceu a senha?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login" id="submitBtn">
+                            <span>Entrar</span>
+                        </button>
+                    </form>
+
+                    <!-- RODAPÉ DO CARD -->
+                    <div class="login-footer">
+                        Não possui uma conta? <a href="cadastro.html" class="signup-link">Cadastre-se aqui</a>
+                    </div>
+
                 </div>
-
-                <div class="form-group">
-                    <label for="password">
-                        <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                        Senha
-                    </label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-                </div>
-
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        Lembrar de mim
-                    </label>
-
-                    <a href="#" class="forgot-link" onclick="alert('Entre em contato com o suporte para redefinir sua senha.'); return false;">Esqueceu a senha?</a>
-                </div>
-
-                <button type="submit" class="btn-login" id="submitBtn">
-                    <span>Entrar</span>
-                </button>
-            </form>
-
-            <!-- RODAPÉ DO CARD -->
-            <div class="login-footer">
-                Não possui uma conta? <a href="cadastro.html" class="signup-link">Cadastre-se aqui</a>
             </div>
-
         </div>
     </div>
 
@@ -101,7 +103,7 @@
                     if (resp.ok) {
                         const sessao = await resp.json();
                         if (sessao.autenticado) {
-                            window.location.href = sessao.role === 'adm' ? 'adm.html' : 'index.html';
+                            window.location.href = sessao.role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
                             return;
                         }
                     }
@@ -155,7 +157,7 @@
                             sessionStorage.setItem('chronohistory_welcome', data.user?.user || usernameInput);
 
                             loginSucesso = true;
-                            window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
+                            window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
                             return;
                         } else if (response.status === 401) {
                             alert(data.message || 'Usuário ou senha incorretos.');
@@ -187,7 +189,7 @@
                     }));
                     sessionStorage.setItem('chronohistory_welcome', usernameInput);
 
-                    window.location.href = role === 'adm' ? 'adm.html' : 'index.html';
+                    window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
                 }
             });
         });

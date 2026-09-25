@@ -1,259 +1,491 @@
 <!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronohistory — Aprenda história de um jeito interativo</title>
+    <meta
+      name="description"
+      content="Chronohistory é uma plataforma educativa que transforma o estudo da história em uma jornada interativa: linha do tempo, galeria histórica e jogo educativo, tudo em um só lugar."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/chronohistory.css" />
+    <link rel="stylesheet" href="css/landing.css" />
+    <link rel="icon" type="image/png" href="logo.png" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chronohistory</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="css/chronohistory.css" />
-  <link rel="stylesheet" href="css/map.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link rel="icon" type="image/png" href="logo.png" />
-</head>
+  <body>
+    <!-- ═══ HEADER ═══ -->
+    <header>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Logo -->
+          <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <img
+              src="logo.png"
+              alt="Logo Chronohistory"
+              class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain"
+            />
+            <span class="logo-title">Chronohistory</span>
+          </div>
 
-<body>
-  <!-- ═══ HEADER ═══ -->
-  <header>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-4">
-      <div class="flex items-center justify-between gap-2">
-        <!-- Logo -->
-        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-          <img src="logo.png" alt="Logo Chronohistory" class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 object-contain" />
-          <span class="logo-title">Chronohistory</span>
+          <!-- Desktop Nav + Ações -->
+          <div class="hidden lg:flex items-center gap-8">
+            <nav class="flex items-center gap-8" id="desktopNav">
+              <a class="nav-link active" href="index.html" id="navInicioBtn">Início</a>
+              <a class="nav-link" href="linha-do-tempo.html">Linha do Tempo</a>
+              <a class="nav-link hidden" data-requires-auth href="galeria.html"
+                >Galeria Histórica</a
+              >
+              <a class="nav-link hidden" data-requires-auth href="jogo.html"
+                >Jogo Interativo</a
+              >
+            </nav>
+
+            <div class="landing-nav-actions">
+              <a class="landing-nav-login" href="login.html" id="navLoginBtn"
+                >Login</a
+              >
+              <a
+                class="landing-nav-signup"
+                href="cadastro.html"
+                id="navSignupBtn"
+                >Criar conta</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile Toggle -->
+          <button id="menuBtn" class="menu-toggle" aria-label="Menu">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden lg:flex items-center" id="desktopNav">
-          <a class="nav-link active" href="index.html">Linha do Tempo</a>
-          <a class="nav-link hidden" data-requires-auth href="galeria.html">Galeria Histórica</a>
-          <a class="nav-link hidden" data-requires-auth href="jogo.html">Jogo Interativo</a>
-          <a class="nav-link" href="login.html" id="navLoginBtn">Login</a>
+        <!-- Mobile Menu -->
+        <nav id="mobileMenu" class="mobile-menu">
+          <a class="mobile-link active" href="index.html" id="mobileInicioBtn">Início</a>
+          <a class="mobile-link" href="linha-do-tempo.html">Linha do Tempo</a>
+          <a class="mobile-link hidden" data-requires-auth href="galeria.html"
+            >Galeria Histórica</a
+          >
+          <a class="mobile-link hidden" data-requires-auth href="jogo.html"
+            >Jogo Interativo</a
+          >
+          <a class="mobile-link" href="login.html" id="mobileLoginBtn">Login</a>
+          <a class="mobile-link" href="cadastro.html" id="mobileSignupBtn"
+            >Criar conta</a
+          >
         </nav>
+      </div>
+    </header>
 
-        <!-- Mobile Toggle -->
-        <button id="menuBtn" class="menu-toggle" aria-label="Menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+    <!-- ═══ HERO ═══ -->
+    <section class="landing-hero" id="hero">
+      <div class="landing-hero-bg">
+        <div class="landing-stars"></div>
+        <div class="landing-orb"></div>
+        <div class="landing-orb landing-orb-blue"></div>
       </div>
 
-      <!-- Mobile Menu -->
-      <nav id="mobileMenu" class="mobile-menu">
-        <a class="mobile-link active" href="index.html">Linha do Tempo</a>
-        <a class="mobile-link hidden" data-requires-auth href="galeria.html">Galeria Histórica</a>
-        <a class="mobile-link hidden" data-requires-auth href="jogo.html">Jogo Interativo</a>
-        <a class="mobile-link" href="login.html" id="mobileLoginBtn">Login</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ═══ HERO SECTION (vídeo confinado aqui, não mais na página inteira) ═══ -->
-  <section class="hero-section" id="hero">
-    <div class="hero-video-bg">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="vei.mp4" type="video/mp4" />
-      </video>
-      <div class="hero-video-overlay"></div>
-    </div>
-
-    <div class="hero-pixel-border"></div>
-
-    <div class="hero-content">
-      <span class="hero-badge">Linha do tempo interativa</span>
-      <h1 class="hero-title">
-        Explore a <span class="hero-title-accent">história</span><br />
-        do mundo
-      </h1>
-      <p class="hero-desc">
-        Descubra eventos, civilizações e personagens que moldaram a humanidade
-        ao longo dos séculos.
-      </p>
-      <div class="hero-btns">
-        <a href="#timeline-section" class="hero-btn-primary">Ver linha do tempo</a>
-        <a href="jogo.html" class="hero-btn-secondary">Jogar agora</a>
+      <div class="landing-hero-content">
+        <img src="logo.png" alt="Logo Chronohistory" class="landing-hero-logo" />
+        <span class="hero-badge">Plataforma educativa de história</span>
+        <h1 class="landing-hero-title">
+          Viaje pela história<br />aprendendo na prática
+        </h1>
+        <p class="landing-hero-desc">
+          Uma linha do tempo interativa, uma galeria de obras e um jogo
+          educativo — tudo em um só lugar para transformar o estudo da história
+          em uma jornada que você não vai querer parar de explorar.
+        </p>
+        <div class="landing-hero-btns">
+          <a href="cadastro.html" class="landing-btn-primary"
+            >Criar conta grátis</a
+          >
+          <a href="linha-do-tempo.html" class="landing-btn-ghost"
+            >Ver linha do tempo →</a
+          >
+        </div>
       </div>
-    </div>
 
-    <div class="hero-scroll-arrow" onclick="
+      <div class="landing-chip landing-chip-left reveal">
+        <span class="landing-chip-label">Linha do tempo</span>
+        <span class="landing-chip-value">100+ eventos</span>
+      </div>
+      <div class="landing-chip landing-chip-right reveal">
+        <span class="landing-chip-label">Jornada completa</span>
+        <span class="landing-chip-value">5 períodos históricos</span>
+      </div>
+
+      <div
+        class="hero-scroll-arrow"
+        onclick="
           document
-            .getElementById('timeline-section')
+            .getElementById('recursos')
             .scrollIntoView({ behavior: 'smooth' })
-        ">
-      <div class="scroll-arrow-pixel">↓</div>
-      <div class="scroll-arrow-label">Rolar</div>
-    </div>
-  </section>
+        "
+      >
+        <div class="scroll-arrow-pixel">↓</div>
+        <div class="scroll-arrow-label">Rolar</div>
+      </div>
+    </section>
 
-  <!-- ═══ MAIN ═══ -->
-  <main id="timeline-section">
-    <!-- Filtros -->
-    <div class="filter-section">
-      <h2 class="filter-title">Filtrar jornada histórica</h2>
-      <div class="filter-grid">
-        <div class="lugar-filter-wrapper">
-          <label class="filter-label">Local do evento</label>
-          <div class="lugar-input-container">
-            <input type="text" id="lugarFilter" class="filter-input lugar-filter-input" list="lugarOptions"
-              placeholder="Digite um país, ex: Roma, Egito..." autocomplete="off" />
-            <span class="lugar-search-icon">⌕</span>
+    <!-- ═══ ESTATÍSTICAS ═══ -->
+    <section class="stats-band">
+      <div class="stat-item">
+        <div class="stat-value">100+</div>
+        <div class="stat-label">Eventos históricos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Períodos cobertos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">100+</div>
+        <div class="stat-label">Obras na galeria</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">Grátis</div>
+        <div class="stat-label">Para sempre</div>
+      </div>
+    </section>
+
+    <!-- ═══ RECURSOS ═══ -->
+    <section class="landing-section" id="recursos">
+      <span class="section-eyebrow reveal">O que você vai encontrar</span>
+      <h2 class="section-title reveal">Três formas de explorar a história</h2>
+      <p class="section-desc reveal">
+        Cada recurso foi pensado para um jeito diferente de aprender — leia,
+        veja e jogue, no seu ritmo.
+      </p>
+
+      <div class="features-grid">
+        <a href="linha-do-tempo.html" class="feature-card reveal">
+          <div class="feature-icon">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
           </div>
-          <datalist id="lugarOptions"></datalist>
-        </div>
-        <div>
-          <label class="filter-label">Ano ou época</label>
-          <input type="text" id="anoFilter" class="filter-input" placeholder="Ex: 476, 1500, 1945, 500 a.C." />
-        </div>
-        <div>
-          <label class="filter-label">Período histórico</label>
-          <select id="periodoFilter" class="filter-select"></select>
-        </div>
-      </div>
-      <div class="filter-actions">
-        <button id="limparFiltros" class="btn-clear">Limpar filtros</button>
-        <button id="aplicarFiltros" class="btn-apply">Aplicar filtros</button>
-      </div>
-    </div>
+          <h3 class="feature-title">Linha do Tempo Interativa</h3>
+          <p class="feature-desc">
+            Navegue por mais de 100 eventos, da Pré-História à Idade
+            Contemporânea, com filtros por local, ano e período histórico.
+          </p>
+          <span class="feature-link">Explorar linha do tempo →</span>
+        </a>
 
-    <!-- Linha do Tempo -->
-    <div class="mb-8">
-      <div class="timeline-header">
-        <h2 class="timeline-title">Linha do tempo cronológica</h2>
-      </div>
-
-      <div id="timelineContainer" class="timeline-container">
-        <div class="timeline-line"></div>
-        <div id="timelineItems" class="space-y-12">
-          <div class="text-center py-16">
-            <div class="loading-spinner mx-auto mb-4"></div>
-            <p>Carregando eventos históricos...</p>
+        <a href="galeria.html" class="feature-card is-locked reveal">
+          <span class="feature-badge-lock">Requer login</span>
+          <div class="feature-icon">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
           </div>
+          <h3 class="feature-title">Galeria Histórica</h3>
+          <p class="feature-desc">
+            Descubra obras de arte e imagens que retratam os momentos mais
+            marcantes de cada época, lado a lado com seu contexto histórico.
+          </p>
+          <span class="feature-link">Ver galeria →</span>
+        </a>
+
+        <a href="jogo.html" class="feature-card is-locked reveal">
+          <span class="feature-badge-lock">Requer login</span>
+          <div class="feature-icon">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              ></polygon>
+            </svg>
+          </div>
+          <h3 class="feature-title">Jogo Interativo</h3>
+          <p class="feature-desc">
+            Aprenda brincando: viva a história em primeira pessoa em um jogo
+            educativo pensado para fixar o conteúdo de um jeito divertido.
+          </p>
+          <span class="feature-link">Jogar agora →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══ COMO FUNCIONA ═══ -->
+    <section class="landing-section steps-section">
+      <span class="section-eyebrow reveal">Como funciona</span>
+      <h2 class="section-title reveal">Comece em três passos simples</h2>
+
+      <div class="steps-grid">
+        <div class="step-item reveal">
+          <span class="step-number"></span>
+          <h3 class="step-title">Crie sua conta</h3>
+          <p class="step-desc">
+            Cadastre-se gratuitamente em poucos segundos e comece sua jornada
+            pela história.
+          </p>
+        </div>
+        <div class="step-item reveal">
+          <span class="step-number"></span>
+          <h3 class="step-title">Explore os períodos</h3>
+          <p class="step-desc">
+            Percorra a linha do tempo, veja a galeria de obras e descubra
+            curiosidades de cada era.
+          </p>
+        </div>
+        <div class="step-item reveal">
+          <span class="step-number"></span>
+          <h3 class="step-title">Jogue e aprenda</h3>
+          <p class="step-desc">
+            Coloque seu conhecimento à prova no jogo interativo e fixe o que
+            aprendeu.
+          </p>
         </div>
       </div>
+    </section>
 
-      <div id="loadingIndicator" class="hidden text-center py-8">
-        <div class="loading-spinner mx-auto mb-4"></div>
-        <p class="text-[#EDD9A3] text-lg">
-          Carregando mais eventos históricos...
+    <!-- ═══ PLANOS ═══ -->
+    <section class="landing-section" id="planos">
+      <span class="section-eyebrow reveal">Planos</span>
+      <h2 class="section-title reveal">Escolha como quer aprender</h2>
+      <p class="section-desc reveal">
+        Comece de graça hoje mesmo. Os planos Pro e Max estão a caminho, com
+        recursos pensados para quem quer ir além.
+      </p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card reveal">
+          <span class="pricing-name">Grátis</span>
+          <div class="pricing-price">
+            <span class="pricing-price-value">R$ 0</span>
+            <span class="pricing-price-period">/ para sempre</span>
+          </div>
+          <p class="pricing-desc">
+            Tudo que você precisa para começar sua jornada pela história.
+          </p>
+          <ul class="pricing-features">
+            <li>Linha do tempo completa</li>
+            <li>Galeria histórica</li>
+            <li>Primeiro mundo do jogo</li>
+            <li>Acompanhamento de progresso</li>
+          </ul>
+          <a href="cadastro.html" class="pricing-btn pricing-btn-primary"
+            >Criar conta grátis</a
+          >
+        </div>
+
+        <div class="pricing-card pricing-card-highlight reveal">
+          <span class="pricing-badge">Mais popular</span>
+          <span class="pricing-name">Pro</span>
+          <div class="pricing-price">
+            <span class="pricing-price-value">Em breve</span>
+          </div>
+          <p class="pricing-desc">
+            Para quem quer recursos avançados de estudo e acompanhamento.
+          </p>
+          <ul class="pricing-features">
+            <li>Tudo do plano Grátis</li>
+            <li>Todos os mundos do jogo</li>
+          </ul>
+          <span class="pricing-btn pricing-btn-disabled">Em breve</span>
+        </div>
+
+        <div class="pricing-card reveal">
+          <span class="pricing-name">Max</span>
+          <div class="pricing-price">
+            <span class="pricing-price-value">Em breve</span>
+          </div>
+          <p class="pricing-desc">
+            Para escolas e professores que querem levar a turma inteira.
+          </p>
+          <ul class="pricing-features">
+            <li>Tudo do plano Pro</li>
+            <li>Painel para professores</li>
+            <li>Conteúdo exclusivo</li>
+          </ul>
+          <span class="pricing-btn pricing-btn-disabled">Em breve</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA FINAL ═══ -->
+    <section class="final-cta">
+      <div class="final-cta-box reveal">
+        <h2 class="final-cta-title">Pronto para começar sua jornada?</h2>
+        <p class="final-cta-desc">
+          Crie sua conta gratuita e tenha acesso à linha do tempo completa, à
+          galeria histórica e ao jogo interativo.
+        </p>
+        <div class="final-cta-btns">
+          <a href="cadastro.html" class="final-cta-primary"
+            >Criar conta grátis</a
+          >
+          <a href="login.html" class="final-cta-secondary">Já tenho conta</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+      <div class="max-w-7xl mx-auto text-center">
+        <span class="footer-brand"
+          >Chronohistory — desvendando o passado, construindo o futuro</span
+        >
+        <p class="footer-copy">
+          © 2026 · Uma jornada através do tempo com sabedoria ancestral
         </p>
       </div>
-    </div>
-  </main>
+    </footer>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer>
-    <div class="max-w-7xl mx-auto text-center">
-      <span class="footer-brand">Chronohistory — desvendando o passado, construindo o futuro</span>
-      <p class="footer-copy">
-        © 2026 · Uma jornada através do tempo com sabedoria ancestral
-      </p>
-    </div>
-  </footer>
+    <script src="js/auth.js"></script>
 
-  <!-- ═══ MODALS ═══ -->
-  <div id="saberMaisModal"
-    class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto transform transition-all">
-      <div class="modal-header flex justify-between items-center">
-        <h3 class="modal-title">Saber mais</h3>
-        <button id="fecharModal" class="modal-close">×</button>
-      </div>
-      <div id="modalContent" class="modal-body"></div>
-    </div>
-  </div>
+    <!-- ═══ MENU MOBILE, PARTÍCULAS & ANIMAÇÃO DE ENTRADA ═══ -->
+    <script>
+      (function () {
+        var particleSymbols = ["✦", "✧", "⬥", "⬦", "◆", "◇", "⚜"];
+        var colors = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
 
-  <div id="mapModal"
-    class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform transition-all">
-      <div class="modal-header flex justify-between items-center">
-        <h3 class="modal-title">Localização do evento</h3>
-        <button id="fecharMapModal" class="modal-close">×</button>
-      </div>
-      <div class="p-4">
-        <div id="map" style="height: 400px; border-radius: 4px"></div>
-      </div>
-    </div>
-  </div>
+        function createParticle() {
+          var p = document.createElement("div");
+          p.className = "medieval-particle";
+          p.textContent =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-20px";
+          p.style.color = colors[Math.floor(Math.random() * colors.length)];
+          p.style.animationDuration = 6 + Math.random() * 10 + "s";
+          p.style.animationDelay = Math.random() * 4 + "s";
+          p.style.fontSize = 8 + Math.random() * 10 + "px";
+          p.style.opacity = "0";
+          document.body.appendChild(p);
+          setTimeout(function () {
+            if (p.parentNode) p.parentNode.removeChild(p);
+          }, 18000);
+        }
 
-  <script src="js/auth.js"></script>
-  <script src="js/script.js"></script>
+        setInterval(createParticle, 2200);
+        for (var i = 0; i < 5; i++) {
+          setTimeout(createParticle, i * 400);
+        }
+      })();
 
-  <!-- ═══ MENU MOBILE & PARTÍCULAS MEDIEVAIS ═══ -->
-  <script>
-    (function () {
-      var particleSymbols = ["✦", "✧", "⬥", "⬦", "◆", "◇", "⚜"];
-      var colors = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
+      document.addEventListener("DOMContentLoaded", function () {
+        var header = document.querySelector("header");
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (window.scrollY > 40) {
+              header.classList.add("scrolled");
+            } else {
+              header.classList.remove("scrolled");
+            }
+          },
+          { passive: true },
+        );
 
-      function createParticle() {
-        var p = document.createElement("div");
-        p.className = "medieval-particle";
-        p.textContent =
-          particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-20px";
-        p.style.color = colors[Math.floor(Math.random() * colors.length)];
-        p.style.animationDuration = 6 + Math.random() * 10 + "s";
-        p.style.animationDelay = Math.random() * 4 + "s";
-        p.style.fontSize = 8 + Math.random() * 10 + "px";
-        p.style.opacity = "0";
-        document.body.appendChild(p);
-        setTimeout(function () {
-          if (p.parentNode) p.parentNode.removeChild(p);
-        }, 18000);
-      }
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
 
-      setInterval(createParticle, 2200);
-      for (var i = 0; i < 5; i++) {
-        setTimeout(createParticle, i * 400);
-      }
-    })();
-
-    document.addEventListener("DOMContentLoaded", function () {
-      var header = document.querySelector("header");
-      window.addEventListener(
-        "scroll",
-        function () {
-          if (window.scrollY > 40) {
-            header.classList.add("scrolled");
-          } else {
-            header.classList.remove("scrolled");
-          }
-        },
-        { passive: true },
-      );
-
-      const menuBtn = document.getElementById("menuBtn");
-      const mobileMenu = document.getElementById("mobileMenu");
-
-      if (menuBtn) {
-        menuBtn.addEventListener("click", function () {
-          mobileMenu.classList.toggle("open");
-        });
-      }
-
-      if (mobileMenu) {
-        mobileMenu.querySelectorAll("a").forEach(function (link) {
-          link.addEventListener("click", function () {
-            mobileMenu.classList.remove("open");
+        if (menuBtn) {
+          menuBtn.addEventListener("click", function () {
+            mobileMenu.classList.toggle("open");
           });
-        });
-      }
+        }
 
-      window.addEventListener("resize", function () {
-        if (window.innerWidth >= 1024 && mobileMenu) {
-          mobileMenu.classList.remove("open");
+        if (mobileMenu) {
+          mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+              mobileMenu.classList.remove("open");
+            });
+          });
+        }
+
+        window.addEventListener("resize", function () {
+          if (window.innerWidth >= 1024 && mobileMenu) {
+            mobileMenu.classList.remove("open");
+          }
+        });
+
+        // Revela seções suavemente conforme entram na tela
+        const reveals = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window && reveals.length) {
+          const observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry, i) {
+                if (entry.isIntersecting) {
+                  setTimeout(
+                    function () {
+                      entry.target.classList.add("is-visible");
+                    },
+                    (i % 3) * 90,
+                  );
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+          );
+          reveals.forEach(function (el) {
+            observer.observe(el);
+          });
+          // Rede de segurança: garante que nada fique permanentemente
+          // invisível (ex: rolagem instantânea que pula elementos sem o
+          // observer chegar a detectá-los).
+          setTimeout(function () {
+            reveals.forEach(function (el) {
+              el.classList.add("is-visible");
+            });
+          }, 2500);
+        } else {
+          reveals.forEach(function (el) {
+            el.classList.add("is-visible");
+          });
         }
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

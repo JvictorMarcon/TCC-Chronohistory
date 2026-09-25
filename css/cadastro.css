@@ -7,13 +7,58 @@
 
 body {
     font-family: 'Lato', sans-serif;
-    min-height: 100vh;
+    height: 100vh;
+    margin: 0;
+    background: #0a0910;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== LAYOUT SPLIT ===== */
+.auth-split {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ===== IMAGEM DE FUNDO (TELA CHEIA) ===== */
+.auth-media {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+.auth-media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.auth-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to left,
+        rgba(10, 9, 16, 0.75) 0%,
+        rgba(10, 9, 16, 0.3) 50%,
+        rgba(10, 9, 16, 0.1) 100%
+    );
+}
+
+/* ===== LADO DO FORMULÁRIO (CANTO DIREITO) ===== */
+.auth-form-side {
+    position: fixed;
+    top: 0;
+    right: 5rem;
+    height: 100vh;
+    width: 600px;
+    max-width: calc(100vw - 2rem);
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #1a1410;
-    position: relative;
-    overflow-x: hidden;
+    padding: 1rem;
 }
 
 /* ===== VÍDEO DE FUNDO ===== */
@@ -44,18 +89,24 @@ body {
 .back-button {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: #e8ddce;
+    gap: 0.4rem;
+    color: #5c4033;
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(92, 64, 51, 0.2);
+    padding-bottom: 0.75rem;
+    width: 100%;
 }
 
 .back-button:hover {
-    color: #d4c5a9;
-    transform: translateX(-4px);
+    color: #8b6914;
+    gap: 0.6rem;
+    border-bottom-color: rgba(139, 105, 20, 0.3);
 }
 
 /* ===== PARTÍCULAS MEDIEVAIS ===== */
@@ -94,20 +145,20 @@ body {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 480px;
-    padding: 1.5rem;
+    max-width: 580px;
+    padding: 0.5rem;
 }
 
 .login-card {
-    background: linear-gradient(145deg, #f5efe4, #e8ddce);
-    border-radius: 32px;
-    padding: 2.5rem 2rem 2.8rem;
+    background: linear-gradient(145deg, rgba(245, 239, 228, 0.97), rgba(232, 221, 206, 0.97));
+    border-radius: 24px;
+    padding: 2.2rem 2rem 2.4rem;
     box-shadow:
         0 30px 60px -15px rgba(0, 0, 0, 0.7),
         0 0 0 1px rgba(139, 105, 20, 0.25),
         inset 0 1px 0 rgba(255, 245, 220, 0.6);
     border: 1px solid rgba(212, 197, 169, 0.4);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(12px);
     transition: transform 0.3s ease;
 }
 
@@ -138,13 +189,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.2rem;
     text-decoration: none;
 }
 
 .login-logo img {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     object-fit: contain;
     margin-bottom: 0.5rem;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
@@ -152,7 +203,7 @@ body {
 
 .login-logo h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #5c4033;
     letter-spacing: 2px;
@@ -160,18 +211,18 @@ body {
 }
 
 .login-logo span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #8b7355;
-    letter-spacing: 6px;
+    letter-spacing: 5px;
     text-transform: uppercase;
     margin-top: 0.1rem;
 }
 
 /* ===== FORMULÁRIO ===== */
 .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.1rem;
 }
 
 .form-group {
@@ -195,13 +246,13 @@ body {
 }
 
 .form-group input {
-    padding: 0.9rem 1.2rem;
+    padding: 0.85rem 1.1rem;
     border: 2px solid #d4c5a9;
-    border-radius: 16px;
+    border-radius: 14px;
     background: rgba(255, 252, 245, 0.7);
     backdrop-filter: blur(4px);
     font-family: 'Lato', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #3d2c1e;
     transition: all 0.3s ease;
     outline: none;
@@ -220,14 +271,15 @@ body {
 
 /* ===== BOTÃO ===== */
 .btn-login {
+    grid-column: 1 / -1;
     margin-top: 0.5rem;
-    padding: 1rem;
+    padding: 0.95rem;
     border: none;
     border-radius: 60px;
     background: linear-gradient(135deg, #8b6914, #a68a56);
     color: #fff;
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 1.5px;
     cursor: pointer;
@@ -274,18 +326,29 @@ body {
 }
 
 /* ===== RESPONSIVO ===== */
-@media (max-width: 480px) {
+@media (max-width: 680px) {
+    .auth-form-side {
+        width: 100vw;
+        right: 0;
+        padding: 1rem;
+    }
+
+    .login-form {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+    }
+
     .login-card {
-        padding: 1.8rem 1.2rem 2rem;
+        padding: 1.5rem 1rem 1.8rem;
     }
 
     .login-logo h1 {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
 
     .login-logo img {
-        width: 60px;
-        height: 60px;
+        width: 48px;
+        height: 48px;
     }
 }
 

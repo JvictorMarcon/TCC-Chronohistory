@@ -29,13 +29,20 @@
           <span class="logo-title">Chronohistory</span>
         </div>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden lg:flex items-center" id="desktopNav">
-          <a class="nav-link" href="index.html">Linha do Tempo</a>
-          <a class="nav-link active" data-requires-auth href="galeria.html">Galeria Histórica</a>
-          <a class="nav-link" data-requires-auth href="jogo.html">Jogo Interativo</a>
-          <a class="nav-link" href="login.html" id="navLoginBtn">Login</a>
-        </nav>
+        <!-- Desktop Nav + Ações -->
+        <div class="hidden lg:flex items-center gap-8">
+          <nav class="flex items-center gap-8" id="desktopNav">
+            <a class="nav-link" href="index.html" id="navInicioBtn">Início</a>
+            <a class="nav-link" href="linha-do-tempo.html">Linha do Tempo</a>
+            <a class="nav-link active" data-requires-auth href="galeria.html">Galeria Histórica</a>
+            <a class="nav-link" data-requires-auth href="jogo.html">Jogo Interativo</a>
+          </nav>
+
+          <div class="landing-nav-actions">
+            <a class="landing-nav-login" href="login.html" id="navLoginBtn">Login</a>
+            <a class="landing-nav-signup" href="cadastro.html" id="navSignupBtn">Criar conta</a>
+          </div>
+        </div>
 
         <!-- Mobile Toggle -->
         <button id="menuBtn" class="menu-toggle" aria-label="Menu">
@@ -50,10 +57,12 @@
 
       <!-- Mobile Menu -->
       <nav id="mobileMenu" class="mobile-menu">
-        <a class="mobile-link" href="index.html">Linha do Tempo</a>
+        <a class="mobile-link" href="index.html" id="mobileInicioBtn">Início</a>
+        <a class="mobile-link" href="linha-do-tempo.html">Linha do Tempo</a>
         <a class="mobile-link active" data-requires-auth href="galeria.html">Galeria Histórica</a>
         <a class="mobile-link" data-requires-auth href="jogo.html">Jogo Interativo</a>
         <a class="mobile-link" href="login.html" id="mobileLoginBtn">Login</a>
+        <a class="mobile-link" href="cadastro.html" id="mobileSignupBtn">Criar conta</a>
       </nav>
     </div>
   </header>
