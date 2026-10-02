@@ -111,16 +111,17 @@
     filter: drop-shadow(0 4px 16px rgba(201, 162, 39, 0.4));
 }
 
-/* Personagem do jogo: só aparece em telas largas, onde sobra margem
-   dos dois lados do conteúdo central sem disputar espaço com ele. */
+/* Personagem do jogo: encostado no canto inferior esquerdo, parcialmente
+   atrás do chip "Linha do tempo" e do conteúdo central (z-index menor que
+   os dois) — um elemento de fundo, não um ícone separado flutuando na
+   margem. Só aparece em telas largas, onde cabe sem virar bagunça. */
 .landing-hero-character {
     display: none;
     position: absolute;
-    left: clamp(0.5rem, 3vw, 3rem);
-    top: 50%;
-    transform: translateY(-54%);
+    left: clamp(-4rem, -3vw, -1rem);
+    bottom: 0;
     z-index: 1;
-    width: clamp(220px, 19vw, 380px);
+    width: clamp(260px, 24vw, 460px);
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
     pointer-events: none;
 }
