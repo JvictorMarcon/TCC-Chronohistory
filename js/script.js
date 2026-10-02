@@ -17,6 +17,7 @@ let itemsPerLoad = 8;
 let todosEventosCarregados = false;
 let totalEventosCarregados = 0;
 let sessaoAtual = null; // { user, role, nome, fase_jogo }
+let enriquecimentoPorNome = {}; // nome normalizado -> dados extras do periodos.json
 
 // ============================================
 // Verificar Sessão (fonte de verdade: servidor)
@@ -68,6 +69,9 @@ async function carregarDados() {
         'periodos.json'
     ];
 
+    // Carrega em paralelo — o enriquecimento não bloqueia a timeline
+    const enriquecimentoPromise = carregarEnriquecimento();
+
     for (const url of endpoints) {
         try {
             const response = await fetch(url);
@@ -102,9 +106,60 @@ async function carregarDados() {
         else todosPeriodos = [data];
     }
 
+    await enriquecimentoPromise;
     processarEventos();
     preencherFiltros();
     aplicarFiltros();
+}
+
+function normalizarNomeEvento(nome) {
+    return String(nome || '')
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .trim();
+}
+
+// ============================================
+// Enriquecimento — a API (Supabase) só traz os campos
+// básicos de cada evento; "o que mudou", "informações
+// adicionais" e o papel de cada figura histórica só existem
+// no periodos.json local. Carrega esse arquivo sempre (não só
+// como fallback de falha) e casa por nome do evento para
+// completar o que a API deixou de fora.
+// ============================================
+async function carregarEnriquecimento() {
+    try {
+        const resp = await fetch('periodos.json');
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const periodos = Array.isArray(data) ? data : (data.periodos || data.data || []);
+
+        enriquecimentoPorNome = {};
+        periodos.forEach(periodo => {
+            // legado/curiosidades/caracteristicas_principais são do período
+            // inteiro (gerados uma única vez por IA), não do evento — todo
+            // evento do mesmo período compartilha esses três campos.
+            const legadoPeriodo = periodo.legado || '';
+            const curiosidadesPeriodo = periodo.curiosidades || [];
+            const caracteristicasPeriodo = periodo.caracteristicas_principais || [];
+
+            (periodo.acontecimentos || []).forEach(evento => {
+                const chave = normalizarNomeEvento(evento.nome);
+                if (!chave) return;
+                enriquecimentoPorNome[chave] = {
+                    oque_mudou: evento.oque_mudou || '',
+                    informacoes_adicionais: evento.informacoes_adicionais || '',
+                    figuras_principais: evento.figuras_principais || [],
+                    legado: legadoPeriodo,
+                    curiosidades: curiosidadesPeriodo,
+                    caracteristicas_principais: caracteristicasPeriodo
+                };
+            });
+        });
+    } catch (err) {
+        console.warn('Não foi possível carregar o enriquecimento de periodos.json:', err);
+    }
 }
 
 function formatarUrlImagem(urlOuNome, periodoNome) {
@@ -186,6 +241,20 @@ function processarEventos() {
                     ? item.figuras_historicas
                     : JSON.parse(item.figuras_historicas || '[]');
             } catch (_) {}
+            figuras = figuras.map(f => typeof f === 'string' ? { nome: f } : f);
+
+            // A API só traz os dados básicos — completa com o que existe no
+            // periodos.json local pra esse mesmo evento (por nome)
+            const extra = enriquecimentoPorNome[normalizarNomeEvento(item.nome)] || {};
+            // Se a API não trouxe o "papel" de cada figura (só o nome), usa
+            // o periodos.json pra preencher essa descrição
+            const figurasComPapel = figuras.map(f => {
+                if (f.papel) return f;
+                const match = (extra.figuras_principais || []).find(
+                    fp => normalizarNomeEvento(fp.nome) === normalizarNomeEvento(f.nome)
+                );
+                return match ? { ...f, papel: match.papel } : f;
+            });
 
             todosEventos.push({
                 id: item.id || `${periodoIndex}`,
@@ -195,15 +264,15 @@ function processarEventos() {
                 anoNumerico,
                 lugar: item.lugar || 'Regiões diversas',
                 oque_aconteceu: item.acontecimento || item.oque_aconteceu || '',
-                oque_mudou: item.oque_mudou || '',
+                oque_mudou: item.oque_mudou || extra.oque_mudou || '',
                 periodoNome: item.periodo || 'Período histórico',
                 periodoId: item.id || periodoIndex,
                 periodoResumo: '',
-                caracteristicas_principais: [],
-                legado: '',
-                curiosidades: [],
-                figuras_principais: figuras.map(f => typeof f === 'string' ? { nome: f } : f),
-                informacoes_adicionais: '',
+                caracteristicas_principais: extra.caracteristicas_principais || [],
+                legado: extra.legado || '',
+                curiosidades: extra.curiosidades || [],
+                figuras_principais: figurasComPapel,
+                informacoes_adicionais: item.informacoes_adicionais || extra.informacoes_adicionais || '',
                 imagem: formatarUrlImagem(item.imagemUrl || item.imagem, item.periodo || 'História'),
                 globalId,
                 periodoOriginal: item

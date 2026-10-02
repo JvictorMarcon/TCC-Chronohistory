@@ -40,16 +40,22 @@ async function obterSessao() {
 
 async function fazerLogout(event) {
     if (event) event.preventDefault();
-    if (confirm('Deseja realmente encerrar a sessão e deslogar?')) {
-        try {
-            await fetch(`${AUTH_API_BASE}/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-        } catch (_) {}
-        limparSessaoLocal();
-        window.location.href = resolverCaminhoLogin();
+
+    const link = event ? event.currentTarget : null;
+    if (link) {
+        link.textContent = 'Saindo...';
+        link.style.pointerEvents = 'none';
+        link.style.opacity = '0.7';
     }
+
+    try {
+        await fetch(`${AUTH_API_BASE}/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (_) {}
+    limparSessaoLocal();
+    window.location.href = resolverCaminhoLogin();
 }
 
 function atualizarNavegacao(sessao) {
