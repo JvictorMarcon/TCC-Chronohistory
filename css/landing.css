@@ -721,7 +721,7 @@
     position: relative;
     overflow: hidden;
     background-image:
-        linear-gradient(135deg, rgba(166, 138, 86, 0.82), rgba(201, 162, 39, 0.82)),
+        linear-gradient(180deg, rgba(10, 9, 16, 0.5), rgba(10, 9, 16, 0.88)),
         url('../assets/herois-vortice.webp');
     background-size: cover;
     background-position: center 30%;
@@ -736,7 +736,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.16) 0%, transparent 55%);
+    background-image: radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 55%);
     pointer-events: none;
 }
 
@@ -744,7 +744,7 @@
     font-family: 'Fraunces', serif;
     font-weight: 600;
     font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-    color: var(--ink);
+    color: var(--paper);
     margin-bottom: 0.75rem;
     position: relative;
 }
@@ -752,7 +752,7 @@
 .final-cta-desc {
     font-family: 'Inter', sans-serif;
     font-size: 0.98rem;
-    color: rgba(26, 20, 16, 0.78);
+    color: rgba(245, 230, 200, 0.8);
     max-width: 480px;
     margin: 0 auto 1.75rem;
     line-height: 1.65;
@@ -772,15 +772,15 @@
     font-size: 0.88rem;
     font-weight: 700;
     padding: 13px 28px;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--paper);
+    color: var(--ink);
     text-decoration: none;
     border-radius: 2px;
     transition: all 0.2s ease;
 }
 
 .final-cta-primary:hover {
-    background: #000;
+    background: #fff;
     transform: translateY(-1px);
 }
 
@@ -790,15 +790,15 @@
     font-weight: 600;
     padding: 13px 28px;
     background: transparent;
-    color: var(--ink);
-    border: 1px solid rgba(26, 20, 16, 0.4);
+    color: var(--paper);
+    border: 1px solid rgba(245, 230, 200, 0.4);
     text-decoration: none;
     border-radius: 2px;
     transition: all 0.2s ease;
 }
 
 .final-cta-secondary:hover {
-    border-color: var(--ink);
+    border-color: var(--paper);
     transform: translateY(-1px);
 }
 
