@@ -89,28 +89,10 @@
     <!-- SCRIPTS DE AUTENTICAÇÃO -->
     <script>
         const API_URL = 'https://backend-tcc-cronohistory.onrender.com';
-        const API_URL_LOCAL = 'http://localhost:5000';
 
-        // Verificar se já há sessão ativa ao abrir a página
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Se viemos de um logout, não fazer auto-redirect (evita loop)
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('logout') === '1') return;
-
-            const urlsTentar = [API_URL, API_URL_LOCAL];
-            for (const url of urlsTentar) {
-                try {
-                    const resp = await fetch(`${url}/me`, { credentials: 'include' });
-                    if (resp.ok) {
-                        const sessao = await resp.json();
-                        if (sessao.autenticado) {
-                            window.location.href = sessao.role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
-                            return;
-                        }
-                    }
-                } catch (_) {}
-            }
-
+        document.addEventListener('DOMContentLoaded', () => {
+            // O formulário precisa ficar pronto para uso imediatamente,
+            // independente do resultado da checagem de sessão abaixo.
             const form = document.getElementById('loginForm');
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -127,72 +109,60 @@
                 btn.disabled = true;
                 btn.innerHTML = '<span>Verificando...</span>';
 
-                let loginSucesso = false;
-                const urlsLogin = [API_URL, API_URL_LOCAL];
+                try {
+                    const response = await fetch(`${API_URL}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            user: usernameInput,
+                            password: passwordInput
+                        })
+                    });
 
-                for (const url of urlsLogin) {
-                    try {
-                        const response = await fetch(`${url}/login`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            credentials: 'include',
-                            body: JSON.stringify({
-                                user: usernameInput,
-                                password: passwordInput
-                            })
-                        });
+                    const data = await response.json();
 
-                        const data = await response.json();
+                    if (response.ok && (data.status === 'success' || data.token)) {
+                        const role = (data.role || data.user?.role || 'aluno').toLowerCase();
 
-                        if (response.ok && (data.status === 'success' || data.token)) {
-                            const role = (data.role || data.user?.role || 'aluno').toLowerCase();
-                            
-                            // Salva no localStorage como fallback visual
-                            localStorage.setItem('chronohistory_token', data.token || 'sessao_ativa');
-                            localStorage.setItem('chronohistory_user', JSON.stringify({
-                                user: data.user?.user || usernameInput,
-                                nome: data.user?.nome || usernameInput,
-                                role: role,
-                                fase_jogo: data.user?.fase_jogo || 1
-                            }));
-                            sessionStorage.setItem('chronohistory_welcome', data.user?.user || usernameInput);
+                        // Salva no localStorage como fallback visual (sessão real fica no cookie/JWT do backend)
+                        localStorage.setItem('chronohistory_token', data.token || 'sessao_ativa');
+                        localStorage.setItem('chronohistory_user', JSON.stringify({
+                            user: data.user?.user || usernameInput,
+                            nome: data.user?.nome || usernameInput,
+                            role: role,
+                            fase_jogo: data.user?.fase_jogo || 1
+                        }));
+                        sessionStorage.setItem('chronohistory_welcome', data.user?.user || usernameInput);
 
-                            loginSucesso = true;
-                            window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
-                            return;
-                        } else if (response.status === 401) {
-                            alert(data.message || 'Usuário ou senha incorretos.');
-                            btn.disabled = false;
-                            btn.innerHTML = '<span>Entrar</span>';
-                            return;
-                        }
-                    } catch (error) {
-                        console.warn(`Tentativa com ${url} falhou:`, error);
+                        window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
+                        return;
+                    } else if (response.status === 401) {
+                        alert(data.message || 'Usuário ou senha incorretos.');
+                    } else {
+                        alert(data.message || 'Não foi possível fazer login. Tente novamente.');
                     }
+                } catch (error) {
+                    console.warn('Falha ao conectar com o servidor:', error);
+                    alert('Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.');
                 }
 
-                // Se chegou aqui, nenhuma URL funcionou - tenta fallback local
-                if (!loginSucesso) {
-                    console.warn('Backend indisponível. Login local ativado.');
-                    const isAdm = (
-                        usernameInput.toLowerCase() === 'admin' ||
-                        usernameInput.toLowerCase() === 'adm' ||
-                        usernameInput === 'CR0N0H1ST0R7'
-                    );
-                    const role = isAdm ? 'adm' : 'aluno';
-
-                    localStorage.setItem('chronohistory_token', 'local_token_' + Date.now());
-                    localStorage.setItem('chronohistory_user', JSON.stringify({
-                        user: usernameInput,
-                        nome: isAdm ? 'Administrador' : usernameInput,
-                        role: role,
-                        fase_jogo: 1
-                    }));
-                    sessionStorage.setItem('chronohistory_welcome', usernameInput);
-
-                    window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
-                }
+                btn.disabled = false;
+                btn.innerHTML = '<span>Entrar</span>';
             });
+
+            // Verificar se já há sessão ativa ao abrir a página (não bloqueia o formulário acima)
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('logout') === '1') return; // evita loop de redirect logo após sair
+
+            fetch(`${API_URL}/me`, { credentials: 'include' })
+                .then(resp => resp.ok ? resp.json() : null)
+                .then(sessao => {
+                    if (sessao && sessao.autenticado) {
+                        window.location.href = sessao.role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
+                    }
+                })
+                .catch(() => {});
         });
     </script>
 </body>

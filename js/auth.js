@@ -113,6 +113,14 @@ function atualizarNavegacao(sessao) {
     if (!autenticado && paginaRestrita) {
         alert('Acesso restrito! Faça login para continuar.');
         window.location.href = resolverCaminhoLogin();
+        return;
+    }
+
+    // Quem já está logado não fica na landing page (index.html) — ela é a
+    // porta de entrada pra quem ainda não tem conta. Manda direto pro app.
+    const naIndex = path.endsWith('/index.html') || path === '/' || path.endsWith('/');
+    if (autenticado && naIndex) {
+        window.location.href = (userObj.role === 'adm') ? 'adm.html' : 'linha-do-tempo.html';
     }
 }
 

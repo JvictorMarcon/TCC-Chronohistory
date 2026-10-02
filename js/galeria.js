@@ -3,7 +3,6 @@
 // ============================================
 
 const API_BASE = 'https://backend-tcc-cronohistory.onrender.com';
-const API_LOCAL = 'http://localhost:5000';
 
 // ── Estado Global ─────────────────────────
 let todosEventos = [];
@@ -385,28 +384,13 @@ function matchFiltro(evento, filtro) {
     return keywords.some(kw => periodoLower.includes(kw));
 }
 
-// ── Verificação de Autenticação ────────────
-function verificarAutenticacao() {
-    try {
-        const token = localStorage.getItem('chronohistory_token');
-        const user = localStorage.getItem('chronohistory_user');
-        if (!token && !user) {
-            alert('Acesso restrito! Você precisa estar logado para acessar a Galeria Histórica de Imagens.');
-            window.location.href = 'login.html';
-            return false;
-        }
-        return true;
-    } catch (e) {
-        return true;
-    }
-}
-
 // ============================================
 // Inicialização
 // ============================================
+// A checagem de acesso restrito já é feita centralmente por auth.js
+// (carregado antes deste script em galeria.html); duplicar aqui apenas
+// disparava um segundo alerta de "acesso restrito" para o mesmo caso.
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!verificarAutenticacao()) return;
-
     // Inicia imediatamente com o acervo base garantindo exibição instantânea
     todosEventos = ACERVO_HISTORICO_DEFAULT.map(e => ({
         ...e,
@@ -425,27 +409,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================
 async function carregarDados() {
     // 1. Tenta buscar imagens cadastradas na API Supabase /imagens
-    const endpointsImagens = [
-        `${API_BASE}/imagens`,
-        `${API_LOCAL}/imagens`
-    ];
-
     let imagensBanco = [];
-    for (const url of endpointsImagens) {
-        try {
-            const resp = await fetch(url);
-            if (resp.ok) {
-                const data = await resp.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    imagensBanco = data;
-                    break;
-                } else if (data && Array.isArray(data.data) && data.data.length > 0) {
-                    imagensBanco = data.data;
-                    break;
-                }
+    try {
+        const resp = await fetch(`${API_BASE}/imagens`);
+        if (resp.ok) {
+            const data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+                imagensBanco = data;
+            } else if (data && Array.isArray(data.data) && data.data.length > 0) {
+                imagensBanco = data.data;
             }
-        } catch (_) {}
-    }
+        }
+    } catch (_) {}
 
     if (imagensBanco.length > 0) {
         todosEventos = imagensBanco.map((img, index) => {

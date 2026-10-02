@@ -1297,8 +1297,10 @@
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        Backend offline ou em cold-start (Render.com). Tentando reconectar
-        automaticamente…
+        <span id="offlineBannerText"
+          >Backend offline ou em cold-start (Render.com). Tentando reconectar
+          automaticamente…</span
+        >
         <button class="retry-btn" onclick="carregarDados(true)">
           Tentar agora
         </button>
@@ -1971,15 +1973,30 @@
         const dot = document.getElementById("dotIndicator");
         const text = document.getElementById("statusText");
         const banner = document.getElementById("offlineBanner");
+        const bannerText = document.getElementById("offlineBannerText");
         if (!dot || !text || !banner) return;
 
         dot.className = "dot";
         if (state === "online") {
           text.textContent = customLabel || "Online (Render)";
           banner.classList.remove("visible");
+        } else if (state === "cached") {
+          // Nenhuma chamada ao backend teve sucesso: os dados exibidos vêm
+          // de um arquivo local (periodos.json), não do servidor.
+          dot.classList.add("loading");
+          text.textContent = customLabel || "Offline (dados em cache)";
+          if (bannerText) {
+            bannerText.textContent =
+              "Sem conexão com o backend (Render.com). Exibindo dados salvos localmente — edições não serão sincronizadas até a conexão voltar.";
+          }
+          banner.classList.add("visible");
         } else if (state === "offline") {
           dot.classList.add("offline");
           text.textContent = customLabel || "Offline";
+          if (bannerText) {
+            bannerText.textContent =
+              "Backend offline ou em cold-start (Render.com). Tentando reconectar automaticamente…";
+          }
           banner.classList.add("visible");
         } else {
           dot.classList.add("loading");
@@ -2428,12 +2445,15 @@
         cacheUsuarios = normalizarUsuarios(rawUsuarios);
 
         // Atualização da UI
-        if (cacheEventos.length > 0) {
-          const statusLabel = conectouRender
-            ? "Online (Render.com)"
-            : "Online (Sincronizado)";
-          setStatus("online", statusLabel);
+        if (conectouRender) {
+          setStatus("online", "Online (Render.com)");
           atualizarInterface();
+        } else if (cacheEventos.length > 0) {
+          setStatus("cached");
+          atualizarInterface();
+          if (!manual) {
+            retryTimer = setTimeout(() => carregarDados(), 12000);
+          }
         } else {
           setStatus("offline");
           if (!manual) {

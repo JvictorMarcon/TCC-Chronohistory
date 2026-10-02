@@ -188,7 +188,6 @@
     <!-- SCRIPTS DE REGISTRO -->
     <script>
       const API_URL = "https://backend-tcc-cronohistory.onrender.com";
-      const API_URL_LOCAL = "http://localhost:5000";
 
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("registerForm");
@@ -217,48 +216,39 @@
             perfil: "aluno",
           });
 
-          // Tenta primeiro a URL de produção, depois local
-          const urlsTentar = [API_URL, API_URL_LOCAL];
-          let erro = null;
+          try {
+            const response = await fetch(`${API_URL}/cadastro`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: payload,
+            });
 
-          for (const url of urlsTentar) {
-            try {
-              const response = await fetch(`${url}/cadastro`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: payload,
-              });
+            const data = await response.json();
 
-              const data = await response.json();
-
-              if (response.ok && data.status === "success") {
-                sessionStorage.setItem("chronohistory_welcome", username);
-                window.location.href = "linha-do-tempo.html";
-                return;
-              } else if (response.status === 400) {
-                // Usuário duplicado ou erro de validação
-                alert(
-                  data.message ||
-                    "Erro ao realizar o cadastro. Tente outro nome de usuário.",
-                );
-                btn.disabled = false;
-                btn.innerHTML = "<span>Cadastrar-se</span>";
-                return;
-              }
-              // Se chegou aqui, houve um erro mas pode tentar próxima URL
-              erro = data.message || "Erro no servidor";
-            } catch (error) {
-              erro = error.message;
-              // Continua para próxima URL
+            if (response.ok && data.status === "success") {
+              sessionStorage.setItem("chronohistory_welcome", username);
+              window.location.href = "linha-do-tempo.html";
+              return;
+            } else if (response.status === 400) {
+              // Usuário ou e-mail duplicado, ou erro de validação
+              alert(
+                data.message ||
+                  "Erro ao realizar o cadastro. Tente outro nome de usuário.",
+              );
+            } else {
+              console.error("Erro de cadastro:", data.message || response.status);
+              alert(
+                "Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.",
+              );
             }
+          } catch (error) {
+            console.error("Erro de cadastro:", error.message);
+            alert(
+              "Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.",
+            );
           }
 
-          // Se chegou aqui, todas as URLs falharam
-          console.error("Erro de cadastro:", erro);
-          alert(
-            "Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.",
-          );
           btn.disabled = false;
           btn.innerHTML = "<span>Cadastrar-se</span>";
         });
