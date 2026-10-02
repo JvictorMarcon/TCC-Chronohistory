@@ -328,6 +328,28 @@ body::before {
     gap: 0.4rem;
 }
 
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.form-row .form-group {
+    min-width: 0;
+}
+
+.form-row .form-group input {
+    width: 100%;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+}
+
+@media (max-width: 420px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
 .form-group label {
     font-size: 0.85rem;
     font-weight: 600;
