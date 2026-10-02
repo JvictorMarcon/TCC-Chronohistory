@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronohistory — Esqueci minha senha</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/medieval.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="preload" href="Imagem_login.webp" as="image" type="image/webp">
+</head>
+<body>
+
+    <div class="auth-split">
+        <!-- IMAGEM DE FUNDO -->
+        <div class="auth-media">
+            <img src="Imagem_login.webp" alt="" class="auth-media-img" loading="eager" decoding="async">
+            <div class="auth-media-overlay"></div>
+        </div>
+
+        <!-- LADO DO FORMULÁRIO -->
+        <div class="auth-form-side">
+            <div class="login-wrapper">
+                <div class="login-card">
+                    <a href="login.html" class="back-button" title="Voltar para o login">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                        <span>Voltar</span>
+                    </a>
+
+                    <div class="login-ornament">Recuperar acesso</div>
+
+                    <a href="index.html" class="login-logo">
+                        <img src="logo.png" alt="Chronohistory Logo">
+                        <h1>CHRONOHISTORY</h1>
+                        <span>Linha do Tempo</span>
+                    </a>
+
+                    <!-- ETAPA 1: PEDIR O CÓDIGO -->
+                    <form class="login-form" id="pedirCodigoForm">
+                        <p class="form-hint">Informe o e-mail da sua conta. Vamos te mandar um código de 6 dígitos para criar uma nova senha.</p>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                E-mail cadastrado
+                            </label>
+                            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                        </div>
+
+                        <button type="submit" class="btn-login" id="pedirCodigoBtn">
+                            <span>Enviar código</span>
+                        </button>
+                    </form>
+
+                    <!-- ETAPA 2: DIGITAR CÓDIGO + NOVA SENHA (oculta até o e-mail ser enviado) -->
+                    <form class="login-form" id="redefinirForm" style="display:none;">
+                        <div class="form-feedback success" id="emailEnviadoMsg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Se esse e-mail estiver cadastrado, um código chegou para <b id="emailConfirmado"></b>. Confira também a caixa de spam.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codigo">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Código de 6 dígitos
+                            </label>
+                            <input type="text" id="codigo" name="codigo" placeholder="000000" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" style="letter-spacing:6px; font-size:1.2rem; text-align:center;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                Nova senha
+                            </label>
+                            <input type="password" id="password" name="password" placeholder="Mínimo de 6 caracteres" required autocomplete="new-password" minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmarSenha">
+                                <svg class="w-4 h-4 text-gold inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                Confirmar nova senha
+                            </label>
+                            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Repita a nova senha" required autocomplete="new-password" minlength="6">
+                        </div>
+
+                        <button type="submit" class="btn-login" id="redefinirBtn">
+                            <span>Redefinir senha</span>
+                        </button>
+
+                        <button type="button" id="reenviarBtn" style="background:none;border:none;color:#8b6914;font-size:0.82rem;cursor:pointer;text-decoration:underline;padding:0;">
+                            Não recebeu? Enviar novamente
+                        </button>
+                    </form>
+
+                    <!-- ETAPA 3: SUCESSO -->
+                    <div id="sucesso" style="display:none;">
+                        <div class="form-feedback success">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Senha redefinida com sucesso! Redirecionando para o login...</span>
+                        </div>
+                    </div>
+
+                    <!-- RODAPÉ DO CARD -->
+                    <div class="login-footer">
+                        Lembrou a senha? <a href="login.html" class="signup-link">Fazer login</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://backend-tcc-cronohistory.onrender.com';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const pedirForm = document.getElementById('pedirCodigoForm');
+            const redefinirForm = document.getElementById('redefinirForm');
+            const telaSucesso = document.getElementById('sucesso');
+            let emailAtual = '';
+
+            async function enviarCodigo(email) {
+                try {
+                    await fetch(`${API_URL}/esqueci-senha`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                } catch (error) {
+                    console.warn('Falha ao conectar com o servidor:', error);
+                }
+            }
+
+            pedirForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                const btn = document.getElementById('pedirCodigoBtn');
+
+                if (!email) {
+                    alert('Informe seu e-mail.');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<span>Enviando...</span>';
+
+                await enviarCodigo(email);
+                emailAtual = email;
+
+                // Sempre avança para a etapa de código, exista o e-mail ou não —
+                // isso evita que alguém descubra quais e-mails estão cadastrados.
+                document.getElementById('emailConfirmado').textContent = email;
+                pedirForm.style.display = 'none';
+                redefinirForm.style.display = 'flex';
+            });
+
+            document.getElementById('reenviarBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('reenviarBtn');
+                btn.disabled = true;
+                btn.textContent = 'Enviando...';
+                await enviarCodigo(emailAtual);
+                btn.textContent = 'Código reenviado!';
+                setTimeout(() => {
+                    btn.textContent = 'Não recebeu? Enviar novamente';
+                    btn.disabled = false;
+                }, 3000);
+            });
+
+            redefinirForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const codigo = document.getElementById('codigo').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmarSenha = document.getElementById('confirmarSenha').value;
+                const btn = document.getElementById('redefinirBtn');
+
+                if (!/^\d{6}$/.test(codigo)) {
+                    alert('Digite o código de 6 dígitos que enviamos para o seu e-mail.');
+                    return;
+                }
+                if (password.length < 6) {
+                    alert('A senha precisa ter pelo menos 6 caracteres.');
+                    return;
+                }
+                if (password !== confirmarSenha) {
+                    alert('As senhas não coincidem.');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<span>Salvando...</span>';
+
+                try {
+                    const response = await fetch(`${API_URL}/resetar-senha`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: emailAtual, codigo, password })
+                    });
+                    const data = await response.json();
+
+                    if (response.ok && data.status === 'success') {
+                        redefinirForm.style.display = 'none';
+                        telaSucesso.style.display = 'block';
+                        setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+                        return;
+                    }
+
+                    alert(data.message || 'Não foi possível redefinir a senha. Tente pedir um novo código.');
+                } catch (error) {
+                    console.warn('Falha ao conectar com o servidor:', error);
+                    alert('Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.');
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = '<span>Redefinir senha</span>';
+            });
+        });
+    </script>
+</body>
+</html>

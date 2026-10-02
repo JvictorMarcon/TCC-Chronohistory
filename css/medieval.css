@@ -450,6 +450,40 @@ body::before {
     box-shadow: 0 2px 10px rgba(139, 105, 20, 0.2);
 }
 
+/* ===== MENSAGEM DE FEEDBACK (reset de senha, etc.) ===== */
+.form-feedback {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.form-feedback.success {
+    background: rgba(139, 105, 20, 0.1);
+    border: 1px solid rgba(139, 105, 20, 0.3);
+    color: #5c4033;
+}
+
+.form-feedback.error {
+    background: rgba(178, 50, 50, 0.08);
+    border: 1px solid rgba(178, 50, 50, 0.28);
+    color: #8a2f2f;
+}
+
+.form-feedback svg {
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.form-hint {
+    font-size: 0.8rem;
+    color: #8b7355;
+    margin-top: -0.2rem;
+}
+
 /* ===== RODAPÉ DO CARD ===== */
 .login-footer {
     margin-top: 1.8rem;
