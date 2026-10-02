@@ -227,6 +227,19 @@
             const data = await response.json();
 
             if (response.ok && data.status === "success") {
+              const role = (data.role || data.user?.role || "aluno").toLowerCase();
+
+              // Mesmo padrão do login.html: salva a sessão local pra já entrar logado
+              localStorage.setItem("chronohistory_token", data.token || "sessao_ativa");
+              localStorage.setItem(
+                "chronohistory_user",
+                JSON.stringify({
+                  user: data.user?.user || username,
+                  nome: data.user?.nome || fullname,
+                  role: role,
+                  fase_jogo: data.user?.fase_jogo || 1,
+                }),
+              );
               sessionStorage.setItem("chronohistory_welcome", username);
               window.location.href = "linha-do-tempo.html";
               return;
