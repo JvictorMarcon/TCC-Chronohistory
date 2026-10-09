@@ -107,8 +107,19 @@ function atualizarNavegacao(sessao) {
         }
     });
 
-    // Redireciona de páginas restritas se não estiver logado
     const path = window.location.pathname;
+
+    // O jogo depende de precisão de mouse (motor GameMaker) e não funciona bem
+    // em telas touch/pequenas — bloqueia o acesso antes de qualquer outra coisa.
+    const ehTelaDeJogo = path.includes('jogo.html');
+    const ehMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+    if (ehTelaDeJogo && ehMobile) {
+        alert('O Jogo Interativo está disponível apenas em computadores. Acesse por um desktop ou notebook para jogar.');
+        window.location.href = autenticado ? 'linha-do-tempo.html' : resolverCaminhoLogin();
+        return;
+    }
+
+    // Redireciona de páginas restritas se não estiver logado
     const paginaRestrita = path.includes('galeria.html') || path.includes('jogo.html') || path.includes('adm.html');
     if (!autenticado && paginaRestrita) {
         alert('Acesso restrito! Faça login para continuar.');

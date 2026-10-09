@@ -193,6 +193,15 @@ header.scrolled {
     white-space: nowrap;
 }
 
+/* O jogo não funciona bem em telas pequenas/touch (ver js/auth.js) —
+   esconde o link em vez de deixar um caminho que sempre vai barrar. */
+@media (max-width: 767px) {
+    a[href="jogo.html"],
+    a[href*="/jogo.html"] {
+        display: none !important;
+    }
+}
+
 nav.hidden.lg\:flex {
     gap: 2rem;
 }
