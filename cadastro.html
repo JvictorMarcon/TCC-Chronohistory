@@ -80,6 +80,8 @@
               placeholder="Digite seu nome completo"
               required
               autocomplete="name"
+              pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+"
+              title="Use apenas letras e espaços"
             />
           </div>
 
@@ -164,9 +166,42 @@
               type="password"
               id="password"
               name="password"
-              placeholder="Mínimo de 6 caracteres"
+              placeholder="Entre 8 e 20 caracteres"
               required
               autocomplete="new-password"
+              minlength="8"
+              maxlength="20"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">
+              <svg
+                class="w-4 h-4 text-gold inline-block mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
+              </svg>
+              Confirmar Senha
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Repita a senha"
+              required
+              autocomplete="new-password"
+              minlength="8"
+              maxlength="20"
             />
           </div>
 
@@ -197,11 +232,34 @@
           const fullname = document.getElementById("fullname").value.trim();
           const username = document.getElementById("username").value.trim();
           const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value.trim();
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
           const btn = document.getElementById("submitBtn");
 
-          if (!fullname || !username || !email || !password) {
+          if (!fullname || !username || !email || !password || !confirmPassword) {
             alert("Preencha todos os campos obrigatórios.");
+            return;
+          }
+
+          const nomeValido = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(fullname);
+          if (!nomeValido) {
+            alert("O nome deve conter apenas letras e espaços.");
+            return;
+          }
+
+          const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+          if (!emailValido) {
+            alert("Informe um e-mail em um formato válido (ex.: usuario@email.com).");
+            return;
+          }
+
+          if (password.length < 8 || password.length > 20) {
+            alert("A senha deve ter entre 8 e 20 caracteres.");
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            alert("As senhas não coincidem. Confira e tente novamente.");
             return;
           }
 

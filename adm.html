@@ -644,6 +644,24 @@
         box-shadow: 0 0 0 3px var(--gold-soft);
       }
 
+      .form-group input.field-invalid,
+      .form-group select.field-invalid,
+      .form-group textarea.field-invalid {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px var(--danger-bg);
+      }
+
+      .field-error-msg {
+        color: #ff6b6b;
+        font-size: 0.78rem;
+        margin-top: 0.3rem;
+        display: none;
+      }
+
+      .field-error-msg.visible {
+        display: block;
+      }
+
       .form-group textarea {
         resize: vertical;
         min-height: 78px;
@@ -1416,7 +1434,7 @@
                   Novo Evento Histórico
                 </h2>
               </div>
-              <form id="formAddEvento" onsubmit="handleSalvarEvento(event)">
+              <form id="formAddEvento" onsubmit="handleSalvarEvento(event)" novalidate>
                 <div class="form-group">
                   <label for="evNome">Nome do Evento *</label>
                   <input
@@ -1425,18 +1443,27 @@
                     placeholder="Ex: Queda da Bastilha"
                     required
                   />
+                  <span class="field-error-msg" id="evNomeErro"
+                    >O nome do evento é obrigatório.</span
+                  >
                 </div>
                 <div class="form-group">
                   <label for="evPeriodo">Período Histórico *</label>
                   <select id="evPeriodo" required>
+                    <option value="" selected disabled>
+                      Selecione um período
+                    </option>
                     <option value="Pré-História">Pré-História</option>
                     <option value="Idade Antiga">Idade Antiga</option>
                     <option value="Idade Média">Idade Média</option>
                     <option value="Idade Moderna">Idade Moderna</option>
-                    <option value="Idade Contemporânea" selected>
+                    <option value="Idade Contemporânea">
                       Idade Contemporânea
                     </option>
                   </select>
+                  <span class="field-error-msg" id="evPeriodoErro"
+                    >Selecione um período histórico.</span
+                  >
                 </div>
                 <div class="form-row">
                   <div class="form-group">
@@ -1470,12 +1497,16 @@
                 </div>
                 <div class="form-group">
                   <label for="evAcontecimento"
-                    >Descrição / O que aconteceu</label
+                    >Descrição / O que aconteceu *</label
                   >
                   <textarea
                     id="evAcontecimento"
                     placeholder="Resumo do evento histórico..."
+                    required
                   ></textarea>
+                  <span class="field-error-msg" id="evAcontecimentoErro"
+                    >A descrição do evento é obrigatória.</span
+                  >
                 </div>
                 <button type="submit" class="btn-primary">
                   <svg
@@ -2656,8 +2687,53 @@
       }
 
       // ─── CRUD EVENTOS ───
+      const CAMPOS_OBRIGATORIOS_EVENTO = ["evNome", "evPeriodo", "evAcontecimento"];
+
+      function limparDestaqueErro(id) {
+        document.getElementById(id).classList.remove("field-invalid");
+        document.getElementById(id + "Erro")?.classList.remove("visible");
+      }
+
+      function destacarCampoInvalido(id) {
+        document.getElementById(id).classList.add("field-invalid");
+        document.getElementById(id + "Erro")?.classList.add("visible");
+      }
+
+      // Assim que o professor corrige um campo destacado, tira o destaque na hora
+      CAMPOS_OBRIGATORIOS_EVENTO.forEach((id) => {
+        const el = document.getElementById(id);
+        el?.addEventListener("input", () => {
+          if (el.value.trim()) limparDestaqueErro(id);
+        });
+      });
+
+      function validarFormEvento() {
+        let primeiroInvalido = null;
+        CAMPOS_OBRIGATORIOS_EVENTO.forEach((id) => {
+          const valor = document.getElementById(id).value.trim();
+          if (!valor) {
+            destacarCampoInvalido(id);
+            primeiroInvalido = primeiroInvalido || id;
+          } else {
+            limparDestaqueErro(id);
+          }
+        });
+        return primeiroInvalido;
+      }
+
       async function handleSalvarEvento(e) {
         e.preventDefault();
+
+        const primeiroInvalido = validarFormEvento();
+        if (primeiroInvalido) {
+          document.getElementById(primeiroInvalido).focus();
+          mostrarToast(
+            "Preencha todos os campos obrigatórios antes de salvar.",
+            "error",
+          );
+          return;
+        }
+
         const payload = {
           nome: document.getElementById("evNome").value.trim(),
           periodo: document.getElementById("evPeriodo").value,
