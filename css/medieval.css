@@ -235,7 +235,7 @@ body::before {
     align-items: center;
 }
 
-.input-icon-field svg {
+.input-icon-field > svg {
     position: absolute;
     left: 1rem;
     z-index: 2;
@@ -246,6 +246,43 @@ body::before {
 .form-group .input-icon-field input {
     width: 100%;
     padding-left: 3.25rem;
+}
+
+.form-group .input-icon-field input.has-toggle {
+    padding-right: 2.75rem;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 0.85rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #8b6914;
+    opacity: 0.65;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+.toggle-password .icon-eye-off {
+    display: none;
+}
+
+.toggle-password.is-visible .icon-eye {
+    display: none;
+}
+
+.toggle-password.is-visible .icon-eye-off {
+    display: block;
 }
 
 /* ===== PARTÍCULAS MEDIEVAIS ===== */
@@ -465,6 +502,19 @@ body::before {
     width: 100%;
     padding-left: 0.9rem;
     padding-right: 0.9rem;
+}
+
+/* .form-row tem a mesma especificidade da regra de .input-icon-field
+   lá em cima e vem depois no arquivo, então vencia e cortava o padding
+   do ícone/olho nos campos de senha de 2 colunas (esqueci-senha.html).
+   Precisa de mais uma classe aqui pra voltar a ganhar. */
+.form-row .form-group .input-icon-field input {
+    padding-left: 3.25rem;
+    padding-right: 0.9rem;
+}
+
+.form-row .form-group .input-icon-field input.has-toggle {
+    padding-right: 2.75rem;
 }
 
 @media (max-width: 420px) {
