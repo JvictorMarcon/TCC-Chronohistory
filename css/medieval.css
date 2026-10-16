@@ -125,6 +125,129 @@ body::before {
     }
 }
 
+/* ===== TELA DE LOGIN — CARTÃO COM PAINEL DUPLO =====
+   Flutua sobre a imagem de fundo (.auth-media). Painel esquerdo
+   mostra a arte dos heróis em vórtice; painel direito é o
+   formulário em si, com inputs com ícone. Classe própria
+   (.auth-shell), não mexe em .login-card usado por
+   cadastro.html / esqueci-senha.html. ===== */
+.auth-shell {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    min-height: 540px;
+    display: flex;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow:
+        0 40px 80px -20px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(139, 105, 20, 0.25);
+    animation: fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.auth-panel-media {
+    position: relative;
+    flex: 1 1 45%;
+    display: none;
+    overflow: hidden;
+}
+
+@media (min-width: 860px) {
+    .auth-panel-media { display: block; }
+}
+
+.auth-panel-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+.auth-panel-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 9, 16, 0.78) 0%, rgba(10, 9, 16, 0.1) 45%, rgba(10, 9, 16, 0.1) 100%);
+}
+
+.auth-panel-caption {
+    position: absolute;
+    left: 1.75rem;
+    right: 1.75rem;
+    top: 1.75rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.1rem 1.3rem;
+    background: rgba(10, 9, 16, 0.45);
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    border-radius: 18px;
+    backdrop-filter: blur(6px);
+}
+
+.auth-panel-caption-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #f5efe4;
+}
+
+.auth-panel-caption-sub {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(245, 239, 228, 0.78);
+}
+
+.auth-panel-form {
+    position: relative;
+    flex: 1 1 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    background: linear-gradient(165deg, #f5efe4, #e8ddce);
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.75rem, 4vw, 3rem);
+}
+
+.auth-panel-form .back-button {
+    margin: 0 0 1.1rem 0;
+    align-self: flex-start;
+}
+
+.auth-panel-form .login-logo {
+    align-items: flex-start;
+    margin-bottom: 1.1rem;
+}
+
+.auth-panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #3a2a16;
+    margin-bottom: 1.1rem;
+}
+
+.input-icon-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-field svg {
+    position: absolute;
+    left: 1rem;
+    z-index: 2;
+    color: #8b6914;
+    pointer-events: none;
+}
+
+.form-group .input-icon-field input {
+    width: 100%;
+    padding-left: 3.25rem;
+}
+
 /* ===== PARTÍCULAS MEDIEVAIS ===== */
 .medieval-particle {
     position: fixed;

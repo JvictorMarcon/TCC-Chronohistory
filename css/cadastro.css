@@ -9,7 +9,12 @@ body {
     font-family: 'Lato', sans-serif;
     height: 100vh;
     margin: 0;
-    background: #0a0910;
+    background:
+        radial-gradient(circle at 12% 15%, rgba(255, 255, 255, 0.45), transparent 38%),
+        radial-gradient(circle at 90% 85%, rgba(107, 79, 14, 0.22), transparent 42%),
+        radial-gradient(circle at 88% 12%, rgba(201, 162, 39, 0.18), transparent 36%),
+        repeating-linear-gradient(135deg, rgba(139, 105, 20, 0.05) 0px, rgba(139, 105, 20, 0.05) 1px, transparent 1px, transparent 26px),
+        linear-gradient(160deg, #ddceac 0%, #b49c6e 55%, #98804f 100%);
     position: relative;
     overflow: hidden;
 }
@@ -21,45 +26,45 @@ body {
     height: 100vh;
 }
 
-/* ===== IMAGEM DE FUNDO (TELA CHEIA) ===== */
-.auth-media {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
+/* ===== CARTÃO COMPACTO (5 CAMPOS EM GRID, mesmo tamanho do login) ===== */
+.auth-shell {
+    min-height: auto;
 }
 
-.auth-media picture,
-.auth-media-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.auth-panel-media {
+    flex: 1 1 40%;
 }
 
-.auth-media-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to left,
-        rgba(10, 9, 16, 0.75) 0%,
-        rgba(10, 9, 16, 0.3) 50%,
-        rgba(10, 9, 16, 0.1) 100%
-    );
+.auth-panel-form {
+    flex: 1 1 60%;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
-/* ===== LADO DO FORMULÁRIO (CANTO DIREITO) ===== */
+.auth-panel-form .back-button {
+    margin-bottom: 0.75rem;
+}
+
+.auth-panel-form .login-logo {
+    margin-bottom: 0.75rem;
+}
+
+.auth-panel-title {
+    margin-bottom: 0.85rem;
+}
+
+/* ===== LADO DO FORMULÁRIO (CARTÃO CENTRALIZADO) ===== */
 .auth-form-side {
-    position: fixed;
-    top: 0;
-    right: 5rem;
-    height: 100vh;
-    width: 600px;
-    max-width: calc(100vw - 2rem);
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
     z-index: 10;
     display: flex;
-    align-items: center;
+    align-items: safe center;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
 }
 
 /* ===== VÍDEO DE FUNDO ===== */
@@ -141,50 +146,6 @@ body {
     }
 }
 
-/* ===== CONTAINER DO CADASTRO ===== */
-.login-wrapper {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 580px;
-    padding: 0.5rem;
-}
-
-.login-card {
-    background: linear-gradient(145deg, rgba(245, 239, 228, 0.97), rgba(232, 221, 206, 0.97));
-    border-radius: 24px;
-    padding: 2.2rem 2rem 2.4rem;
-    box-shadow:
-        0 30px 60px -15px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(139, 105, 20, 0.25),
-        inset 0 1px 0 rgba(255, 245, 220, 0.6);
-    border: 1px solid rgba(212, 197, 169, 0.4);
-    backdrop-filter: blur(12px);
-    transition: transform 0.3s ease;
-}
-
-/* ===== DECORAÇÃO TOPO ===== */
-.login-ornament {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    color: #8b6914;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-weight: 300;
-}
-
-.login-ornament::before,
-.login-ornament::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #b8a082, transparent);
-}
-
 /* ===== LOGO ===== */
 .login-logo {
     display: flex;
@@ -247,7 +208,7 @@ body {
 }
 
 .form-group input {
-    padding: 0.85rem 1.1rem;
+    padding: 0.8rem 1.1rem;
     border: 2px solid #d4c5a9;
     border-radius: 14px;
     background: rgba(255, 252, 245, 0.7);
@@ -305,12 +266,12 @@ body {
 
 /* ===== RODAPÉ DO CARD ===== */
 .login-footer {
-    margin-top: 1.8rem;
+    margin-top: 1rem;
     text-align: center;
     font-size: 0.85rem;
     color: #8b7355;
     border-top: 1px solid rgba(139, 105, 20, 0.12);
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 }
 
 .signup-link {
@@ -328,19 +289,9 @@ body {
 
 /* ===== RESPONSIVO ===== */
 @media (max-width: 680px) {
-    .auth-form-side {
-        width: 100vw;
-        right: 0;
-        padding: 1rem;
-    }
-
     .login-form {
         grid-template-columns: 1fr;
         gap: 0.9rem;
-    }
-
-    .login-card {
-        padding: 1.5rem 1rem 1.8rem;
     }
 
     .login-logo h1 {
@@ -351,23 +302,6 @@ body {
         width: 48px;
         height: 48px;
     }
-}
-
-/* ===== ANIMAÇÃO DE ENTRADA ===== */
-@keyframes fadeSlideUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px) scale(0.96);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.login-wrapper {
-    animation: fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ===== SCROLLBAR ===== */
