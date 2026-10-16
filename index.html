@@ -442,9 +442,12 @@
     <script>
       (function () {
         var particleSymbols = ["✦", "✧", "⬥", "⬦", "◆", "◇", "⚜"];
-        var colors = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
+        var colorsDark = ["#C9A227", "#E8C84A", "#A68A56", "#F5E6C8"];
+        var colorsLight = ["#8B6914", "#6B4F0E", "#A68A56", "#C9A227"];
 
         function createParticle() {
+          var isLight = document.documentElement.getAttribute("data-theme") === "light";
+          var colors = isLight ? colorsLight : colorsDark;
           var p = document.createElement("div");
           p.className = "medieval-particle";
           p.textContent =
