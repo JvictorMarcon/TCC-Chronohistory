@@ -655,7 +655,65 @@ function obterCoordenadas(lugar) {
         'egito antigo': { lat: 26.8206, lng: 30.8025 },
         'grécia antiga': { lat: 39.0742, lng: 21.8243 },
         'roma antiga': { lat: 41.9028, lng: 12.4964 },
-        'constantinopla': { lat: 41.0082, lng: 28.9784 }
+        'constantinopla': { lat: 41.0082, lng: 28.9784 },
+        // Nomes históricos/regionais recorrentes nos eventos cadastrados —
+        // o geocoder gratuito (Nominatim) não reconhece bem esses nomes
+        // antigos, então valem a pena ter um ponto fixo aqui.
+        'alemanha': { lat: 51.1657, lng: 10.4515 },
+        'frança': { lat: 46.2276, lng: 2.2137 },
+        'itália': { lat: 41.8719, lng: 12.5674 },
+        'inglaterra': { lat: 52.3555, lng: -1.1743 },
+        'escócia': { lat: 56.4907, lng: -4.2026 },
+        'rússia': { lat: 61.5240, lng: 105.3188 },
+        'urss': { lat: 61.5240, lng: 105.3188 },
+        'méxico': { lat: 23.6345, lng: -102.5528 },
+        'índia': { lat: 20.5937, lng: 78.9629 },
+        'china': { lat: 35.8617, lng: 104.1954 },
+        'japão': { lat: 36.2048, lng: 138.2529 },
+        'jerusalém': { lat: 31.7683, lng: 35.2137 },
+        'judéia': { lat: 31.5, lng: 35.1 },
+        'meca': { lat: 21.3891, lng: 39.8579 },
+        'medina': { lat: 24.5247, lng: 39.5692 },
+        'filadélfia': { lat: 39.9526, lng: -75.1652 },
+        'trento': { lat: 46.0748, lng: 11.1217 },
+        'mainz': { lat: 50.0, lng: 8.2711 },
+        'olímpia': { lat: 37.6381, lng: 21.6300 },
+        'bolonha': { lat: 44.4949, lng: 11.3426 },
+        'oxford': { lat: 51.7520, lng: -1.2577 },
+        'istambul': { lat: 41.0082, lng: 28.9784 },
+        'macedônia': { lat: 41.6086, lng: 21.7453 },
+        'pérsia': { lat: 32.4279, lng: 53.6880 },
+        'levante': { lat: 34.8, lng: 36.0 },
+        'eurásia': { lat: 55.0, lng: 60.0 },
+        'vale do nilo': { lat: 26.8206, lng: 30.8025 },
+        'vale do rio indo': { lat: 27.7, lng: 68.3 },
+        'crescente fértil': { lat: 33.0, lng: 44.0 },
+        'babilônia': { lat: 32.5422, lng: 44.4209 },
+        'anatólia': { lat: 38.9637, lng: 35.2433 },
+        'turquia': { lat: 38.9637, lng: 35.2433 },
+        'iraque': { lat: 33.2232, lng: 43.6793 },
+        'irã': { lat: 32.4279, lng: 53.6880 },
+        'península ibérica': { lat: 40.4637, lng: -3.7492 },
+        'caribe': { lat: 18.7357, lng: -70.1627 },
+        'andes': { lat: -13.0, lng: -75.0 },
+        'áfrica oriental': { lat: -1.2921, lng: 36.8219 },
+        'tordesilhas': { lat: 41.5026, lng: -5.0 },
+        'vila rica': { lat: -20.3855, lng: -43.5035 },
+        'minas gerais': { lat: -18.5122, lng: -44.5550 },
+        'pernambuco': { lat: -8.8137, lng: -36.9541 },
+        'bahia': { lat: -12.5797, lng: -41.7007 },
+        'paquistão': { lat: 30.3753, lng: 69.3451 },
+        'indonésia': { lat: -0.7893, lng: 113.9213 },
+        'austrália': { lat: -25.2744, lng: 133.7751 },
+        // Continentes por último de propósito: como a checagem é por
+        // substring, essas entradas genéricas só devem "ganhar" quando
+        // nenhuma região/país mais específico (acima) bateu antes.
+        'europa': { lat: 54.5260, lng: 15.2551 },
+        'ásia': { lat: 34.0479, lng: 100.6197 },
+        'áfrica': { lat: -8.7832, lng: 34.5085 },
+        'américas': { lat: 10.0, lng: -80.0 },
+        'américa': { lat: 10.0, lng: -80.0 },
+        'oceania': { lat: -22.7359, lng: 140.0188 }
     };
 
     for (const [key, coords] of Object.entries(coordenadas)) {
@@ -667,14 +725,56 @@ function obterCoordenadas(lugar) {
     return { lat: 0, lng: 0 };
 }
 
-function buscarCoordenadasPorNome(lugar, nomeEvento) {
-    const coordsCache = obterCoordenadas(lugar);
-    if (coordsCache.lat !== 0 || coordsCache.lng !== 0) {
-        criarMapaComCoordenadas(coordsCache.lat, coordsCache.lng, lugar, nomeEvento);
-        return;
+// Muitos "lugares" dos eventos são textos descritivos, não um endereço
+// único — ex: "Anatólia (atual Turquia)", "Crescente Fértil (Oriente
+// Médio)" ou até "Bagdá, Córdoba, Cairo e outros centros islâmicos".
+// Nenhum geocoder (pago ou gratuito) resolve isso direto, então aqui a
+// gente quebra o texto em termos candidatos — do mais específico pro
+// mais genérico — e tenta cada um até achar alguma coisa.
+// Termos genéricos demais pra virar um ponto no mapa — tentar geocodificar
+// "Mundial" só devolve lixo (tipo uma rua chamada "Mundial" em algum lugar).
+const LUGARES_SEM_PONTO_UNICO = ['mundial', 'lua'];
+
+function obterTermosBusca(lugar) {
+    if (!lugar) return [];
+
+    const lowerCompleto = lugar.toLowerCase().trim();
+    if (LUGARES_SEM_PONTO_UNICO.some(termo => lowerCompleto === termo || lowerCompleto.startsWith(termo + ','))) {
+        return [];
     }
 
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(lugar)}&format=json&limit=1&accept-language=pt`;
+    const termos = [];
+
+    // conteúdo entre parênteses costuma ser o nome moderno e mais
+    // preciso, ex: "(atual Turquia)" -> "Turquia"
+    const matchParen = lugar.match(/\(([^)]+)\)/);
+    if (matchParen) {
+        const dentro = matchParen[1].replace(/^atual\s+/i, '').trim();
+        if (dentro) termos.push(dentro);
+    }
+
+    const semParenteses = lugar.replace(/\([^)]*\)/g, '').trim();
+    const primeiroSegmento = semParenteses.split(/,| e /i)[0].trim();
+    if (primeiroSegmento) termos.push(primeiroSegmento);
+
+    if (semParenteses && !termos.includes(semParenteses)) {
+        termos.push(semParenteses);
+    }
+    if (!termos.includes(lugar)) termos.push(lugar);
+
+    return termos.filter(Boolean);
+}
+
+function buscarCoordenadasPorNome(lugar, nomeEvento) {
+    const termos = obterTermosBusca(lugar);
+
+    for (const termo of termos) {
+        const coords = obterCoordenadas(termo);
+        if (coords.lat !== 0 || coords.lng !== 0) {
+            criarMapaComCoordenadas(coords.lat, coords.lng, lugar, nomeEvento);
+            return;
+        }
+    }
 
     const mapContainer = document.getElementById('map');
     if (mapContainer) {
@@ -688,21 +788,29 @@ function buscarCoordenadasPorNome(lugar, nomeEvento) {
         `;
     }
 
+    tentarGeocodificacao(termos, 0, lugar, nomeEvento);
+}
+
+function tentarGeocodificacao(termos, indice, lugarOriginal, nomeEvento) {
+    if (indice >= termos.length) {
+        criarMapaComCoordenadas(0, 0, lugarOriginal, nomeEvento);
+        return;
+    }
+
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(termos[indice])}&format=json&limit=1&accept-language=pt`;
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data && data.length > 0) {
                 const lat = parseFloat(data[0].lat);
                 const lng = parseFloat(data[0].lon);
-                const displayName = data[0].display_name || lugar;
-                criarMapaComCoordenadas(lat, lng, displayName, nomeEvento);
+                criarMapaComCoordenadas(lat, lng, lugarOriginal, nomeEvento);
             } else {
-                criarMapaComCoordenadas(0, 0, lugar, nomeEvento);
+                tentarGeocodificacao(termos, indice + 1, lugarOriginal, nomeEvento);
             }
         })
-        .catch(() => {
-            criarMapaComCoordenadas(0, 0, lugar, nomeEvento);
-        });
+        .catch(() => tentarGeocodificacao(termos, indice + 1, lugarOriginal, nomeEvento));
 }
 
 function criarMapaComCoordenadas(lat, lng, lugar, nomeEvento) {
@@ -727,8 +835,17 @@ function criarMapaComCoordenadas(lat, lng, lugar, nomeEvento) {
             zoomControl: true
         });
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // A CartoDB (basemaps.cartocdn.com) passou a exigir chave de API e
+        // só devolve um selo "API KEY REQUIRED" no lugar do mapa — trocado
+        // pelo basemapa cinza-claro gratuito da Esri (sem chave, sem
+        // cadastro), com uma camada extra só de rótulos por cima.
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+            maxZoom: 16
+        }).addTo(currentMap);
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 16
         }).addTo(currentMap);
 
         // ANTES: marcador em círculo perfeito com sombra difusa (visual
