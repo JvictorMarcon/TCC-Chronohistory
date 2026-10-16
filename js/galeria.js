@@ -621,6 +621,7 @@ function abrirDetalhe(globalId) {
             modalImagem.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Escola_de_Atenas_-_Vaticano_2.jpg/960px-Escola_de_Atenas_-_Vaticano_2.jpg';
         };
         modalImagem.alt = evento.nome;
+        modalImagem.onclick = () => abrirZoom(modalImagem.src, evento.nome);
     }
 
     if (modalTitulo) modalTitulo.textContent = evento.nome;
@@ -686,6 +687,28 @@ function fecharDetalhe() {
 }
 
 // ============================================
+// Lightbox de Zoom da Imagem
+// ============================================
+function abrirZoom(src, alt) {
+    const zoomModal = document.getElementById('zoomModal');
+    const zoomImagem = document.getElementById('zoomImagem');
+    if (!zoomModal || !zoomImagem) return;
+
+    zoomImagem.src = src;
+    zoomImagem.alt = alt || '';
+    zoomImagem.classList.remove('zoomed');
+    zoomModal.classList.remove('hidden');
+}
+
+function fecharZoom() {
+    const zoomModal = document.getElementById('zoomModal');
+    const zoomImagem = document.getElementById('zoomImagem');
+    if (!zoomModal) return;
+    zoomModal.classList.add('hidden');
+    if (zoomImagem) zoomImagem.classList.remove('zoomed');
+}
+
+// ============================================
 // Verificar URL Params
 // ============================================
 function checkUrlParams() {
@@ -742,10 +765,37 @@ function setupEventListeners() {
         });
     }
 
-    // Tecla ESC para fechar
+    // Tecla ESC para fechar (primeiro o zoom, se estiver aberto)
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') fecharDetalhe();
+        if (e.key !== 'Escape') return;
+        const zoomModal = document.getElementById('zoomModal');
+        if (zoomModal && !zoomModal.classList.contains('hidden')) {
+            fecharZoom();
+        } else {
+            fecharDetalhe();
+        }
     });
+
+    // Lightbox de zoom: fechar no X, fechar clicando fora da imagem,
+    // e clicar na própria imagem alterna entre ampliar e reduzir.
+    const zoomFecharBtn = document.getElementById('fecharZoomModal');
+    if (zoomFecharBtn) {
+        zoomFecharBtn.addEventListener('click', fecharZoom);
+    }
+
+    const zoomModal = document.getElementById('zoomModal');
+    if (zoomModal) {
+        zoomModal.addEventListener('click', (e) => {
+            if (e.target === zoomModal) fecharZoom();
+        });
+    }
+
+    const zoomImagem = document.getElementById('zoomImagem');
+    if (zoomImagem) {
+        zoomImagem.addEventListener('click', () => {
+            zoomImagem.classList.toggle('zoomed');
+        });
+    }
 }
 
 function escapeHtml(text) {

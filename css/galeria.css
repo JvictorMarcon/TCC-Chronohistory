@@ -199,6 +199,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     display: block;
     transition: transform 0.5s ease;
 }
@@ -377,7 +378,28 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     display: block;
+    cursor: zoom-in;
+}
+
+.modal-galeria-zoom-dica {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 6px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    pointer-events: none;
 }
 
 .modal-galeria-imagem-legenda {
@@ -551,6 +573,75 @@
     padding: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 2vw, 1.5rem);
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
+}
+
+/* ── LIGHTBOX DE ZOOM DA IMAGEM ─────────────────────────── */
+.zoom-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(10, 8, 5, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 5vw, 3rem);
+}
+
+.zoom-modal.hidden {
+    display: none;
+}
+
+.zoom-modal-imagem {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    cursor: zoom-in;
+    transition: transform 0.25s ease;
+    transform-origin: center center;
+    user-select: none;
+    border-radius: 2px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.zoom-modal-imagem.zoomed {
+    cursor: zoom-out;
+    transform: scale(2);
+}
+
+.zoom-modal-fechar {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #F7F3EA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.zoom-modal-fechar:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: var(--seal);
+    color: var(--seal);
+}
+
+.zoom-modal-dica {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(247, 243, 234, 0.6);
+    pointer-events: none;
+    white-space: nowrap;
 }
 
 /* ============================================================
