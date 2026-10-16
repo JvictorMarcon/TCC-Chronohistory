@@ -552,3 +552,51 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
 }
+
+/* ============================================================
+   TEMA CLARO — os cards e o modal já usam --paper/--ink como
+   superfície própria e continuam legíveis nos dois temas; só o
+   texto "solto" sobre o fundo da página (título, busca, filtros,
+   estados vazios) precisa de versão escura aqui.
+   ============================================================ */
+:root[data-theme="light"] .galeria-hero-titulo {
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .galeria-hero-desc {
+    color: rgba(26, 20, 16, 0.7);
+}
+
+:root[data-theme="light"] .galeria-busca-input {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-color: rgba(26, 20, 16, 0.18);
+    color: var(--ink);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1410' stroke-opacity='0.45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+}
+
+:root[data-theme="light"] .galeria-busca-input::placeholder {
+    color: rgba(26, 20, 16, 0.4);
+}
+
+:root[data-theme="light"] .galeria-filtros-label {
+    color: rgba(26, 20, 16, 0.6);
+}
+
+:root[data-theme="light"] .filtro-btn {
+    color: rgba(26, 20, 16, 0.7);
+}
+
+:root[data-theme="light"] .filtro-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .filtro-btn.filtro-ativo {
+    color: var(--paper);
+}
+
+:root[data-theme="light"] .sem-resultados,
+:root[data-theme="light"] .galeria-erro {
+    background: rgba(26, 20, 16, 0.03);
+    color: var(--ink);
+}

@@ -20,6 +20,221 @@
     --bg-page: #0a0910;
 }
 
+/* ============================================================
+   TEMA CLARO — alternado via [data-theme="light"] na <html>
+   (ver js/theme.js). Troca o fundo da página e os componentes
+   do cabeçalho/navegação; os "cartões de pergaminho" (timeline,
+   filtros, modais) já usam --paper/--ink como superfície própria
+   e continuam legíveis em qualquer um dos dois fundos, então não
+   precisam de override aqui.
+   ============================================================ */
+:root[data-theme="light"] {
+    --bg-page: #f3ead4;
+}
+
+:root[data-theme="light"] body {
+    color: var(--ink);
+}
+
+:root[data-theme="light"] body::before {
+    opacity: 0.18;
+}
+
+/* Fundo opaco de propósito: a header fica sobre vídeos/imagens
+   escuras em várias páginas (linha-do-tempo, jogo etc.), então o
+   "vidro" claro precisa de corpo próprio para não desaparecer por
+   cima deles — um tingimento quase transparente (como no escuro)
+   some contra qualquer fundo escuro atrás. */
+:root[data-theme="light"] header {
+    background: rgba(250, 245, 232, 0.88);
+    border-color: rgba(166, 138, 86, 0.35);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 12px 40px rgba(26, 20, 16, 0.18);
+}
+
+:root[data-theme="light"] header.scrolled {
+    background: rgba(250, 245, 232, 0.96);
+    border-color: rgba(166, 138, 86, 0.5);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 14px 45px rgba(26, 20, 16, 0.2),
+        0 0 0 1px rgba(201, 162, 39, 0.22);
+}
+
+:root[data-theme="light"] .nav-link {
+    color: rgba(26, 20, 16, 0.72);
+}
+
+:root[data-theme="light"] .nav-link:hover,
+:root[data-theme="light"] .nav-link.active {
+    color: var(--ink);
+    border-bottom-color: var(--seal);
+}
+
+:root[data-theme="light"] .landing-nav-login {
+    background: rgba(26, 20, 16, 0.05);
+    border-color: rgba(26, 20, 16, 0.16);
+    color: rgba(26, 20, 16, 0.8);
+}
+
+:root[data-theme="light"] .landing-nav-login:hover {
+    background: rgba(26, 20, 16, 0.1);
+    border-color: rgba(26, 20, 16, 0.3);
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .landing-nav-signup {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+}
+
+:root[data-theme="light"] .landing-nav-signup:hover {
+    background: var(--ink-soft);
+}
+
+:root[data-theme="light"] .menu-toggle {
+    color: var(--ink);
+    border-color: rgba(26, 20, 16, 0.2);
+}
+
+:root[data-theme="light"] .menu-toggle:hover {
+    border-color: var(--seal);
+    color: #8b6914;
+}
+
+:root[data-theme="light"] .mobile-link {
+    color: rgba(26, 20, 16, 0.75);
+}
+
+:root[data-theme="light"] .mobile-link:hover,
+:root[data-theme="light"] .mobile-link.active {
+    color: var(--ink);
+    border-left-color: var(--seal);
+    background: rgba(201, 162, 39, 0.1);
+}
+
+/* .page-hero-eyebrow/.page-hero-titulo/.page-hero-desc (linha-do-tempo)
+   ficam de fora de propósito: o texto sempre fica sobre o vídeo de
+   fundo fixo da página (nunca sobre o fundo claro/escuro em si), que
+   continua escuro nos dois temas — por isso o texto claro original já
+   tem o contraste certo e não deve mudar com o tema. */
+
+/* ── FILTROS (linha-do-tempo) ──────────────────────────────
+   O card de filtro é um "vidro" translúcido sobre o vídeo de
+   fundo (que continua escuro nos dois temas); no claro ele
+   precisa de um vidro CLARO, senão o texto cai no mesmo
+   problema que a header tinha. */
+:root[data-theme="light"] .filter-section {
+    background: rgba(250, 245, 232, 0.85);
+    border-color: rgba(166, 138, 86, 0.4);
+}
+
+:root[data-theme="light"] .filter-title {
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .filter-label {
+    color: rgba(26, 20, 16, 0.6);
+}
+
+:root[data-theme="light"] .filter-select,
+:root[data-theme="light"] .filter-input {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(26, 20, 16, 0.18);
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .filter-select option {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .filter-input::placeholder {
+    color: rgba(26, 20, 16, 0.4);
+}
+
+:root[data-theme="light"] .lugar-search-icon {
+    color: var(--ink);
+}
+
+:root[data-theme="light"] .btn-clear {
+    color: rgba(26, 20, 16, 0.7);
+    border-color: rgba(26, 20, 16, 0.22);
+}
+
+:root[data-theme="light"] .btn-clear:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+}
+
+/* .timeline-title também fica sobre o vídeo de fundo (igual ao
+   page-hero acima) — mantém o texto claro original nos dois temas. */
+:root[data-theme="light"] #timelineItems .text-center {
+    background: rgba(250, 245, 232, 0.85);
+    border-color: rgba(166, 138, 86, 0.4);
+}
+
+:root[data-theme="light"] #timelineItems .text-center p {
+    color: var(--ink);
+}
+
+/* ── BOTÃO DE TEMA CLARO/ESCURO ───────────────────────────── */
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 64px;
+    height: 34px;
+    padding: 0 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    border-color: var(--seal);
+}
+
+.theme-toggle-icon {
+    position: relative;
+    z-index: 1;
+    color: rgba(247, 244, 234, 0.55);
+    transition: color 0.3s ease;
+    pointer-events: none;
+}
+
+:root[data-theme="light"] .theme-toggle {
+    background: rgba(26, 20, 16, 0.07);
+    border-color: rgba(26, 20, 16, 0.18);
+}
+
+:root[data-theme="light"] .theme-toggle-icon {
+    color: rgba(26, 20, 16, 0.5);
+}
+
+.theme-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E8C84A, #C9A227);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+:root[data-theme="light"] .theme-toggle-thumb {
+    transform: translateX(30px);
+}
+
 * {
     margin: 0;
     padding: 0;
