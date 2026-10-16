@@ -492,9 +492,9 @@ main {
 
 /* ── FILTER SECTION ────────────────────────────────────── */
 .filter-section {
-    background: rgba(247, 243, 234, 0.03);
+    background: rgba(247, 243, 234, 0.05);
     border: 1px solid var(--gold-soft);
-    border-radius: 4px;
+    border-radius: 20px;
     backdrop-filter: blur(8px);
     padding: clamp(1.5rem, 2.5vw, 2.25rem);
     margin-bottom: clamp(2rem, 4vw, 3rem);
@@ -526,7 +526,7 @@ main {
     background: rgba(0, 0, 0, 0.22);
     border: 1px solid rgba(247, 243, 234, 0.18);
     color: var(--paper);
-    border-radius: 2px;
+    border-radius: 10px;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     transition: all 0.2s ease;
@@ -578,7 +578,7 @@ main {
     background: transparent;
     color: rgba(247, 243, 234, 0.7);
     border: 1px solid rgba(247, 243, 234, 0.22);
-    border-radius: 2px;
+    border-radius: 999px;
     font-family: 'Inter', sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
@@ -593,7 +593,7 @@ main {
     background: var(--seal);
     color: var(--paper);
     border: 1px solid var(--seal);
-    border-radius: 2px;
+    border-radius: 999px;
     font-family: 'Inter', sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
@@ -674,7 +674,7 @@ main {
 .timeline-card {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: 20px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.18);
     padding: clamp(1.5rem, 2.5vw, 2.25rem);
     transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -704,9 +704,9 @@ main {
 .timeline-card p {
     font-family: 'Inter', sans-serif;
     color: var(--ink-soft);
-    font-size: 1rem; /* ALTERADO: era 0.95rem */
-    line-height: 1.75; /* ALTERADO: era 1.65, texto mais arejado */
-    letter-spacing: 0.005em; /* NOVO: leve ajuste, ajuda legibilidade em blocos de texto */
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.005em;
 }
 
 .year-badge {
@@ -750,7 +750,7 @@ main {
     color: var(--paper);
     border: 1px solid var(--seal);
     transition: all 0.2s ease;
-    border-radius: 2px;
+    border-radius: 999px;
     cursor: pointer;
 }
 
@@ -766,7 +766,7 @@ main {
     color: var(--ink-soft);
     border: 1px solid var(--line);
     transition: all 0.2s ease;
-    border-radius: 2px;
+    border-radius: 999px;
     cursor: pointer;
 }
 
