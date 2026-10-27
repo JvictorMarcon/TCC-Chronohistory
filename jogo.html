@@ -558,6 +558,48 @@
     <!-- SCRIPT PRINCIPAL -->
     <script>
       // ==========================================
+      // RAIZ DO PROBLEMA (bordas pretas + clique levemente errado):
+      // o jogo exportado do GameMaker tem um modo interno de "manter
+      // proporção" (variável global _WM4, ligada por padrão) que SÓ
+      // desenha o conteúdo numa área central do canvas, preenchendo o
+      // resto com preto, toda vez que o tamanho do canvas não é
+      // exatamente o que o jogo "acha" que deveria ser — é isso que
+      // sobra como barra preta na tela cheia (nenhum CSS por fora
+      // consegue remover, porque o preto é desenhado pelo próprio
+      // jogo dentro do canvas). Essa mesma conta interna de escala é
+      // reaproveitada para converter clique em coordenada do jogo, e
+      // como ela assume (incorretamente) que o canvas sempre é
+      // exibido do mesmo tamanho da sua resolução interna, qualquer
+      // canvas responsivo (o nosso é) desalinha o clique também.
+      //
+      // Correção na raiz: 1) desliga o modo "manter proporção" (o
+      // jogo passa a esticar pra preencher o canvas inteiro, sem
+      // sobra preta); 2) mantemos a resolução INTERNA do canvas
+      // (atributos width/height) sempre igual ao tamanho real exibido
+      // em CSS, em qualquer situação (card normal ou tela cheia) —
+      // assim a conta de escala do próprio jogo (pra desenhar E pra
+      // calcular o clique) fica sempre 1:1 e correta, sem precisar
+      // mais corrigir nada por fora.
+      if (typeof window._WM4 !== "undefined") {
+        window._WM4 = false;
+      }
+
+      function sincronizarResolucaoCanvas() {
+        const canvas = document.getElementById("canvas");
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        const largura = Math.max(1, Math.round(rect.width));
+        const altura = Math.max(1, Math.round(rect.height));
+        if (canvas.width === largura && canvas.height === altura) return;
+        if (typeof window._Mr === "function") {
+          window._Mr(largura, altura);
+        } else {
+          canvas.width = largura;
+          canvas.height = altura;
+        }
+      }
+
+      // ==========================================
       // TELA CHEIA E REDIMENSIONAMENTO DINÂMICO
       // ==========================================
       const gameArea = document.getElementById("gameArea");
@@ -637,6 +679,8 @@
             canvas.style.removeProperty("position");
           }
         }
+
+        sincronizarResolucaoCanvas();
       }
 
       function toggleFullscreen() {
@@ -696,6 +740,30 @@
         if (canvas) {
           canvas.setAttribute("tabindex", "0");
         }
+        // Sincroniza depois do init do GameMaker (que mexe no canvas
+        // pra resolução fixa 1000x500) pra garantir que o tamanho real
+        // exibido prevaleça desde o primeiro frame.
+        requestAnimationFrame(sincronizarResolucaoCanvas);
+
+        // O próprio jogo (lógica compilada, não o runtime) também
+        // redimensiona o canvas sozinho pouco depois de iniciar (ao
+        // clicar em "Executar jogo") — pra não entrar em conflito com
+        // esse timing imprevisível, observa diretamente os atributos
+        // width/height do canvas e corrige de volta assim que QUALQUER
+        // coisa (o próprio jogo incluso) mudar pra um valor diferente
+        // do que está realmente exibido. O guard de "já está certo"
+        // dentro de sincronizarResolucaoCanvas evita loop infinito.
+        if (canvas && window.MutationObserver) {
+          const observadorCanvas = new MutationObserver(sincronizarResolucaoCanvas);
+          observadorCanvas.observe(canvas, {
+            attributes: true,
+            attributeFilter: ["width", "height"],
+          });
+        }
+
+        // Rede de segurança de baixa frequência, caso alguma mudança
+        // de tamanho escape da observação acima.
+        setInterval(sincronizarResolucaoCanvas, 1000);
       };
 
       function esconderTelaPlay() {
