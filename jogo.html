@@ -184,14 +184,6 @@
         border-color: #ff6666;
       }
 
-      /* ═══ CONTROLES ═══
-         .controles-jogo / .titulo-controles / .grade-controles /
-         .grupo-controle / .tecla / .descricao-tecla / .info-jogo já têm
-         estilo completo em css/medieval.css (mesma seção usada como
-         referência de identidade visual do site). Não redeclarar aqui —
-         a versão anterior sobrescrevia só a cor do texto sem redeclarar o
-         fundo escuro, deixando o texto ilegível. */
-
       /* ═══ TELA CHEIA SEM BORDAS PRETAS ═══
          Preenche 100vw/100vh sem preservar a proporção 2:1 — antes isso
          era necessário para o mouse não desalinhar, mas agora a correção
@@ -278,20 +270,6 @@
           width: 34px;
           height: 34px;
           font-size: 1rem;
-        }
-
-        .tecla {
-          font-size: 0.9rem;
-          padding: 0.4rem 0.8rem;
-          min-width: 45px;
-        }
-
-        .descricao-tecla {
-          font-size: 0.65rem;
-        }
-
-        .grade-controles {
-          gap: 0.8rem;
         }
       }
     </style>
@@ -449,33 +427,6 @@
               <span class="play-icon">▶</span>
               Executar jogo
             </button>
-          </div>
-        </div>
-
-        <!-- Controles -->
-        <div class="controles-jogo">
-          <div class="titulo-controles">CONTROLES DO JOGO</div>
-
-          <div class="grade-controles">
-            <div class="grupo-controle">
-              <div class="tecla">A / D</div>
-              <div class="descricao-tecla">Andar</div>
-            </div>
-
-            <div class="grupo-controle">
-              <div class="tecla">W</div>
-              <div class="descricao-tecla">Pular</div>
-            </div>
-
-            <div class="grupo-controle">
-              <div class="tecla">E</div>
-              <div class="descricao-tecla">Interagir</div>
-            </div>
-
-            <div class="grupo-controle">
-              <div class="tecla">Backspace / ESC</div>
-              <div class="descricao-tecla">Voltar / Menu</div>
-            </div>
           </div>
         </div>
 
