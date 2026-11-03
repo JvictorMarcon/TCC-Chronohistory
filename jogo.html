@@ -184,6 +184,85 @@
         border-color: #ff6666;
       }
 
+      /* ═══ CONTROLES POR TOQUE (celular/tablet) ═══
+         O jogo exportado do GameMaker só reconhece teclado físico — não
+         existe suporte nativo a toque pros controles do próprio jogo
+         (andar, pular, interagir). Em telas sem teclado (pointer: coarse)
+         simulamos essas teclas chamando diretamente window.onkeydown/
+         onkeyup (atribuídos pelo próprio motor), que é exatamente a fonte
+         que ele usa pra saber quais teclas estão pressionadas — ver script
+         antes de BLANK GAME.js. */
+      .controles-tateis {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 25;
+        padding: 16px;
+        justify-content: space-between;
+        align-items: flex-end;
+        pointer-events: none;
+      }
+
+      .controles-tateis-grupo {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        pointer-events: none;
+      }
+
+      .controles-tateis-direita {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .controles-tateis-acoes {
+        display: flex;
+        gap: 10px;
+      }
+
+      .botao-tatil {
+        pointer-events: auto;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(6px);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        touch-action: none;
+        -webkit-tap-highlight-color: transparent;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        transition: background 0.15s, transform 0.1s;
+      }
+
+      .botao-tatil.ativo {
+        background: var(--seal-dark);
+        transform: scale(0.92);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+
+      .botao-tatil-voltar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      @media (pointer: coarse) {
+        .controles-tateis {
+          display: flex;
+        }
+      }
+
       /* ═══ TELA CHEIA SEM BORDAS PRETAS ═══
          Preenche 100vw/100vh sem preservar a proporção 2:1 — antes isso
          era necessário para o mouse não desalinhar, mas agora a correção
@@ -270,6 +349,18 @@
           width: 34px;
           height: 34px;
           font-size: 1rem;
+        }
+
+        .botao-tatil {
+          width: 46px;
+          height: 46px;
+          font-size: 1rem;
+        }
+
+        .botao-tatil-voltar {
+          width: 36px;
+          height: 36px;
+          font-size: 0.85rem;
         }
       }
     </style>
@@ -421,6 +512,21 @@
             </a>
           </div>
 
+          <!-- Controles por toque (celular/tablet) -->
+          <div class="controles-tateis" id="controlesTateis">
+            <div class="controles-tateis-grupo controles-tateis-esquerda">
+              <button class="botao-tatil" type="button" data-tecla="65" aria-label="Andar para a esquerda (A)">A</button>
+              <button class="botao-tatil" type="button" data-tecla="68" aria-label="Andar para a direita (D)">D</button>
+            </div>
+            <div class="controles-tateis-grupo controles-tateis-direita">
+              <button class="botao-tatil botao-tatil-voltar" type="button" data-tecla="8" aria-label="Voltar / Menu (Backspace)">⌫</button>
+              <div class="controles-tateis-acoes">
+                <button class="botao-tatil" type="button" data-tecla="69" aria-label="Interagir (E)">E</button>
+                <button class="botao-tatil" type="button" data-tecla="87" aria-label="Pular (W)">W</button>
+              </div>
+            </div>
+          </div>
+
           <!-- Play Overlay -->
           <div class="play-overlay" id="play-overlay">
             <button id="btn-play" type="button" onclick="esconderTelaPlay()">
@@ -531,8 +637,19 @@
       // assim a conta de escala do próprio jogo (pra desenhar E pra
       // calcular o clique) fica sempre 1:1 e correta, sem precisar
       // mais corrigir nada por fora.
+      // O nome exato dessa variável é gerado pelo minificador do GameMaker
+      // e muda a cada reexportação do jogo — "_WM4" era o nome na build
+      // anterior, "_Si5" é o nome nesta build atual (confirmado checando
+      // o código-fonte minificado de html5game/BLANK GAME.js). Se o jogo
+      // for reexportado de novo, pode ser necessário achar o novo nome de
+      // novo (procurar por um "var" global booleano, inicializado como
+      // true, usado perto de canvas.width/height para decidir entre
+      // preservar a proporção com barras pretas ou esticar).
       if (typeof window._WM4 !== "undefined") {
         window._WM4 = false;
+      }
+      if (typeof window._Si5 !== "undefined") {
+        window._Si5 = false;
       }
 
       function sincronizarResolucaoCanvas() {
@@ -747,6 +864,66 @@
           }, 100);
         }
       }
+
+      // ==========================================
+      // CONTROLES POR TOQUE (celular/tablet)
+      // ==========================================
+      // O jogo exportado do GameMaker só entende teclado físico: o motor
+      // guarda quais teclas estão pressionadas através de window.onkeydown/
+      // onkeyup, que ELE MESMO atribui assim que inicializa (dentro de
+      // BLANK GAME.js). Não existe teclado em celular/tablet, então, em vez
+      // de um atalho superficial (ex.: desenhar os botões e simplesmente
+      // clicar no jogo), chamamos esses mesmos manipuladores diretamente,
+      // com um objeto de evento mínimo — exatamente a fonte de dados que o
+      // motor usa pra decidir se uma tecla está "para baixo" ou não. Assim
+      // os botões de toque se comportam, pro jogo, como teclado de verdade.
+      (function () {
+        function simularTecla(codigo, pressionando) {
+          const manipulador = pressionando ? window.onkeydown : window.onkeyup;
+          if (typeof manipulador !== "function") return;
+          manipulador({
+            which: codigo,
+            keyCode: codigo,
+            key: "",
+            shiftKey: false,
+            preventDefault: function () {},
+          });
+        }
+
+        document.querySelectorAll(".botao-tatil").forEach(function (botao) {
+          const codigo = parseInt(botao.dataset.tecla, 10);
+          if (!codigo) return;
+
+          let pressionado = false;
+
+          function iniciar(e) {
+            if (e) e.preventDefault();
+            if (pressionado) return;
+            pressionado = true;
+            botao.classList.add("ativo");
+            simularTecla(codigo, true);
+          }
+
+          function finalizar(e) {
+            if (e) e.preventDefault();
+            if (!pressionado) return;
+            pressionado = false;
+            botao.classList.remove("ativo");
+            simularTecla(codigo, false);
+          }
+
+          botao.addEventListener("pointerdown", iniciar);
+          botao.addEventListener("pointerup", finalizar);
+          botao.addEventListener("pointercancel", finalizar);
+          botao.addEventListener("pointerleave", finalizar);
+          botao.addEventListener("touchstart", iniciar, { passive: false });
+          botao.addEventListener("touchend", finalizar);
+          botao.addEventListener("touchcancel", finalizar);
+          botao.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+          });
+        });
+      })();
 
       // ==========================================
       // MENU MOBILE
