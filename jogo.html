@@ -638,20 +638,32 @@
       // calcular o clique) fica sempre 1:1 e correta, sem precisar
       // mais corrigir nada por fora.
       // O nome exato dessa variável é gerado pelo minificador do GameMaker
-      // e muda a cada reexportação do jogo — "_WM4" era o nome na build
-      // anterior, "_Si5" é o nome nesta build atual (confirmado checando
-      // o código-fonte minificado de html5game/BLANK GAME.js). Se o jogo
-      // for reexportado de novo, pode ser necessário achar o novo nome de
-      // novo (procurar por um "var" global booleano, inicializado como
-      // true, usado perto de canvas.width/height para decidir entre
-      // preservar a proporção com barras pretas ou esticar).
+      // e muda a CADA reexportação do jogo (mesmo entre duas exportações
+      // do mesmo projeto) — já foram "_WM4", depois "_Si5", agora "_IT4"
+      // nesta build (confirmado checando html5game/BLANK GAME.js que está
+      // commitado agora). Se o jogo for reexportado de novo, repita essa
+      // investigação: procure por um "var" global booleano, inicializado
+      // como "!0" (true), usado perto de canvas.width/height dentro da
+      // função que decide entre preservar a proporção (com barras pretas)
+      // ou esticar o conteúdo pro tamanho real do canvas.
       if (typeof window._WM4 !== "undefined") {
         window._WM4 = false;
       }
       if (typeof window._Si5 !== "undefined") {
         window._Si5 = false;
       }
+      if (typeof window._IT4 !== "undefined") {
+        window._IT4 = false;
+      }
 
+      // IMPORTANTE: NÃO chamar nenhuma função do jogo pelo nome minificado
+      // (ex.: a antiga "_Mr") pra redimensionar o canvas. Esses nomes curtos
+      // colidem entre reexportações — na build atual "_Mr" é uma função
+      // totalmente diferente (nada a ver com canvas), e chamá-la aqui
+      // lançava um erro interno do jogo ("index out of range") que travava
+      // o loop de renderização, deixando a tela preta depois de abrir.
+      // Atribuir width/height diretamente é seguro em qualquer build,
+      // porque são propriedades padrão do <canvas>, não algo do GameMaker.
       function sincronizarResolucaoCanvas() {
         const canvas = document.getElementById("canvas");
         if (!canvas) return;
@@ -659,12 +671,8 @@
         const largura = Math.max(1, Math.round(rect.width));
         const altura = Math.max(1, Math.round(rect.height));
         if (canvas.width === largura && canvas.height === altura) return;
-        if (typeof window._Mr === "function") {
-          window._Mr(largura, altura);
-        } else {
-          canvas.width = largura;
-          canvas.height = altura;
-        }
+        canvas.width = largura;
+        canvas.height = altura;
       }
 
       // ==========================================
