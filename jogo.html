@@ -138,83 +138,50 @@
         pointer-events: none;
       }
 
-      /* ═══ CONTROLES POR TOQUE (celular/tablet) ═══
-         O jogo exportado do GameMaker só reconhece teclado físico — não
-         existe suporte nativo a toque pros controles do próprio jogo
-         (andar, pular, interagir). Em telas sem teclado (pointer: coarse)
-         simulamos essas teclas chamando diretamente window.onkeydown/
-         onkeyup (atribuídos pelo próprio motor), que é exatamente a fonte
-         que ele usa pra saber quais teclas estão pressionadas — ver script
-         antes de BLANK GAME.js. */
-      .controles-tateis {
-        display: none;
+      /* ═══ BOTÕES OVERLAY ═══ */
+      .game-overlay-btns {
         position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 25;
-        padding: 16px;
-        justify-content: space-between;
-        align-items: flex-end;
-        pointer-events: none;
-      }
-
-      .controles-tateis-grupo {
+        top: 12px;
+        right: 12px;
         display: flex;
-        align-items: flex-end;
-        gap: 10px;
-        pointer-events: none;
-      }
-
-      .controles-tateis-direita {
-        flex-direction: column;
-        align-items: flex-end;
         gap: 8px;
+        z-index: 30;
       }
 
-      .controles-tateis-acoes {
-        display: flex;
-        gap: 10px;
-      }
-
-      .botao-tatil {
-        pointer-events: auto;
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.55);
+      .game-overlay-btn {
+        background: rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(6px);
-        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
         color: #ffffff;
-        font-family: "Inter", sans-serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        user-select: none;
-        touch-action: none;
-        -webkit-tap-highlight-color: transparent;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-        transition: background 0.15s, transform 0.1s;
-      }
-
-      .botao-tatil.ativo {
-        background: var(--seal-dark);
-        transform: scale(0.92);
-        border-color: rgba(255, 255, 255, 0.6);
-      }
-
-      .botao-tatil-voltar {
         width: 40px;
         height: 40px;
-        font-size: 1rem;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        user-select: none;
+        font-weight: 400;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
 
-      @media (pointer: coarse) {
-        .controles-tateis {
-          display: flex;
-        }
+      .game-overlay-btn:hover {
+        background: var(--seal-dark);
+        transform: scale(1.15);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 25px var(--gold-soft);
+      }
+
+      .game-overlay-btn:active {
+        transform: scale(0.9);
+      }
+
+      #exitBtn:hover {
+        background: rgba(200, 50, 50, 0.85) !important;
+        border-color: #ff6666;
       }
 
       /* ═══ TELA CHEIA SEM BORDAS PRETAS ═══
@@ -299,16 +266,10 @@
           font-size: 1rem;
         }
 
-        .botao-tatil {
-          width: 46px;
-          height: 46px;
+        .game-overlay-btn {
+          width: 34px;
+          height: 34px;
           font-size: 1rem;
-        }
-
-        .botao-tatil-voltar {
-          width: 36px;
-          height: 36px;
-          font-size: 0.85rem;
         }
       }
     </style>
@@ -412,19 +373,52 @@
             </canvas>
           </div>
 
-          <!-- Controles por toque (celular/tablet) -->
-          <div class="controles-tateis" id="controlesTateis">
-            <div class="controles-tateis-grupo controles-tateis-esquerda">
-              <button class="botao-tatil" type="button" data-tecla="65" aria-label="Andar para a esquerda (A)">A</button>
-              <button class="botao-tatil" type="button" data-tecla="68" aria-label="Andar para a direita (D)">D</button>
-            </div>
-            <div class="controles-tateis-grupo controles-tateis-direita">
-              <button class="botao-tatil botao-tatil-voltar" type="button" data-tecla="8" aria-label="Voltar / Menu (Backspace)">⌫</button>
-              <div class="controles-tateis-acoes">
-                <button class="botao-tatil" type="button" data-tecla="69" aria-label="Interagir (E)">E</button>
-                <button class="botao-tatil" type="button" data-tecla="87" aria-label="Pular (W)">W</button>
-              </div>
-            </div>
+          <!-- BOTÕES OVERLAY -->
+          <div class="game-overlay-btns">
+            <!-- Tela Cheia -->
+            <button
+              class="game-overlay-btn"
+              id="fullscreenBtn"
+              title="Tela cheia"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+            </button>
+
+            <!-- Sair -->
+            <a
+              href="linha-do-tempo.html"
+              class="game-overlay-btn"
+              id="exitBtn"
+              title="Voltar à Linha do Tempo"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 6l-12 12"></path>
+                <path d="M6 6l12 12"></path>
+              </svg>
+            </a>
           </div>
 
           <!-- Play Overlay -->
@@ -578,6 +572,9 @@
       // ==========================================
       // TELA CHEIA E REDIMENSIONAMENTO DINÂMICO
       // ==========================================
+      const gameArea = document.getElementById("gameArea");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+
       function enforceFullscreenCanvasSize() {
         const isFullscreen = !!(
           document.fullscreenElement ||
@@ -656,6 +653,36 @@
         sincronizarResolucaoCanvas();
       }
 
+      function toggleFullscreen() {
+        if (!gameArea) return;
+
+        const isFullscreen =
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement;
+
+        if (isFullscreen) {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen)
+            document.webkitExitFullscreen();
+          else if (document.msExitFullscreen) document.msExitFullscreen();
+        } else {
+          if (gameArea.requestFullscreen)
+            gameArea.requestFullscreen().catch((e) => console.error(e));
+          else if (gameArea.webkitRequestFullscreen)
+            gameArea.webkitRequestFullscreen();
+          else if (gameArea.msRequestFullscreen)
+            gameArea.msRequestFullscreen();
+        }
+
+        setTimeout(() => {
+          enforceFullscreenCanvasSize();
+          if (typeof window.dispatchEvent === "function") {
+            window.dispatchEvent(new Event("resize"));
+          }
+        }, 100);
+      }
+
       document.addEventListener("fullscreenchange", () => {
         enforceFullscreenCanvasSize();
         setTimeout(() => {
@@ -667,6 +694,10 @@
       document.addEventListener("webkitfullscreenchange", enforceFullscreenCanvasSize);
       document.addEventListener("msfullscreenchange", enforceFullscreenCanvasSize);
       window.addEventListener("resize", enforceFullscreenCanvasSize);
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+      }
 
       // ==========================================
       // INICIALIZAÇÃO GAMEMAKER
@@ -735,66 +766,6 @@
           }, 100);
         }
       }
-
-      // ==========================================
-      // CONTROLES POR TOQUE (celular/tablet)
-      // ==========================================
-      // O jogo exportado do GameMaker só entende teclado físico: o motor
-      // guarda quais teclas estão pressionadas através de window.onkeydown/
-      // onkeyup, que ELE MESMO atribui assim que inicializa (dentro de
-      // BLANK GAME.js). Não existe teclado em celular/tablet, então, em vez
-      // de um atalho superficial (ex.: desenhar os botões e simplesmente
-      // clicar no jogo), chamamos esses mesmos manipuladores diretamente,
-      // com um objeto de evento mínimo — exatamente a fonte de dados que o
-      // motor usa pra decidir se uma tecla está "para baixo" ou não. Assim
-      // os botões de toque se comportam, pro jogo, como teclado de verdade.
-      (function () {
-        function simularTecla(codigo, pressionando) {
-          const manipulador = pressionando ? window.onkeydown : window.onkeyup;
-          if (typeof manipulador !== "function") return;
-          manipulador({
-            which: codigo,
-            keyCode: codigo,
-            key: "",
-            shiftKey: false,
-            preventDefault: function () {},
-          });
-        }
-
-        document.querySelectorAll(".botao-tatil").forEach(function (botao) {
-          const codigo = parseInt(botao.dataset.tecla, 10);
-          if (!codigo) return;
-
-          let pressionado = false;
-
-          function iniciar(e) {
-            if (e) e.preventDefault();
-            if (pressionado) return;
-            pressionado = true;
-            botao.classList.add("ativo");
-            simularTecla(codigo, true);
-          }
-
-          function finalizar(e) {
-            if (e) e.preventDefault();
-            if (!pressionado) return;
-            pressionado = false;
-            botao.classList.remove("ativo");
-            simularTecla(codigo, false);
-          }
-
-          botao.addEventListener("pointerdown", iniciar);
-          botao.addEventListener("pointerup", finalizar);
-          botao.addEventListener("pointercancel", finalizar);
-          botao.addEventListener("pointerleave", finalizar);
-          botao.addEventListener("touchstart", iniciar, { passive: false });
-          botao.addEventListener("touchend", finalizar);
-          botao.addEventListener("touchcancel", finalizar);
-          botao.addEventListener("contextmenu", function (e) {
-            e.preventDefault();
-          });
-        });
-      })();
 
       // ==========================================
       // MENU MOBILE
