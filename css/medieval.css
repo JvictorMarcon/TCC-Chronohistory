@@ -826,42 +826,6 @@ body::before {
     font-style: italic;
 }
 
-/* ===== OVERLAY DO JOGO ===== */
-.game-overlay-btns {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-
-.game-overlay-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(139, 105, 20, 0.2);
-    border: 1px solid rgba(139, 105, 20, 0.4);
-    border-radius: 8px;
-    color: #f5efe4;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
-}
-
-.game-overlay-btn:hover {
-    background: rgba(139, 105, 20, 0.4);
-    border-color: rgba(139, 105, 20, 0.7);
-}
-
-.game-overlay-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-}
-
 /* ===== PLAY OVERLAY ===== */
 .play-overlay {
     position: absolute;
@@ -973,17 +937,6 @@ body::before {
 
     .descricao-tecla {
         font-size: 0.7rem;
-    }
-
-    .game-overlay-btns {
-        top: 8px;
-        right: 8px;
-        gap: 6px;
-    }
-
-    .game-overlay-btn {
-        width: 36px;
-        height: 36px;
     }
 
     #btn-play {
