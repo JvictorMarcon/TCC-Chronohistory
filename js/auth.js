@@ -179,12 +179,18 @@ function mostrarBoasVindas() {
     }, 2800);
 }
 
+// Dispara a checagem de sessão assim que este script carrega, sem esperar
+// o DOMContentLoaded (o fetch em si não depende do DOM) — o resultado fica
+// pronto mais cedo. Também fica exposta em window para outro script dessa
+// mesma página eventualmente reaproveitar, em vez de chamar /me de novo.
+window.chronohistorySessaoPromise = obterSessao();
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Executa imediatamente com os dados locais salvos (sem esperar rede)
     atualizarNavegacao(lerUsuarioLocal());
     mostrarBoasVindas();
 
-    // Depois valida com o backend se disponível
-    const sessao = await obterSessao();
+    // Depois valida com o backend (chamada já disparada acima)
+    const sessao = await window.chronohistorySessaoPromise;
     atualizarNavegacao(sessao);
 });

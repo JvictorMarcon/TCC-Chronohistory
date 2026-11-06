@@ -53,8 +53,11 @@ async function verificarSessao() {
 // Inicialização
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    await verificarSessao();
-    await carregarDados();
+    // Em paralelo — nenhuma das duas depende do resultado da outra
+    // (carregarDados não lê sessaoAtual), e as duas batem no mesmo backend
+    // que pode estar lento/acordando. Rodar em série fazia o usuário
+    // esperar a SOMA das duas chamadas; em paralelo, espera só a mais lenta.
+    await Promise.all([verificarSessao(), carregarDados()]);
     setupEventListeners();
 });
 
@@ -65,7 +68,6 @@ async function carregarDados() {
     let data = null;
     const endpoints = [
         `${API_BASE}/eventos`,
-        `${API_BASE}/periodos`,
         'periodos.json'
     ];
 
