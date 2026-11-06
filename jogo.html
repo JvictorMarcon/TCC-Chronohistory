@@ -189,12 +189,18 @@
          era necessário para o mouse não desalinhar, mas agora a correção
          de coordenada (ver script antes de BLANK GAME.js) recalcula a
          escala X e Y de forma independente a partir do tamanho real
-         exibido, então esticar a tela toda não quebra mais o clique. */
+         exibido, então esticar a tela toda não quebra mais o clique.
+
+         ".tela-cheia-simulada" entra na mesma lista de condições porque o
+         iOS Safari não implementa a Fullscreen API pra elementos comuns
+         (só pra <video>) — nesse caso o JS liga essa classe manualmente em
+         vez de depender de :fullscreen, usando exatamente o mesmo visual. */
       :is(.game-area, #gameArea):is(
           :fullscreen,
           :-webkit-full-screen,
           :-moz-full-screen,
-          :-ms-fullscreen
+          :-ms-fullscreen,
+          .tela-cheia-simulada
         ) {
         width: 100vw !important;
         height: 100vh !important;
@@ -216,7 +222,8 @@
           :fullscreen,
           :-webkit-full-screen,
           :-moz-full-screen,
-          :-ms-fullscreen
+          :-ms-fullscreen,
+          .tela-cheia-simulada
         )
         .gm4html5_div_class {
         width: 100vw !important;
@@ -234,7 +241,8 @@
           :fullscreen,
           :-webkit-full-screen,
           :-moz-full-screen,
-          :-ms-fullscreen
+          :-ms-fullscreen,
+          .tela-cheia-simulada
         )
         #canvas {
         width: 100% !important;
@@ -549,6 +557,9 @@
       if (typeof window._IT4 !== "undefined") {
         window._IT4 = false;
       }
+      if (typeof window._Ok5 !== "undefined") {
+        window._Ok5 = false;
+      }
 
       // IMPORTANTE: NÃO chamar nenhuma função do jogo pelo nome minificado
       // (ex.: a antiga "_Mr") pra redimensionar o canvas. Esses nomes curtos
@@ -579,7 +590,8 @@
         const isFullscreen = !!(
           document.fullscreenElement ||
           document.webkitFullscreenElement ||
-          document.msFullscreenElement
+          document.msFullscreenElement ||
+          (gameArea && gameArea.classList.contains("tela-cheia-simulada"))
         );
         const canvas = document.getElementById("canvas");
         const gmDiv = document.getElementById("gm4html5_div_id");
@@ -653,8 +665,55 @@
         sincronizarResolucaoCanvas();
       }
 
+      // iOS Safari não implementa a Fullscreen API em elementos comuns (só
+      // em <video>) — "requestFullscreen" nem existe lá. Nesse caso, em vez
+      // de não fazer nada (o bug original no celular), simulamos a tela
+      // cheia só com CSS: a classe "tela-cheia-simulada" aplica exatamente
+      // o mesmo visual de :fullscreen (ver CSS acima). enforceFullscreenCanvasSize
+      // já trata essa classe como "está em tela cheia" pra todo o resto do
+      // código (sincronizar canvas, etc.) funcionar igual.
+      //
+      // Por que reparentar pro <body>: .game-card (avô de #gameArea) tem
+      // backdrop-filter, que cria um "containing block" novo pra qualquer
+      // descendente com position:fixed — ou seja, "position:fixed;top:0;
+      // left:0" ficaria preso no canto do card, não da tela de verdade. A
+      // Fullscreen API nativa não sofre disso porque tira o elemento do
+      // fluxo normal; aqui replicamos isso manualmente movendo o elemento
+      // pro body (sem position/filter) enquanto durar a tela cheia simulada.
+      let gameAreaPaiOriginal = null;
+      let gameAreaIrmaoOriginal = null;
+
+      function ativarTelaCheiaSimulada() {
+        if (!gameArea.classList.contains("tela-cheia-simulada")) {
+          gameAreaPaiOriginal = gameArea.parentNode;
+          gameAreaIrmaoOriginal = gameArea.nextSibling;
+          document.body.appendChild(gameArea);
+        }
+        gameArea.classList.add("tela-cheia-simulada");
+        document.body.style.overflow = "hidden";
+        enforceFullscreenCanvasSize();
+        window.dispatchEvent(new Event("resize"));
+      }
+
+      function desativarTelaCheiaSimulada() {
+        gameArea.classList.remove("tela-cheia-simulada");
+        document.body.style.overflow = "";
+        if (gameAreaPaiOriginal) {
+          gameAreaPaiOriginal.insertBefore(gameArea, gameAreaIrmaoOriginal);
+          gameAreaPaiOriginal = null;
+          gameAreaIrmaoOriginal = null;
+        }
+        enforceFullscreenCanvasSize();
+        window.dispatchEvent(new Event("resize"));
+      }
+
       function toggleFullscreen() {
         if (!gameArea) return;
+
+        if (gameArea.classList.contains("tela-cheia-simulada")) {
+          desativarTelaCheiaSimulada();
+          return;
+        }
 
         const isFullscreen =
           document.fullscreenElement ||
@@ -666,13 +725,16 @@
           else if (document.webkitExitFullscreen)
             document.webkitExitFullscreen();
           else if (document.msExitFullscreen) document.msExitFullscreen();
+        } else if (gameArea.requestFullscreen) {
+          gameArea.requestFullscreen().catch(() => ativarTelaCheiaSimulada());
+        } else if (gameArea.webkitRequestFullscreen) {
+          gameArea.webkitRequestFullscreen();
+        } else if (gameArea.msRequestFullscreen) {
+          gameArea.msRequestFullscreen();
         } else {
-          if (gameArea.requestFullscreen)
-            gameArea.requestFullscreen().catch((e) => console.error(e));
-          else if (gameArea.webkitRequestFullscreen)
-            gameArea.webkitRequestFullscreen();
-          else if (gameArea.msRequestFullscreen)
-            gameArea.msRequestFullscreen();
+          // Nenhum método de tela cheia nativo existe (iOS Safari) — usa o
+          // fallback simulado direto.
+          ativarTelaCheiaSimulada();
         }
 
         setTimeout(() => {
