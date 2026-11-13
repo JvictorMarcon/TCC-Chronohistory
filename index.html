@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>(function(){try{if(localStorage.getItem('chronohistory_theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
+    <!-- Esconde o hero até o GSAP montar a animação de entrada; se a CDN
+         falhar, o timeout devolve tudo ao normal. -->
+    <script>(function(){var r=document.documentElement;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('js-anim');setTimeout(function(){if(!window.gsap)r.classList.remove('js-anim');},4000);})();</script>
     <title>Chronohistory — Aprenda história de um jeito interativo</title>
     <meta
       name="description"
@@ -138,23 +141,16 @@
         </div>
       </div>
 
-      <div class="landing-chip landing-chip-left reveal">
+      <div class="landing-chip landing-chip-left">
         <span class="landing-chip-label">Linha do tempo</span>
         <span class="landing-chip-value">100+ eventos</span>
       </div>
-      <div class="landing-chip landing-chip-right reveal">
+      <div class="landing-chip landing-chip-right">
         <span class="landing-chip-label">Jornada completa</span>
         <span class="landing-chip-value">5 períodos históricos</span>
       </div>
 
-      <div
-        class="hero-scroll-arrow"
-        onclick="
-          document
-            .getElementById('recursos')
-            .scrollIntoView({ behavior: 'smooth' })
-        "
-      >
+      <div class="hero-scroll-arrow" role="button" tabindex="0" aria-label="Rolar até os recursos">
         <div class="scroll-arrow-pixel">↓</div>
         <div class="scroll-arrow-label">Rolar</div>
       </div>
@@ -179,6 +175,16 @@
         <div class="stat-label">Para sempre</div>
       </div>
     </section>
+
+    <!-- ═══ FLUXO PRINCIPAL — o "fio do tempo" dourado liga estas seções ═══ -->
+    <div class="landing-flow">
+    <svg class="time-thread" aria-hidden="true" focusable="false">
+      <path class="time-thread-base" />
+      <path class="time-thread-glow" />
+      <path class="time-thread-path" />
+      <circle class="time-thread-halo" r="14" cx="-50" cy="-50" />
+      <circle class="time-thread-head" r="4.5" cx="-50" cy="-50" />
+    </svg>
 
     <!-- ═══ RECURSOS ═══ -->
     <section class="landing-section" id="recursos">
@@ -268,8 +274,116 @@
       </div>
     </section>
 
+    <!-- ═══ GALERIA HISTÓRICA (com a ampulheta 3D) ═══ -->
+    <section class="gallery-showcase" id="galeria">
+      <div class="gallery-inner">
+        <div class="hourglass-stage reveal" aria-hidden="true">
+          <canvas class="hourglass-canvas"></canvas>
+          <svg class="hourglass-fallback" viewBox="0 0 64 96" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 5h48M8 91h48" />
+            <path d="M15 5c0 22 14 31 14 43S15 70 15 91M49 5c0 22-14 31-14 43s14 22 14 43" />
+            <path d="M21 82c4-7 18-7 22 0z" fill="currentColor" opacity="0.6" />
+          </svg>
+          <div class="hourglass-era">
+            <span class="hourglass-era-label">Viajando por</span>
+            <span class="hourglass-era-text">Pré-História</span>
+          </div>
+        </div>
+
+        <div class="gallery-copy">
+          <span class="section-eyebrow gallery-eyebrow reveal">Galeria Histórica</span>
+          <h2 class="gallery-title reveal">Obras que guardam o tempo de cada época</h2>
+          <p class="gallery-desc reveal">
+            Pinturas, mosaicos e fotografias que registraram os grandes
+            momentos da humanidade — cada obra acompanhada do contexto
+            histórico em que nasceu.
+          </p>
+
+          <div class="gallery-track-wrap reveal">
+            <div class="gallery-track">
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/pinturas-rupestres.webp" alt="Pinturas rupestres da caverna de Lascaux" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Pré-História</span>
+                  <h3 class="gallery-card-title">Pinturas rupestres</h3>
+                  <span class="gallery-card-year">c. 40.000 a.C.</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/alexandre.webp" alt="Detalhe do Mosaico de Alexandre, o Grande" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Antiga</span>
+                  <h3 class="gallery-card-title">Alexandre, o Grande</h3>
+                  <span class="gallery-card-year">336 – 323 a.C.</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/carlos-magno.webp" alt="Carlos Magno retratado por Albrecht Dürer" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Média</span>
+                  <h3 class="gallery-card-title">Carlos Magno</h3>
+                  <span class="gallery-card-year">768 – 814 d.C.</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/renascimento.webp" alt="Escola de Atenas, de Rafael" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Moderna</span>
+                  <h3 class="gallery-card-title">Renascimento</h3>
+                  <span class="gallery-card-year">c. 1300 – 1600</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/revolucao-francesa.webp" alt="A Liberdade guiando o povo, de Delacroix" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Contemporânea</span>
+                  <h3 class="gallery-card-title">Revolução Francesa</h3>
+                  <span class="gallery-card-year">1789 – 1799</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/independencia.webp" alt="Independência ou Morte, de Pedro Américo" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Contemporânea</span>
+                  <h3 class="gallery-card-title">Independência do Brasil</h3>
+                  <span class="gallery-card-year">1822</span>
+                </div>
+              </a>
+              <a href="galeria.html" class="gallery-card">
+                <div class="gallery-card-media">
+                  <img src="assets/galeria/chegada-lua.webp" alt="Buzz Aldrin na Lua durante a missão Apollo 11" loading="lazy" decoding="async" />
+                </div>
+                <div class="gallery-card-body">
+                  <span class="gallery-card-era">Idade Contemporânea</span>
+                  <h3 class="gallery-card-title">Chegada à Lua</h3>
+                  <span class="gallery-card-year">1969</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="gallery-cta reveal">
+            <a href="galeria.html" class="landing-btn-primary">Explorar a galeria</a>
+            <span class="gallery-cta-note">Requer login · mais de 100 obras</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ DESTAQUE DO JOGO ═══ -->
-    <section class="landing-section game-spotlight">
+    <section class="landing-section game-spotlight" id="jogo">
       <div class="game-spotlight-grid">
         <div class="game-spotlight-media reveal">
           <img
@@ -310,7 +424,7 @@
     </section>
 
     <!-- ═══ COMO FUNCIONA ═══ -->
-    <section class="landing-section steps-section">
+    <section class="landing-section steps-section" id="como-funciona">
       <span class="section-eyebrow reveal">Como funciona</span>
       <h2 class="section-title reveal">Comece em três passos simples</h2>
 
@@ -407,7 +521,7 @@
     </section>
 
     <!-- ═══ CTA FINAL ═══ -->
-    <section class="final-cta">
+    <section class="final-cta" id="comecar">
       <div class="final-cta-box reveal">
         <h2 class="final-cta-title">Pronto para começar sua jornada?</h2>
         <p class="final-cta-desc">
@@ -422,6 +536,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <!-- ═══ FOOTER ═══ -->
     <footer>
@@ -507,43 +622,25 @@
             mobileMenu.classList.remove("open");
           }
         });
-
-        // Revela seções suavemente conforme entram na tela
-        const reveals = document.querySelectorAll(".reveal");
-        if ("IntersectionObserver" in window && reveals.length) {
-          const observer = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry, i) {
-                if (entry.isIntersecting) {
-                  setTimeout(
-                    function () {
-                      entry.target.classList.add("is-visible");
-                    },
-                    (i % 3) * 90,
-                  );
-                  observer.unobserve(entry.target);
-                }
-              });
-            },
-            { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
-          );
-          reveals.forEach(function (el) {
-            observer.observe(el);
-          });
-          // Rede de segurança: garante que nada fique permanentemente
-          // invisível (ex: rolagem instantânea que pula elementos sem o
-          // observer chegar a detectá-los).
-          setTimeout(function () {
-            reveals.forEach(function (el) {
-              el.classList.add("is-visible");
-            });
-          }, 2500);
-        } else {
-          reveals.forEach(function (el) {
-            el.classList.add("is-visible");
-          });
-        }
       });
     </script>
+
+    <!-- ═══ ANIMAÇÕES DE ROLAGEM (GSAP + ScrollTrigger + SplitText + Lenis) ═══ -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="js/landing-scroll.js"></script>
+
+    <!-- ═══ AMPULHETA 3D (three.js) ═══ -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="js/ampulheta-3d.js"></script>
   </body>
 </html>

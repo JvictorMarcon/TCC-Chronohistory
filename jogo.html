@@ -12,7 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -58,6 +58,10 @@
           0 30px 60px -15px rgba(0, 0, 0, 0.7),
           inset 0 1px 0 rgba(255, 255, 255, 0.05);
         width: 100%;
+        /* o jogo (16:9) inteiro cabe na altura da janela, sem precisar
+           rolar a página: altura útil = tela - cabeçalho - margens - legenda */
+        max-width: max(480px, calc((100vh - 250px) * 16 / 9 + 3rem));
+        margin: 0 auto;
         transition: all 0.3s;
       }
 
@@ -71,13 +75,15 @@
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
       }
 
-      /* Proporção fixa (1000x500 = 2:1), igual à resolução nativa do jogo.
-         Mantê-la constante em qualquer breakpoint evita que o canvas seja
-         esticado de forma não-uniforme — é o que fazia o mouse "desalinhar". */
+      /* Proporção 16:9, igual à resolução nativa do jogo (1366x768).
+         O canvas mantém essa resolução interna e só é ESCALADO pelo CSS,
+         então o jogo aparece inteiro (antes, numa caixa 2:1, o topo e a
+         direita do jogo ficavam cortados) e o clique pode ser convertido
+         com uma simples regra de três (ver "corrigirCoordenada"). */
       .gm4html5_div_class {
         position: relative;
         width: 100%;
-        aspect-ratio: 2 / 1;
+        aspect-ratio: 16 / 9;
         background: #000;
       }
 
@@ -99,8 +105,10 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
+        background:
+          linear-gradient(180deg, rgba(8, 6, 4, 0.55) 0%, rgba(8, 6, 4, 0.82) 70%, rgba(8, 6, 4, 0.95) 100%),
+          url("assets/herois-vortice.webp") center 30% / cover no-repeat,
+          #000;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -130,6 +138,32 @@
       .play-overlay button:hover {
         transform: scale(1.05);
         box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+      }
+
+      .play-titulo {
+        font-family: "Fraunces", "Playfair Display", Georgia, serif;
+        font-size: clamp(1.6rem, 4.5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: var(--seal-light);
+        text-shadow: 0 3px 0 #5a3d0a, 0 0 30px rgba(232, 200, 74, 0.45);
+        text-align: center;
+        line-height: 1;
+      }
+
+      .play-subtitulo {
+        color: #f5e6c8;
+        font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+        text-align: center;
+        margin-top: -0.4rem;
+        margin-bottom: 0.4rem;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      }
+
+      .play-aviso {
+        color: rgba(245, 230, 200, 0.6);
+        font-size: 0.75rem;
+        text-align: center;
       }
 
       .play-overlay.escondido {
@@ -184,80 +218,152 @@
         border-color: #ff6666;
       }
 
-      /* ═══ TELA CHEIA SEM BORDAS PRETAS ═══
-         Preenche 100vw/100vh sem preservar a proporção 2:1 — antes isso
-         era necessário para o mouse não desalinhar, mas agora a correção
-         de coordenada (ver script antes de BLANK GAME.js) recalcula a
-         escala X e Y de forma independente a partir do tamanho real
-         exibido, então esticar a tela toda não quebra mais o clique.
-
-         ".tela-cheia-simulada" entra na mesma lista de condições porque o
-         iOS Safari não implementa a Fullscreen API pra elementos comuns
-         (só pra <video>) — nesse caso o JS liga essa classe manualmente em
-         vez de depender de :fullscreen, usando exatamente o mesmo visual. */
+      /* ═══ TELA CHEIA ═══
+         Fundo preto na tela toda e o jogo centralizado no maior 16:9 que
+         cabe (sem esticar a arte). ".tela-cheia-simulada" é o mesmo visual
+         para o iOS Safari, que não tem a Fullscreen API em <div>. */
       :is(.game-area, #gameArea):is(
           :fullscreen,
           :-webkit-full-screen,
-          :-moz-full-screen,
-          :-ms-fullscreen,
           .tela-cheia-simulada
         ) {
         width: 100vw !important;
         height: 100vh !important;
         max-width: 100vw !important;
-        max-height: 100vh !important;
         margin: 0 !important;
-        padding: 0 !important;
         border-radius: 0 !important;
-        background: #000 !important;
         border: none !important;
-        overflow: hidden !important;
+        background: #000 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
         position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
+        inset: 0;
         z-index: 999999 !important;
       }
 
       :is(.game-area, #gameArea):is(
           :fullscreen,
           :-webkit-full-screen,
-          :-moz-full-screen,
-          :-ms-fullscreen,
           .tela-cheia-simulada
         )
         .gm4html5_div_class {
-        width: 100vw !important;
-        height: 100vh !important;
-        max-width: 100vw !important;
-        max-height: 100vh !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
+        width: min(100vw, calc(100vh * 16 / 9)) !important;
+        height: auto !important;
       }
 
-      :is(.game-area, #gameArea):is(
-          :fullscreen,
-          :-webkit-full-screen,
-          :-moz-full-screen,
-          :-ms-fullscreen,
-          .tela-cheia-simulada
-        )
-        #canvas {
-        width: 100% !important;
-        height: 100% !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        object-fit: fill !important;
-        transform: none !important;
+      /* ═══ CARREGAMENTO (ampulheta) ═══ */
+      .tela-carregando {
+        position: absolute;
+        inset: 0;
+        z-index: 25;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.1rem;
+        padding: 1.5rem;
+        text-align: center;
+        color: #f5e6c8;
+        background:
+          radial-gradient(ellipse at center, rgba(201, 162, 39, 0.16), transparent 60%),
+          radial-gradient(ellipse at bottom, #241a10, #0b0806 70%);
+        transition: opacity 0.6s ease, visibility 0.6s;
+      }
+
+      .tela-carregando.escondido {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .ampulheta {
+        width: clamp(64px, 11vw, 110px);
+        height: auto;
+        filter: drop-shadow(0 0 18px rgba(232, 200, 74, 0.35));
+        animation: ampulheta-gira 3.2s ease-in-out infinite;
+      }
+
+      /* fica parada enquanto a areia cai e dá meia-volta no fim */
+      @keyframes ampulheta-gira {
+        0%, 78% { transform: rotate(0deg); }
+        100% { transform: rotate(180deg); }
+      }
+
+      .ampulheta .areia-cima {
+        animation: areia-cima 3.2s linear infinite;
+        transform-origin: 50% 46%;
+      }
+
+      .ampulheta .areia-baixo {
+        animation: areia-baixo 3.2s linear infinite;
+        transform-origin: 50% 88%;
+      }
+
+      .ampulheta .fio-areia {
+        animation: fio-areia 3.2s linear infinite;
+      }
+
+      @keyframes areia-cima {
+        0% { transform: scaleY(1); }
+        78%, 100% { transform: scaleY(0); }
+      }
+
+      @keyframes areia-baixo {
+        0% { transform: scaleY(0); }
+        78%, 100% { transform: scaleY(1); }
+      }
+
+      @keyframes fio-areia {
+        0%, 76% { opacity: 1; }
+        78%, 100% { opacity: 0; }
+      }
+
+      .carregando-titulo {
+        font-family: "Fraunces", "Playfair Display", Georgia, serif;
+        font-size: clamp(1.05rem, 2.2vw, 1.6rem);
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--seal-light);
+        text-transform: uppercase;
+      }
+
+      .carregando-barra {
+        width: min(360px, 70%);
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(201, 162, 39, 0.45);
+        overflow: hidden;
+      }
+
+      .carregando-barra span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--seal-dark), var(--seal-light));
+        box-shadow: 0 0 12px rgba(232, 200, 74, 0.6);
+        transition: width 0.4s ease;
+      }
+
+      .carregando-porcento {
+        font-size: 0.85rem;
+        color: rgba(245, 230, 200, 0.75);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .carregando-dica {
+        max-width: 34rem;
+        min-height: 2.6em;
+        font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+        font-style: italic;
+        color: rgba(245, 230, 200, 0.85);
+        transition: opacity 0.4s ease;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ampulheta, .ampulheta * { animation: none !important; }
       }
 
       @media (max-width: 768px) {
@@ -376,7 +482,7 @@
       <section class="game-card">
         <div class="game-area" id="gameArea">
           <div class="gm4html5_div_class" id="gm4html5_div_id">
-            <canvas id="canvas" width="1000" height="500">
+            <canvas id="canvas" width="1366" height="768">
               <p>Seu navegador não suporta HTML5 canvas.</p>
             </canvas>
           </div>
@@ -429,12 +535,42 @@
             </a>
           </div>
 
+          <!-- Carregamento (aparece depois de clicar em Executar jogo) -->
+          <div class="tela-carregando escondido" id="tela-carregando" aria-live="polite">
+            <svg class="ampulheta" viewBox="0 0 100 140" aria-hidden="true">
+              <defs>
+                <clipPath id="vidro-cima"><path d="M24 18 H76 C76 44 58 56 52 68 H48 C42 56 24 44 24 18 Z" /></clipPath>
+                <clipPath id="vidro-baixo"><path d="M48 72 H52 C58 84 76 96 76 122 H24 C24 96 42 84 48 72 Z" /></clipPath>
+              </defs>
+              <rect x="14" y="6" width="72" height="12" rx="4" fill="#8b6914" />
+              <rect x="14" y="122" width="72" height="12" rx="4" fill="#8b6914" />
+              <rect x="18" y="18" width="5" height="104" fill="#a68a56" />
+              <rect x="77" y="18" width="5" height="104" fill="#a68a56" />
+              <g clip-path="url(#vidro-cima)">
+                <rect class="areia-cima" x="20" y="30" width="60" height="40" fill="#e8c84a" />
+              </g>
+              <g clip-path="url(#vidro-baixo)">
+                <rect class="areia-baixo" x="20" y="96" width="60" height="28" fill="#e8c84a" />
+              </g>
+              <rect class="fio-areia" x="49" y="66" width="2" height="44" fill="#e8c84a" />
+              <path d="M24 18 H76 C76 44 58 56 52 70 C58 84 76 96 76 122 H24 C24 96 42 84 48 70 C42 56 24 44 24 18 Z"
+                fill="rgba(245,230,200,0.10)" stroke="#f5e6c8" stroke-opacity="0.55" stroke-width="2" />
+            </svg>
+            <div class="carregando-titulo">Viajando no tempo...</div>
+            <div class="carregando-barra"><span id="carregando-barra"></span></div>
+            <div class="carregando-porcento" id="carregando-porcento">0%</div>
+            <div class="carregando-dica" id="carregando-dica"></div>
+          </div>
+
           <!-- Play Overlay -->
           <div class="play-overlay" id="play-overlay">
-            <button id="btn-play" type="button" onclick="esconderTelaPlay()">
+            <div class="play-titulo">Chronohistory</div>
+            <div class="play-subtitulo">Uma viagem através dos séculos</div>
+            <button id="btn-play" type="button" onclick="iniciarJogo()">
               <span class="play-icon">▶</span>
               Executar jogo
             </button>
+            <div class="play-aviso">O primeiro carregamento pode levar alguns instantes.</div>
           </div>
         </div>
 
@@ -468,19 +604,40 @@
       </div>
     </footer>
 
-    <!-- FIX: clique do mouse desalinhado do que é exibido na tela.
-         O canvas tem resolução interna fixa 1000x500 (atributos width/
-         height da tag <canvas>), mas é exibido em qualquer tamanho via
-         CSS responsivo. A função de mouse do jogo (exportado do
-         GameMaker, dentro de BLANK GAME.js) calcula a posição do clique
-         relativa ao canvas em pixels de TELA, mas divide pela resolução
-         INTERNA fixa — sem nunca aplicar a proporção entre as duas. Isso
-         desalinha o clique sempre que o canvas não está exibido exatos
-         1000x500px (ou seja, sempre, já que ele é responsivo). Como não
-         dá pra editar com segurança o arquivo minificado do GameMaker,
-         corrigimos por fora: interceptamos o evento de mouse/toque antes
-         dele chegar no jogo e já entregamos a coordenada na escala que a
-         função (com bug) espera. -->
+
+    <!-- PROGRESSO DO CARREGAMENTO
+         O runtime do GameMaker escreve no console "Loading: ..." para cada
+         textura que pede, "ImageLoaded: ..." quando ela chega e
+         "Entering main loop..." quando o jogo começa. Escutamos essas
+         mensagens (em vez de nomes internos minificados, que mudam a cada
+         exportação) para mover a barra da tela de carregamento. -->
+    <script>
+      (function () {
+        const progresso = { total: 0, prontos: 0, iniciou: false, ouvintes: [] };
+        window.chronoCarregamento = progresso;
+
+        function avisar() {
+          progresso.ouvintes.forEach(function (fn) { fn(progresso); });
+        }
+
+        const logOriginal = console.log.bind(console);
+        console.log = function () {
+          const msg = String(arguments[0]);
+          // conta só imagens: é o que o "ImageLoaded" confirma depois
+          if (msg.indexOf("Loading: ") === 0 && /\.(png|jpe?g|gif|webp)(\?|$)/i.test(msg)) { progresso.total++; avisar(); }
+          else if (msg.indexOf("ImageLoaded: ") === 0 || msg.indexOf("ImageError: ") === 0) { progresso.prontos++; avisar(); }
+          else if (msg.indexOf("Entering main loop") === 0) { progresso.iniciou = true; avisar(); }
+          return logOriginal.apply(console, arguments);
+        };
+      })();
+    </script>
+
+    <!-- CLIQUE / TOQUE NO LUGAR CERTO
+         O canvas tem resolução interna fixa (1366x768) e é exibido em
+         qualquer tamanho via CSS. A conta de mouse do jogo exportado não
+         considera essa escala, então convertemos a posição antes do evento
+         chegar no jogo: (posição na tela) x (resolução interna / tamanho
+         exibido). Funciona igual no card pequeno e na tela cheia. -->
     <script>
       (function () {
         function corrigirCoordenada(e) {
@@ -491,19 +648,49 @@
           const escalaX = canvas.width / rect.width;
           const escalaY = canvas.height / rect.height;
           if (escalaX === 1 && escalaY === 1) return;
-          const clientXCorrigido = rect.left + (e.clientX - rect.left) * escalaX;
-          const clientYCorrigido = rect.top + (e.clientY - rect.top) * escalaY;
+          const x = rect.left + (e.clientX - rect.left) * escalaX;
+          const y = rect.top + (e.clientY - rect.top) * escalaY;
           try {
-            Object.defineProperty(e, "clientX", { value: clientXCorrigido, configurable: true });
-            Object.defineProperty(e, "clientY", { value: clientYCorrigido, configurable: true });
+            Object.defineProperty(e, "clientX", { value: x, configurable: true });
+            Object.defineProperty(e, "clientY", { value: y, configurable: true });
+            Object.defineProperty(e, "pageX", { value: x + window.scrollX, configurable: true });
+            Object.defineProperty(e, "pageY", { value: y + window.scrollY, configurable: true });
           } catch (_) {}
         }
 
         [
-          "mousemove", "mousedown", "mouseup", "click",
+          "mousemove", "mousedown", "mouseup", "click", "wheel",
           "pointermove", "pointerdown", "pointerup",
         ].forEach(function (tipo) {
           window.addEventListener(tipo, corrigirCoordenada, true);
+        });
+
+        // toque: os pontos ficam dentro de e.touches / e.changedTouches
+        function corrigirToque(e) {
+          const canvas = document.getElementById("canvas");
+          if (!canvas || e.target !== canvas) return;
+          const rect = canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
+          const escalaX = canvas.width / rect.width;
+          const escalaY = canvas.height / rect.height;
+          [e.touches, e.changedTouches, e.targetTouches].forEach(function (lista) {
+            if (!lista) return;
+            for (let i = 0; i < lista.length; i++) {
+              const t = lista[i];
+              const x = rect.left + (t.clientX - rect.left) * escalaX;
+              const y = rect.top + (t.clientY - rect.top) * escalaY;
+              try {
+                Object.defineProperty(t, "clientX", { value: x, configurable: true });
+                Object.defineProperty(t, "clientY", { value: y, configurable: true });
+                Object.defineProperty(t, "pageX", { value: x + window.scrollX, configurable: true });
+                Object.defineProperty(t, "pageY", { value: y + window.scrollY, configurable: true });
+              } catch (_) {}
+            }
+          });
+        }
+
+        ["touchstart", "touchmove", "touchend"].forEach(function (tipo) {
+          window.addEventListener(tipo, corrigirToque, { capture: true, passive: false });
         });
       })();
     </script>
@@ -517,171 +704,24 @@
     <!-- SCRIPT PRINCIPAL -->
     <script>
       // ==========================================
-      // RAIZ DO PROBLEMA (bordas pretas + clique levemente errado):
-      // o jogo exportado do GameMaker tem um modo interno de "manter
-      // proporção" (variável global _WM4, ligada por padrão) que SÓ
-      // desenha o conteúdo numa área central do canvas, preenchendo o
-      // resto com preto, toda vez que o tamanho do canvas não é
-      // exatamente o que o jogo "acha" que deveria ser — é isso que
-      // sobra como barra preta na tela cheia (nenhum CSS por fora
-      // consegue remover, porque o preto é desenhado pelo próprio
-      // jogo dentro do canvas). Essa mesma conta interna de escala é
-      // reaproveitada para converter clique em coordenada do jogo, e
-      // como ela assume (incorretamente) que o canvas sempre é
-      // exibido do mesmo tamanho da sua resolução interna, qualquer
-      // canvas responsivo (o nosso é) desalinha o clique também.
-      //
-      // Correção na raiz: 1) desliga o modo "manter proporção" (o
-      // jogo passa a esticar pra preencher o canvas inteiro, sem
-      // sobra preta); 2) mantemos a resolução INTERNA do canvas
-      // (atributos width/height) sempre igual ao tamanho real exibido
-      // em CSS, em qualquer situação (card normal ou tela cheia) —
-      // assim a conta de escala do próprio jogo (pra desenhar E pra
-      // calcular o clique) fica sempre 1:1 e correta, sem precisar
-      // mais corrigir nada por fora.
-      // O nome exato dessa variável é gerado pelo minificador do GameMaker
-      // e muda a CADA reexportação do jogo (mesmo entre duas exportações
-      // do mesmo projeto) — já foram "_WM4", depois "_Si5", agora "_IT4"
-      // nesta build (confirmado checando html5game/BLANK GAME.js que está
-      // commitado agora). Se o jogo for reexportado de novo, repita essa
-      // investigação: procure por um "var" global booleano, inicializado
-      // como "!0" (true), usado perto de canvas.width/height dentro da
-      // função que decide entre preservar a proporção (com barras pretas)
-      // ou esticar o conteúdo pro tamanho real do canvas.
-      if (typeof window._WM4 !== "undefined") {
-        window._WM4 = false;
-      }
-      if (typeof window._Si5 !== "undefined") {
-        window._Si5 = false;
-      }
-      if (typeof window._IT4 !== "undefined") {
-        window._IT4 = false;
-      }
-      if (typeof window._Ok5 !== "undefined") {
-        window._Ok5 = false;
-      }
-
-      // IMPORTANTE: NÃO chamar nenhuma função do jogo pelo nome minificado
-      // (ex.: a antiga "_Mr") pra redimensionar o canvas. Esses nomes curtos
-      // colidem entre reexportações — na build atual "_Mr" é uma função
-      // totalmente diferente (nada a ver com canvas), e chamá-la aqui
-      // lançava um erro interno do jogo ("index out of range") que travava
-      // o loop de renderização, deixando a tela preta depois de abrir.
-      // Atribuir width/height diretamente é seguro em qualquer build,
-      // porque são propriedades padrão do <canvas>, não algo do GameMaker.
-      function sincronizarResolucaoCanvas() {
-        const canvas = document.getElementById("canvas");
-        if (!canvas) return;
-        const rect = canvas.getBoundingClientRect();
-        const largura = Math.max(1, Math.round(rect.width));
-        const altura = Math.max(1, Math.round(rect.height));
-        if (canvas.width === largura && canvas.height === altura) return;
-        canvas.width = largura;
-        canvas.height = altura;
-      }
-
+      // TELA CHEIA
       // ==========================================
-      // TELA CHEIA E REDIMENSIONAMENTO DINÂMICO
-      // ==========================================
+      // A resolução interna do canvas NÃO é mexida aqui: ela é do jogo.
+      // Só o tamanho exibido muda (CSS), e "corrigirCoordenada" ajusta o
+      // clique para qualquer tamanho.
       const gameArea = document.getElementById("gameArea");
       const fullscreenBtn = document.getElementById("fullscreenBtn");
 
-      function enforceFullscreenCanvasSize() {
-        const isFullscreen = !!(
-          document.fullscreenElement ||
-          document.webkitFullscreenElement ||
-          document.msFullscreenElement ||
-          (gameArea && gameArea.classList.contains("tela-cheia-simulada"))
-        );
-        const canvas = document.getElementById("canvas");
-        const gmDiv = document.getElementById("gm4html5_div_id");
-        const area = document.getElementById("gameArea");
-
-        if (isFullscreen) {
-          if (area) {
-            area.style.setProperty("width", "100vw", "important");
-            area.style.setProperty("height", "100vh", "important");
-            area.style.setProperty("margin", "0px", "important");
-            area.style.setProperty("padding", "0px", "important");
-            area.style.setProperty("border-radius", "0px", "important");
-            area.style.setProperty("border", "none", "important");
-          }
-          if (gmDiv) {
-            // Preenche a tela toda — a correção de coordenada (script antes
-            // de BLANK GAME.js) recalcula a escala X/Y a partir do tamanho
-            // real exibido, então não precisa mais preservar a proporção
-            // 2:1 pra manter o clique correto.
-            gmDiv.style.setProperty("width", "100vw", "important");
-            gmDiv.style.setProperty("height", "100vh", "important");
-            gmDiv.style.setProperty("padding-bottom", "0px", "important");
-            gmDiv.style.setProperty("position", "absolute", "important");
-            gmDiv.style.setProperty("top", "0px", "important");
-            gmDiv.style.setProperty("left", "0px", "important");
-          }
-          if (canvas) {
-            canvas.style.setProperty("width", "100%", "important");
-            canvas.style.setProperty("height", "100%", "important");
-            canvas.style.removeProperty("min-height");
-            canvas.style.removeProperty("max-height");
-            canvas.style.setProperty("object-fit", "fill", "important");
-            canvas.style.setProperty("top", "0px", "important");
-            canvas.style.setProperty("left", "0px", "important");
-            canvas.style.setProperty("margin", "0px", "important");
-            canvas.style.setProperty("position", "absolute", "important");
-          }
-        } else {
-          if (area) {
-            area.style.removeProperty("width");
-            area.style.removeProperty("height");
-            area.style.removeProperty("margin");
-            area.style.removeProperty("padding");
-            area.style.removeProperty("border-radius");
-            area.style.removeProperty("border");
-            area.style.removeProperty("display");
-            area.style.removeProperty("align-items");
-            area.style.removeProperty("justify-content");
-          }
-          if (gmDiv) {
-            gmDiv.style.removeProperty("width");
-            gmDiv.style.removeProperty("height");
-            gmDiv.style.removeProperty("padding-bottom");
-            gmDiv.style.removeProperty("top");
-            gmDiv.style.removeProperty("left");
-            gmDiv.style.removeProperty("position");
-          }
-          if (canvas) {
-            canvas.style.removeProperty("width");
-            canvas.style.removeProperty("height");
-            canvas.style.removeProperty("min-height");
-            canvas.style.removeProperty("max-height");
-            canvas.style.removeProperty("object-fit");
-            canvas.style.removeProperty("top");
-            canvas.style.removeProperty("left");
-            canvas.style.removeProperty("margin");
-            canvas.style.removeProperty("position");
-          }
-        }
-
-        sincronizarResolucaoCanvas();
-      }
-
-      // iOS Safari não implementa a Fullscreen API em elementos comuns (só
-      // em <video>) — "requestFullscreen" nem existe lá. Nesse caso, em vez
-      // de não fazer nada (o bug original no celular), simulamos a tela
-      // cheia só com CSS: a classe "tela-cheia-simulada" aplica exatamente
-      // o mesmo visual de :fullscreen (ver CSS acima). enforceFullscreenCanvasSize
-      // já trata essa classe como "está em tela cheia" pra todo o resto do
-      // código (sincronizar canvas, etc.) funcionar igual.
-      //
-      // Por que reparentar pro <body>: .game-card (avô de #gameArea) tem
-      // backdrop-filter, que cria um "containing block" novo pra qualquer
-      // descendente com position:fixed — ou seja, "position:fixed;top:0;
-      // left:0" ficaria preso no canto do card, não da tela de verdade. A
-      // Fullscreen API nativa não sofre disso porque tira o elemento do
-      // fluxo normal; aqui replicamos isso manualmente movendo o elemento
-      // pro body (sem position/filter) enquanto durar a tela cheia simulada.
+      // iOS Safari não tem a Fullscreen API em <div>: simulamos com a classe
+      // "tela-cheia-simulada" (mesmo visual de :fullscreen). O elemento vai
+      // para o <body> porque o backdrop-filter do card prenderia o
+      // position:fixed dentro dele.
       let gameAreaPaiOriginal = null;
       let gameAreaIrmaoOriginal = null;
+
+      function avisarRedimensionamento() {
+        setTimeout(function () { window.dispatchEvent(new Event("resize")); }, 100);
+      }
 
       function ativarTelaCheiaSimulada() {
         if (!gameArea.classList.contains("tela-cheia-simulada")) {
@@ -691,8 +731,7 @@
         }
         gameArea.classList.add("tela-cheia-simulada");
         document.body.style.overflow = "hidden";
-        enforceFullscreenCanvasSize();
-        window.dispatchEvent(new Event("resize"));
+        avisarRedimensionamento();
       }
 
       function desativarTelaCheiaSimulada() {
@@ -703,8 +742,7 @@
           gameAreaPaiOriginal = null;
           gameAreaIrmaoOriginal = null;
         }
-        enforceFullscreenCanvasSize();
-        window.dispatchEvent(new Event("resize"));
+        avisarRedimensionamento();
       }
 
       function toggleFullscreen() {
@@ -715,119 +753,121 @@
           return;
         }
 
-        const isFullscreen =
-          document.fullscreenElement ||
-          document.webkitFullscreenElement ||
-          document.msFullscreenElement;
+        const emTelaCheia = document.fullscreenElement || document.webkitFullscreenElement;
 
-        if (isFullscreen) {
+        if (emTelaCheia) {
           if (document.exitFullscreen) document.exitFullscreen();
-          else if (document.webkitExitFullscreen)
-            document.webkitExitFullscreen();
-          else if (document.msExitFullscreen) document.msExitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
         } else if (gameArea.requestFullscreen) {
-          gameArea.requestFullscreen().catch(() => ativarTelaCheiaSimulada());
+          gameArea.requestFullscreen().catch(ativarTelaCheiaSimulada);
         } else if (gameArea.webkitRequestFullscreen) {
           gameArea.webkitRequestFullscreen();
-        } else if (gameArea.msRequestFullscreen) {
-          gameArea.msRequestFullscreen();
         } else {
-          // Nenhum método de tela cheia nativo existe (iOS Safari) — usa o
-          // fallback simulado direto.
           ativarTelaCheiaSimulada();
         }
-
-        setTimeout(() => {
-          enforceFullscreenCanvasSize();
-          if (typeof window.dispatchEvent === "function") {
-            window.dispatchEvent(new Event("resize"));
-          }
-        }, 100);
+        avisarRedimensionamento();
       }
 
-      document.addEventListener("fullscreenchange", () => {
-        enforceFullscreenCanvasSize();
-        setTimeout(() => {
-          if (typeof window.dispatchEvent === "function") {
-            window.dispatchEvent(new Event("resize"));
-          }
-        }, 100);
-      });
-      document.addEventListener("webkitfullscreenchange", enforceFullscreenCanvasSize);
-      document.addEventListener("msfullscreenchange", enforceFullscreenCanvasSize);
-      window.addEventListener("resize", enforceFullscreenCanvasSize);
+      document.addEventListener("fullscreenchange", avisarRedimensionamento);
+      document.addEventListener("webkitfullscreenchange", avisarRedimensionamento);
 
       if (fullscreenBtn) {
         fullscreenBtn.addEventListener("click", toggleFullscreen);
       }
 
       // ==========================================
-      // INICIALIZAÇÃO GAMEMAKER
+      // INICIAR O JOGO (só depois do clique)
       // ==========================================
-      window.onload = function () {
-        if (typeof GameMaker_Init !== "undefined") {
-          GameMaker_Init();
-        }
-        const canvas = document.getElementById("canvas");
-        if (canvas) {
-          canvas.setAttribute("tabindex", "0");
-        }
-        // Sincroniza depois do init do GameMaker (que mexe no canvas
-        // pra resolução fixa 1000x500) pra garantir que o tamanho real
-        // exibido prevaleça desde o primeiro frame.
-        requestAnimationFrame(sincronizarResolucaoCanvas);
+      // Antes o GameMaker iniciava assim que a página abria: a intro já
+      // rodava escondida atrás do botão e o aluno perdia o começo. Agora o
+      // jogo só carrega quando a pessoa clica em "Executar jogo", com a
+      // tela da ampulheta mostrando o progresso.
+      const dicasCarregamento = [
+        "Converse com todos os personagens: cada um explica uma parte da história.",
+        "Passe no quiz de cada fase para liberar uma página do Diário de Viagem.",
+        "Datas importam, mas entender o PORQUÊ de cada acontecimento vale ainda mais.",
+        "Segure BACKSPACE para pular a cutscene da abertura.",
+        "Use WASD ou as setas para andar e ESPAÇO para pular.",
+        "No fim de cada época, um provão testa tudo o que você aprendeu.",
+        "Aperte L no menu para abrir o Diário de Viagem."
+      ];
+      let jogoIniciado = false;
 
-        // O próprio jogo (lógica compilada, não o runtime) também
-        // redimensiona o canvas sozinho pouco depois de iniciar (ao
-        // clicar em "Executar jogo") — pra não entrar em conflito com
-        // esse timing imprevisível, observa diretamente os atributos
-        // width/height do canvas e corrige de volta assim que QUALQUER
-        // coisa (o próprio jogo incluso) mudar pra um valor diferente
-        // do que está realmente exibido. O guard de "já está certo"
-        // dentro de sincronizarResolucaoCanvas evita loop infinito.
-        if (canvas && window.MutationObserver) {
-          const observadorCanvas = new MutationObserver(sincronizarResolucaoCanvas);
-          observadorCanvas.observe(canvas, {
-            attributes: true,
-            attributeFilter: ["width", "height"],
-          });
-        }
+      function iniciarJogo() {
+        if (jogoIniciado) return;
+        jogoIniciado = true;
 
-        // Rede de segurança de baixa frequência, caso alguma mudança
-        // de tamanho escape da observação acima.
-        setInterval(sincronizarResolucaoCanvas, 1000);
-      };
-
-      function esconderTelaPlay() {
         const overlay = document.getElementById("play-overlay");
+        const telaCarregando = document.getElementById("tela-carregando");
+        const barra = document.getElementById("carregando-barra");
+        const porcento = document.getElementById("carregando-porcento");
+        const dica = document.getElementById("carregando-dica");
         const canvas = document.getElementById("canvas");
-
-        if (
-          typeof g_WebAudioContext !== "undefined" &&
-          g_WebAudioContext &&
-          g_WebAudioContext.state === "suspended"
-        ) {
-          g_WebAudioContext.resume().catch((e) =>
-            console.log("AudioContext resume error:", e)
-          );
-        }
 
         if (overlay) {
           overlay.classList.add("escondido");
+          setTimeout(function () { if (overlay.parentNode) overlay.remove(); }, 300);
+        }
+        if (telaCarregando) telaCarregando.classList.remove("escondido");
+
+        // dicas trocando a cada 4,5 s
+        let indiceDica = Math.floor(Math.random() * dicasCarregamento.length);
+        dica.textContent = dicasCarregamento[indiceDica];
+        const timerDicas = setInterval(function () {
+          dica.style.opacity = "0";
           setTimeout(function () {
-            if (overlay && overlay.parentNode) overlay.remove();
-          }, 300);
+            indiceDica = (indiceDica + 1) % dicasCarregamento.length;
+            dica.textContent = dicasCarregamento[indiceDica];
+            dica.style.opacity = "1";
+          }, 400);
+        }, 4500);
+
+        let terminou = false;
+        function atualizar(p) {
+          if (terminou) return;
+          // as texturas são quase todo o peso do download
+          let fracao = p.total > 0 ? p.prontos / p.total : 0;
+          if (p.iniciou) fracao = 1;
+          const pct = Math.min(100, Math.round(fracao * 100));
+          barra.style.width = pct + "%";
+          porcento.textContent = pct + "%";
+
+          if (p.iniciou) {
+            terminou = true;
+            clearInterval(timerDicas);
+            setTimeout(function () {
+              telaCarregando.classList.add("escondido");
+              if (canvas) canvas.focus();
+            }, 450);
+          }
+        }
+        window.chronoCarregamento.ouvintes.push(atualizar);
+
+        if (typeof GameMaker_Init !== "undefined") {
+          GameMaker_Init();
+        }
+
+        // o AudioContext nasce dentro do clique; garante que não fique pausado
+        if (typeof g_WebAudioContext !== "undefined" && g_WebAudioContext &&
+            g_WebAudioContext.state === "suspended") {
+          g_WebAudioContext.resume().catch(function () {});
         }
 
         if (canvas) {
+          canvas.setAttribute("tabindex", "0");
           canvas.focus();
-          setTimeout(() => {
-            if (typeof window.dispatchEvent === "function") {
-              window.dispatchEvent(new Event("resize"));
-            }
-          }, 100);
         }
+        avisarRedimensionamento();
       }
+
+      // Enter / espaço também iniciam (acessibilidade pelo teclado)
+      document.addEventListener("keydown", function (e) {
+        if (!jogoIniciado && (e.key === "Enter" || e.key === " ") &&
+            document.activeElement === document.body) {
+          e.preventDefault();
+          iniciarJogo();
+        }
+      });
 
       // ==========================================
       // MENU MOBILE

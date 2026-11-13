@@ -149,12 +149,14 @@
     border-radius: 999px;
     text-decoration: none;
     display: inline-block;
-    transition: all 0.25s ease;
+    /* `translate` (e não `transform`) no hover: o GSAP anima `transform`
+       na entrada, e as duas propriedades se compõem sem conflito. */
+    transition: box-shadow 0.25s ease, translate 0.25s ease;
     box-shadow: 0 8px 30px rgba(247, 244, 234, 0.15);
 }
 
 .landing-btn-primary:hover {
-    transform: translateY(-2px);
+    translate: 0 -2px;
     box-shadow: 0 12px 36px rgba(247, 244, 234, 0.25);
 }
 
@@ -166,7 +168,7 @@
     text-decoration: none;
     border-bottom: 1px solid rgba(247, 244, 234, 0.3);
     padding-bottom: 2px;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .landing-btn-ghost:hover {
@@ -323,7 +325,7 @@
     border-radius: 4px;
     padding: clamp(1.5rem, 2.5vw, 2rem);
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, translate 0.25s ease;
     overflow: hidden;
 }
 
@@ -339,7 +341,7 @@
 
 .feature-card:hover {
     border-color: var(--seal);
-    transform: translateY(-4px);
+    translate: 0 -4px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -403,7 +405,9 @@
 }
 
 /* ── DESTAQUE DO JOGO ───────────────────────────────────── */
-.game-spotlight { position: relative; }
+/* overflow-x: clip — o brilho atrás do personagem passava da lateral e
+   fazia a página "balançar" para o lado no celular */
+.game-spotlight { position: relative; overflow-x: clip; }
 
 .game-spotlight-grid {
     display: grid;
@@ -583,15 +587,17 @@
     border: 1px solid var(--gold-soft);
     border-radius: 8px;
     padding: clamp(1.75rem, 2.5vw, 2.25rem);
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    transition: border-color 0.25s ease, translate 0.25s ease;
+    z-index: 1;
 }
 
 .pricing-card:hover {
     border-color: rgba(201, 162, 39, 0.5);
-    transform: translateY(-3px);
+    translate: 0 -3px;
 }
 
 .pricing-card-highlight {
+    z-index: 2;
     background: rgba(201, 162, 39, 0.06);
     border-color: var(--seal);
     box-shadow: 0 20px 50px -20px rgba(201, 162, 39, 0.35);
@@ -959,16 +965,115 @@
     color: #8b6914;
 }
 
-/* ── ANIMAÇÃO DE ENTRADA AO ROLAR ───────────────────────── */
+/* ── ANIMAÇÃO DE ENTRADA AO ROLAR ───────────────────────────
+   Feita em CSS (opacity + transform rodam na GPU, leves em qualquer
+   máquina). O JS só adiciona .is-visible e um atraso curto (--reveal-delay)
+   entre itens que entram juntos. */
 .reveal {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translate3d(0, 18px, 0);
+    /* translate/borda/sombra mantêm o hover dos cards, sem o atraso */
+    transition:
+        opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+        transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+        translate 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+}
+
+/* Com GSAP disponível (`.js-anim`, posto no <html> por um script no
+   <head>), as entradas ficam com ele: o .reveal acima vira só reserva. */
+.js-anim .reveal {
+    opacity: 1;
+    transform: none;
+    /* sem transição em opacity/transform, que o GSAP anima quadro a quadro */
+    transition: translate 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.features-grid { perspective: 1200px; }
+
+/* ── FIO DO TEMPO (linha dourada que liga as seções) ────── */
+.landing-flow { position: relative; }
+
+.time-thread {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+}
+
+@media (min-width: 1100px) {
+    .js-anim .time-thread { display: block; }
+}
+
+.time-thread path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.time-thread-base {
+    stroke: rgba(201, 162, 39, 0.16);
+    stroke-width: 1.5;
+    stroke-dasharray: 2 9;
+}
+
+.time-thread-glow {
+    stroke: rgba(232, 200, 74, 0.14);
+    stroke-width: 9;
+}
+
+.time-thread-path {
+    stroke: var(--seal-light);
+    stroke-width: 2;
+}
+
+.time-thread-head { fill: #f5e2a0; }
+
+.time-thread-halo {
+    fill: rgba(232, 200, 74, 0.28);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: threadPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes threadPulse {
+    0%, 100% { transform: scale(0.7); opacity: 0.9; }
+    50% { transform: scale(1.25); opacity: 0.35; }
+}
+
+:root[data-theme="light"] .time-thread-base { stroke: rgba(139, 105, 20, 0.22); }
+:root[data-theme="light"] .time-thread-glow { stroke: rgba(201, 162, 39, 0.18); }
+:root[data-theme="light"] .time-thread-path { stroke: #8b6914; }
+:root[data-theme="light"] .time-thread-head { fill: #8b6914; }
+:root[data-theme="light"] .time-thread-halo { fill: rgba(139, 105, 20, 0.25); }
+
+/* Lenis (rolagem suave, só em computadores com folga de processamento) */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Evita o "piscar" do hero antes da animação de entrada começar */
+.js-anim .landing-hero-content > *,
+.js-anim .landing-chip,
+.js-anim .hero-scroll-arrow > * {
+    visibility: hidden;
+}
+
+.scroll-arrow-pixel { animation: arrowBob 2.4s ease-in-out infinite; }
+
+@keyframes arrowBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -977,4 +1082,266 @@
         transform: none;
         transition: none;
     }
+
+    .scroll-arrow-pixel { animation: none; }
 }
+
+/* ── GALERIA HISTÓRICA + AMPULHETA 3D ───────────────────── */
+.gallery-showcase {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    padding: clamp(3.5rem, 7vw, 6.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+}
+
+.gallery-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 900px) {
+    .gallery-inner {
+        grid-template-columns: minmax(280px, 0.8fr) 1.45fr;
+        gap: clamp(2rem, 4vw, 3.5rem);
+    }
+}
+
+.hourglass-stage {
+    position: relative;
+    height: clamp(300px, 34vw, 420px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 900px) {
+    .hourglass-stage { height: min(62vh, 520px); }
+}
+
+.hourglass-stage::before {
+    content: '';
+    position: absolute;
+    inset: 8% 4% 14%;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(201, 162, 39, 0.32), transparent 60%),
+        radial-gradient(circle at 35% 70%, rgba(94, 124, 226, 0.22), transparent 55%);
+    filter: blur(30px);
+    z-index: 0;
+}
+
+.hourglass-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.hourglass-fallback {
+    position: relative;
+    z-index: 1;
+    width: 34%;
+    max-width: 150px;
+    color: var(--seal-light);
+    filter: drop-shadow(0 0 18px rgba(232, 200, 74, 0.35));
+    transition: opacity 0.5s ease;
+}
+
+.hourglass-stage.is-3d-ready .hourglass-canvas { opacity: 1; }
+.hourglass-stage.is-3d-ready .hourglass-fallback { opacity: 0; }
+
+.hourglass-era {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    z-index: 2;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.55rem 1.2rem;
+    background: rgba(10, 9, 16, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hourglass-era-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(247, 243, 234, 0.55);
+}
+
+.hourglass-era-text {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--seal-light);
+}
+
+/* Sem isso a coluna (item de grid) cresce até a largura total da faixa de
+   obras e a faixa vaza para fora da tela. */
+.gallery-copy { min-width: 0; }
+
+.gallery-eyebrow { text-align: left; }
+
+.gallery-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    line-height: 1.18;
+    color: var(--paper);
+    margin-bottom: 0.9rem;
+    max-width: 560px;
+}
+
+.gallery-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(247, 243, 234, 0.7);
+    max-width: 520px;
+    margin-bottom: 1.75rem;
+}
+
+/* No celular a faixa é rolada no dedo; no desktop o GSAP a move com a
+   rolagem da página enquanto a seção fica fixada. */
+.gallery-track-wrap {
+    margin: 0 -1.25rem;
+    padding: 0.5rem 1.25rem 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.gallery-track-wrap::-webkit-scrollbar { display: none; }
+
+@media (min-width: 900px) {
+    .gallery-track-wrap {
+        margin: 0;
+        padding: 0.5rem 0 1rem;
+        overflow: visible;
+        /* A faixa desliza só dentro da coluna (corta nas duas laterais);
+           o recorte vertical negativo preserva a sombra/elevação do hover */
+        clip-path: inset(-2rem 0 -2rem 0);
+    }
+}
+
+.gallery-track {
+    display: flex;
+    gap: 1.1rem;
+    width: max-content;
+}
+
+.gallery-card {
+    flex: 0 0 auto;
+    width: clamp(210px, 19vw, 250px);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: rgba(247, 243, 234, 0.03);
+    border: 1px solid var(--gold-soft);
+    border-radius: 6px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, translate 0.25s ease;
+}
+
+.gallery-card:hover {
+    border-color: var(--seal);
+    translate: 0 -4px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-card-media {
+    height: clamp(150px, 24vh, 200px);
+    overflow: hidden;
+    background: rgba(201, 162, 39, 0.08);
+}
+
+.gallery-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.85rem 1rem 1rem;
+}
+
+.gallery-card-era {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--seal-light);
+}
+
+.gallery-card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--paper);
+    line-height: 1.25;
+}
+
+.gallery-card-year {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(247, 243, 234, 0.55);
+}
+
+.gallery-cta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.gallery-cta-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(247, 243, 234, 0.5);
+}
+
+:root[data-theme="light"] .gallery-title,
+:root[data-theme="light"] .gallery-card-title { color: var(--ink); }
+
+:root[data-theme="light"] .gallery-desc,
+:root[data-theme="light"] .gallery-card-year,
+:root[data-theme="light"] .gallery-cta-note { color: rgba(26, 20, 16, 0.65); }
+
+:root[data-theme="light"] .gallery-card-era,
+:root[data-theme="light"] .hourglass-era-text { color: #8b6914; }
+
+:root[data-theme="light"] .gallery-card {
+    background: rgba(26, 20, 16, 0.035);
+    border-color: rgba(26, 20, 16, 0.14);
+}
+
+:root[data-theme="light"] .hourglass-era {
+    background: rgba(255, 252, 244, 0.8);
+    border-color: rgba(166, 138, 86, 0.4);
+}
+
+:root[data-theme="light"] .hourglass-era-label { color: rgba(26, 20, 16, 0.55); }
