@@ -117,7 +117,7 @@
                 const btn = document.getElementById('submitBtn');
 
                 if (!usernameInput || !passwordInput) {
-                    alert('Por favor, preencha todos os campos.');
+                    toast.aviso('Por favor, preencha todos os campos.');
                     return;
                 }
 
@@ -153,13 +153,13 @@
                         window.location.href = role === 'adm' ? 'adm.html' : 'linha-do-tempo.html';
                         return;
                     } else if (response.status === 401) {
-                        alert(data.message || 'Usuário ou senha incorretos.');
+                        toast.erro(data.message || 'Usuário ou senha incorretos.');
                     } else {
-                        alert(data.message || 'Não foi possível fazer login. Tente novamente.');
+                        toast.erro(data.message || 'Não foi possível fazer login. Tente novamente.');
                     }
                 } catch (error) {
                     console.warn('Falha ao conectar com o servidor:', error);
-                    alert('Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.');
+                    toast.erro('Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.');
                 }
 
                 btn.disabled = false;
@@ -210,6 +210,7 @@
             }
         })();
     </script>
-    <script src="js/password-toggle.js"></script>
+        <script src="js/toast.js"></script>
+<script src="js/password-toggle.js"></script>
 </body>
 </html>

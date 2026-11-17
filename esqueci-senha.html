@@ -265,7 +265,7 @@
           const btn = document.getElementById("pedirCodigoBtn");
 
           if (!email) {
-            alert("Informe seu e-mail.");
+            toast.aviso("Informe seu e-mail.");
             return;
           }
 
@@ -307,17 +307,17 @@
           const btn = document.getElementById("redefinirBtn");
 
           if (!/^\d{6}$/.test(codigo)) {
-            alert(
+            toast.aviso(
               "Digite o código de 6 dígitos que enviamos para o seu e-mail.",
             );
             return;
           }
           if (password.length < 6) {
-            alert("A senha precisa ter pelo menos 6 caracteres.");
+            toast.aviso("A senha precisa ter pelo menos 6 caracteres.");
             return;
           }
           if (password !== confirmarSenha) {
-            alert("As senhas não coincidem.");
+            toast.aviso("As senhas não coincidem.");
             return;
           }
 
@@ -341,13 +341,13 @@
               return;
             }
 
-            alert(
+            toast.erro(
               data.message ||
                 "Não foi possível redefinir a senha. Tente pedir um novo código.",
             );
           } catch (error) {
             console.warn("Falha ao conectar com o servidor:", error);
-            alert(
+            toast.erro(
               "Não foi possível se conectar ao servidor. Verifique sua conexão e tente novamente.",
             );
           }
@@ -387,6 +387,7 @@
         }
       })();
     </script>
-    <script src="js/password-toggle.js"></script>
+        <script src="js/toast.js"></script>
+<script src="js/password-toggle.js"></script>
   </body>
 </html>

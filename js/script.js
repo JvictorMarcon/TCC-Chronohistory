@@ -1006,7 +1006,7 @@ function setupEventListeners() {
             if (!token && !user) {
                 e.preventDefault();
                 const destino = link.getAttribute('href') && link.getAttribute('href').includes('galeria') ? 'a Galeria Histórica de Imagens' : 'o Jogo Interativo';
-                alert(`Acesso restrito! Você precisa estar logado para acessar ${destino}.`);
+                try { sessionStorage.setItem('chronohistory_toast', JSON.stringify({ m: `Acesso restrito! Você precisa estar logado para acessar ${destino}.`, t: 'aviso' })); } catch (_) {}
                 window.location.href = 'login.html';
             }
         });

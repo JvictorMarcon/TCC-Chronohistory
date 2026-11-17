@@ -112,7 +112,8 @@ function atualizarNavegacao(sessao) {
     // Redireciona de páginas restritas se não estiver logado
     const paginaRestrita = path.includes('galeria.html') || path.includes('jogo.html') || path.includes('adm.html');
     if (!autenticado && paginaRestrita) {
-        alert('Acesso restrito! Faça login para continuar.');
+        // O toast aparece na página de login (toast.js lê isto ao carregar)
+        try { sessionStorage.setItem('chronohistory_toast', JSON.stringify({ m: 'Acesso restrito! Faça login para continuar.', t: 'aviso' })); } catch (_) {}
         window.location.href = resolverCaminhoLogin();
         return;
     }
